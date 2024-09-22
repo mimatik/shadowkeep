@@ -30,8 +30,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    PLAYER_X, PLAYER_Y = player.Player_move(PLAYER_X, PLAYER_Y)
+        elif event.type == pygame.KEYDOWN:
+            PLAYER_X, PLAYER_Y = player.Player_move(PLAYER_X, PLAYER_Y)
 
     window.fill((0,0,0))
 
