@@ -1,26 +1,21 @@
 import pygame
-import map
+from map import Map
 import grid
-import player
-
+from player import  Player
+import config
 pygame.init()
 
-PLAYER_X = player.player_x
-PLAYER_Y = player.player_y
-
-#Size of the window
-WINDOW_WIDTH = grid.TILE_WIDTH * 20
-WINDOW_HEIGHT = grid.TILE_HEIGHT * 20
-
-#Frames Per Second
-FPS = 60
 
 running = True
 
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+window = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_HEIGHT))
 pygame.display.set_caption("Platformer")
 
 clock = pygame.time.Clock()
+
+map = Map(window)
+
+player = Player(window, map)
 
 gridMousePos = grid.GetCoords(pygame.mouse.get_pos())
 while running:
@@ -31,15 +26,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            PLAYER_X, PLAYER_Y = player.Player_move(PLAYER_X, PLAYER_Y)
+            player.move()
 
-    window.fill((0,0,0))
+    map.blit()
 
-    window.blit(map.SELECTOR,gridMousePos)
+    # window.blit(map.SELECTOR,gridMousePos)
 
-    window.blit(player.player, (PLAYER_X, PLAYER_Y))
+    player.blit()
 
     pygame.display.update()
 
-    clock.tick(FPS)
+    clock.tick(config.FPS)
 
