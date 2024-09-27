@@ -2,8 +2,6 @@
 source ./config
 
 source "$VENV_DIR/bin/activate"
-
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-python src/shadowkeep/main.py
+python src/main.py
 
 deactivate
