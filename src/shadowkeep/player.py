@@ -1,10 +1,11 @@
 import pygame
-from config import TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 
 PLAYER_HEIGHT = TILE_HEIGHT
 PLAYER_WIDTH = TILE_WIDTH
 
-class Player():
+
+class Player:
     def __init__(self, window, map):
         self.x = TILE_HEIGHT * 3
         self.y = TILE_WIDTH * 3
@@ -23,6 +24,6 @@ class Player():
             self.x += TILE_WIDTH
         if pressed_keys[pygame.K_a]:
             self.x -= TILE_WIDTH
+
     def blit(self):
         self.window.blit(self.surface, (self.x, self.y))
-

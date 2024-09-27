@@ -1,8 +1,8 @@
 import pygame
-from map import Map
-import grid
-from player import  Player
-import config
+from shadowkeep import config, grid
+from shadowkeep.map import Map
+from shadowkeep.player import Player
+
 pygame.init()
 
 
@@ -37,4 +37,3 @@ while running:
     pygame.display.update()
 
     clock.tick(config.FPS)
-
