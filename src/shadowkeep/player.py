@@ -1,14 +1,16 @@
 import pygame
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 
+from src.shadowkeep.grid import coords_transform_pair, coords_transform_single
+
 PLAYER_HEIGHT = TILE_HEIGHT
 PLAYER_WIDTH = TILE_WIDTH
 
 
 class Player:
     def __init__(self, window, map):
-        self.x = TILE_HEIGHT * 3
-        self.y = TILE_WIDTH * 3
+        self.x = coords_transform_single(3)
+        self.y = coords_transform_single(3)
         self.window = window
         self.surface = pygame.surface.Surface((PLAYER_WIDTH, PLAYER_HEIGHT))
         self.surface.fill((255, 250, 250))

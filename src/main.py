@@ -17,10 +17,10 @@ map = Map(window)
 
 player = Player(window, map)
 
-gridMousePos = grid.GetCoords(pygame.mouse.get_pos())
+gridMousePos = grid.get_coords(pygame.mouse.get_pos())
 while running:
 
-    gridMousePos = grid.GetCoords(pygame.mouse.get_pos())
+    gridMousePos = grid.get_coords(pygame.mouse.get_pos())
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
