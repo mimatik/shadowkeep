@@ -1,22 +1,35 @@
 import pygame
+from pygame.examples.cursors import image
 from shadowkeep import grid
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
-
+from PIL import Image
 
 class Map:
     def __init__(self, window):
-        self.data = [
-            [1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1],
-        ]
+
+        self.image = Image.open("assets/img/map.png")
+        self.width, self.height = self.image.size
+        print(self.image.size)
+        self.data = []
+
+        for h in range(self.height):
+            self.row = []
+            for w in range(self.width):
+                self.pixel = self.image.getpixel((w ,h))
+                if self.pixel == (0, 0, 0, 255):
+                    self.row.append(1)
+                else:
+                    self.row.append(0)
+            self.data.append(self.row)
+
+        print(self.data)
+
         self.surface_1 = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface_1.fill((255, 0, 255))
         self.surface_2 = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface_2.fill((0, 0, 255))
         self.window = window
+
 
     def blit(self):
         for y, row in enumerate(self.data):
