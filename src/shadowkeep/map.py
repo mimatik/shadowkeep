@@ -7,7 +7,7 @@ from PIL import Image
 class Map:
     def __init__(self, window):
 
-        self.image = Image.open("assets/img/map.png")
+        self.image = Image.open(IMG_DIR / "map.png")
         self.width, self.height = self.image.size
         print(self.image.size)
         self.data = []
