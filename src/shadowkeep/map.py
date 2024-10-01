@@ -24,10 +24,8 @@ class Map:
 
         print(self.data)
 
-        self.surface_1 = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
-        self.surface_1.fill((255, 0, 255))
-        self.surface_2 = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
-        self.surface_2.fill((0, 0, 255))
+        self.wall = pygame.image.load(IMG_DIR / "Wall.png")
+        self.floor = pygame.image.load(IMG_DIR / "Floor.png")
         self.window = window
 
 
@@ -35,17 +33,17 @@ class Map:
         for y, row in enumerate(self.data):
             for x, cell in enumerate(row):
                 if cell == 1:
-                    self.window.blit(self.surface_1, (x * TILE_WIDTH, y * TILE_HEIGHT))
+                    self.window.blit(self.wall, (x * TILE_WIDTH, y * TILE_HEIGHT))
                 elif cell == 0:
-                    self.window.blit(self.surface_2, (x * TILE_WIDTH, y * TILE_HEIGHT))
+                    self.window.blit(self.floor, (x * TILE_WIDTH, y * TILE_HEIGHT))
 
 
 # Tiles
-WALL = pygame.image.load(IMG_DIR / "Wall.png")
-WALL = pygame.transform.scale(WALL, (TILE_WIDTH, TILE_HEIGHT))
-
-FLOOR = pygame.image.load(IMG_DIR / "Floor.png")
-FLOOR = pygame.transform.scale(FLOOR, (TILE_WIDTH, TILE_HEIGHT))
+# WALL = pygame.image.load(IMG_DIR / "Wall.png")
+# WALL = pygame.transform.scale(wall, (TILE_WIDTH, TILE_HEIGHT))
+# 
+# FLOOR = pygame.image.load(IMG_DIR / "Floor.png")
+# FLOOR = pygame.transform.scale(FLOOR, (TILE_WIDTH, TILE_HEIGHT))
 
 SELECTOR = pygame.image.load(IMG_DIR / "Selector.png")
 SELECTOR = pygame.transform.scale(SELECTOR, (TILE_WIDTH, TILE_HEIGHT))
