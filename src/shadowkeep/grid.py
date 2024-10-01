@@ -1,6 +1,5 @@
 from .config import TILE_HEIGHT, TILE_WIDTH
 
-
 def get_coords(pos):
     return (pos[0] // TILE_WIDTH * TILE_WIDTH, pos[1] // TILE_HEIGHT * TILE_HEIGHT)
 
