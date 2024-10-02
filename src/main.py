@@ -31,7 +31,7 @@ while running:
     map.blit()
 
     # window.blit(map.SELECTOR,gridMousePos)
-
+    #
     player.blit()
 
     pygame.display.update()
