@@ -6,8 +6,8 @@ from PIL import Image
 
 
 class Map:
-    def __init__(self, window):
-
+    def __init__(self, game):
+        self.game = game
         self.image = Image.open(IMG_DIR / "map.png")
         self.width, self.height = self.image.size
         print(self.image.size)
@@ -27,15 +27,14 @@ class Map:
 
         self.wall = pygame.image.load(IMG_DIR / "Wall.png")
         self.floor = pygame.image.load(IMG_DIR / "Floor.png")
-        self.window = window
 
     def blit(self):
         for y, row in enumerate(self.data):
             for x, cell in enumerate(row):
                 if cell == 1:
-                    self.window.blit(self.wall, (x * TILE_WIDTH, y * TILE_HEIGHT))
+                    self.game.window.blit(self.wall, (x * TILE_WIDTH, y * TILE_HEIGHT))
                 elif cell == 0:
-                    self.window.blit(self.floor, (x * TILE_WIDTH, y * TILE_HEIGHT))
+                    self.game.window.blit(self.floor, (x * TILE_WIDTH, y * TILE_HEIGHT))
 
 
 # Tiles
