@@ -2,6 +2,7 @@ import pygame
 from shadowkeep.map import Map
 from shadowkeep.player import Player
 from shadowkeep import config
+from shadowkeep.monster import Monster
 
 
 class Game:
@@ -16,6 +17,11 @@ class Game:
 
         self.map = Map(self)
         self.player = Player(self)
+        self.monsters = [Monster(self)]
+
+    def turn(self):
+        for monster in self.monsters:
+            monster.turn()
 
     def run(self):
         while self.running:
@@ -30,4 +36,6 @@ class Game:
     def blit(self):
         self.map.blit()
         self.player.blit()
+        for monster in self.monsters:
+            monster.blit()
         pygame.display.update()

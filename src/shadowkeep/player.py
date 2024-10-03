@@ -3,16 +3,13 @@ import time
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.grid import coords_transform_pair, coords_transform_single
 
-PLAYER_HEIGHT = TILE_HEIGHT
-PLAYER_WIDTH = TILE_WIDTH
-
 
 class Player:
     def __init__(self, game):
         self.x = 10
         self.y = 10
         self.game = game
-        self.surface = pygame.surface.Surface((PLAYER_WIDTH, PLAYER_HEIGHT))
+        self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface.fill((255, 250, 250))
         self.last_pressed = 0
 
@@ -34,6 +31,7 @@ class Player:
         if pressed_keys[pygame.K_a]:
             if self.game.map.data[self.y][self.x - 1] == 0:
                 self.x -= 1
+        self.game.turn()
 
     def blit(self):
         self.game.window.blit(self.surface, coords_transform_pair(self.x, self.y))

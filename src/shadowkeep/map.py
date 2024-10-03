@@ -6,35 +6,41 @@ from PIL import Image
 
 
 class Map:
+    FLOOR = 0
+    WALL = 1
+    SURFACES = {
+        FLOOR: pygame.image.load(IMG_DIR / "Floor.png"),
+        WALL: pygame.image.load(IMG_DIR / "Wall.png"),
+    }
+
     def __init__(self, game):
         self.game = game
-        self.image = Image.open(IMG_DIR / "map.png")
-        self.width, self.height = self.image.size
-        print(self.image.size)
         self.data = []
+        self.load_map_from_image()
 
-        for h in range(self.height):
-            self.row = []
-            for w in range(self.width):
-                self.pixel = self.image.getpixel((w, h))
-                if self.pixel == (0, 0, 0, 255):
-                    self.row.append(1)
-                else:
-                    self.row.append(0)
-            self.data.append(self.row)
+    def load_map_from_image(self):
+        with Image.open(IMG_DIR / "map.png") as image:
+            self.width, self.height = image.size
+            print(image.size)
+
+            for h in range(self.height):
+                row = []
+                for w in range(self.width):
+                    self.pixel = image.getpixel((w, h))
+                    if self.pixel == (0, 0, 0, 255):
+                        row.append(self.WALL)
+                    else:
+                        row.append(self.FLOOR)
+                self.data.append(row)
 
         print(self.data)
-
-        self.wall = pygame.image.load(IMG_DIR / "Wall.png")
-        self.floor = pygame.image.load(IMG_DIR / "Floor.png")
 
     def blit(self):
         for y, row in enumerate(self.data):
             for x, cell in enumerate(row):
-                if cell == 1:
-                    self.game.window.blit(self.wall, (x * TILE_WIDTH, y * TILE_HEIGHT))
-                elif cell == 0:
-                    self.game.window.blit(self.floor, (x * TILE_WIDTH, y * TILE_HEIGHT))
+                self.game.window.blit(
+                    self.SURFACES[cell], (x * TILE_WIDTH, y * TILE_HEIGHT)
+                )
 
 
 # Tiles
