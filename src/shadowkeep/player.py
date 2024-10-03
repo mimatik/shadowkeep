@@ -4,6 +4,8 @@ from shadowkeep.grid import coords_transform_pair, coords_transform_single
 
 PLAYER_HEIGHT = TILE_HEIGHT
 PLAYER_WIDTH = TILE_WIDTH
+
+
 class Player:
     def __init__(self, window, map):
         self.x = 10
