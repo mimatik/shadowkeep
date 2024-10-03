@@ -12,7 +12,6 @@ class Player:
         self.surface = pygame.surface.Surface((PLAYER_WIDTH, PLAYER_HEIGHT))
         self.surface.fill((255, 250, 250))
         self.data = map.data
-        self.clock = pygame.time.Clock()
 
     def move(self):
         pressed_keys = pygame.key.get_pressed()

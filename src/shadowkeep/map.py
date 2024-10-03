@@ -4,6 +4,7 @@ from shadowkeep import grid
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
+
 class Map:
     def __init__(self, window):
 
@@ -15,7 +16,7 @@ class Map:
         for h in range(self.height):
             self.row = []
             for w in range(self.width):
-                self.pixel = self.image.getpixel((w ,h))
+                self.pixel = self.image.getpixel((w, h))
                 if self.pixel == (0, 0, 0, 255):
                     self.row.append(1)
                 else:
@@ -27,7 +28,6 @@ class Map:
         self.wall = pygame.image.load(IMG_DIR / "Wall.png")
         self.floor = pygame.image.load(IMG_DIR / "Floor.png")
         self.window = window
-
 
     def blit(self):
         for y, row in enumerate(self.data):
@@ -41,7 +41,7 @@ class Map:
 # Tiles
 # WALL = pygame.image.load(IMG_DIR / "Wall.png")
 # WALL = pygame.transform.scale(wall, (TILE_WIDTH, TILE_HEIGHT))
-# 
+#
 # FLOOR = pygame.image.load(IMG_DIR / "Floor.png")
 # FLOOR = pygame.transform.scale(FLOOR, (TILE_WIDTH, TILE_HEIGHT))
 
