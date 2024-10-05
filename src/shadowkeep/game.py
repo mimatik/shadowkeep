@@ -20,7 +20,7 @@ class Game:
         self.player = Player(self)
         self.monsters = [Monster(self)]
 
-        self.background_layer = Layer(self, is_static=True)
+        self.background_layer = Layer(self)
         self.dynamic_layer = Layer(self)
 
         self.map.blit(self.background_layer)

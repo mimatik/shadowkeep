@@ -2,9 +2,8 @@ import pygame
 
 
 class Layer:
-    def __init__(self, game, is_static=False):
+    def __init__(self, game):
         self.game = game
-        self.is_static = is_static
         self.surface = pygame.Surface(
             (game.window.get_width(), game.window.get_height()), pygame.SRCALPHA
         )
