@@ -33,5 +33,5 @@ class Player:
                 self.x -= 1
         self.game.turn()
 
-    def blit(self):
-        self.game.window.blit(self.surface, coords_transform_pair(self.x, self.y))
+    def blit(self, layer):
+        layer.blit(self.surface, coords_transform_pair(self.x, self.y))

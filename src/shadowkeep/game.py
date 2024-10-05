@@ -3,6 +3,7 @@ from shadowkeep.map import Map
 from shadowkeep.player import Player
 from shadowkeep import config
 from shadowkeep.monster import Monster
+from shadowkeep.layer import Layer
 
 
 class Game:
@@ -19,9 +20,26 @@ class Game:
         self.player = Player(self)
         self.monsters = [Monster(self)]
 
+        self.background_layer = Layer(self, is_static=True)
+        self.dynamic_layer = Layer(self)
+
+        self.map.blit(self.background_layer)
+
     def turn(self):
         for monster in self.monsters:
             monster.turn()
+
+    def update(self):
+        self.dynamic_layer.clear()
+        self.player.blit(self.dynamic_layer)
+
+        for monster in self.monsters:
+            monster.blit(self.dynamic_layer)
+
+    def draw(self):
+        self.background_layer.draw(self.window)
+        self.dynamic_layer.draw(self.window)
+        pygame.display.update()
 
     def run(self):
         while self.running:
@@ -30,12 +48,6 @@ class Game:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     self.player.move()
-            self.blit()
+            self.update()
+            self.draw()
             self.clock.tick(config.FPS)
-
-    def blit(self):
-        self.map.blit()
-        self.player.blit()
-        for monster in self.monsters:
-            monster.blit()
-        pygame.display.update()
