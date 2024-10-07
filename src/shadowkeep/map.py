@@ -17,6 +17,7 @@ class Map:
         self.game = game
         self.data = []
         self.load_map_from_image()
+        self.layer = game.background_layer
 
     def load_map_from_image(self):
         with Image.open(IMG_DIR / "map.png") as image:
@@ -32,10 +33,12 @@ class Map:
                         row.append(self.FLOOR)
                 self.data.append(row)
 
-    def blit(self, layer):
+    def blit(self):
         for y, row in enumerate(self.data):
             for x, cell in enumerate(row):
-                layer.blit(self.SURFACES[cell], (x * TILE_WIDTH, y * TILE_HEIGHT))
+                self.layer.place_surface(
+                    self.SURFACES[cell], (x * TILE_WIDTH, y * TILE_HEIGHT)
+                )
 
 
 # Tiles

@@ -7,12 +7,13 @@ class Layer:
         self.surface = pygame.Surface(
             (game.window.get_width(), game.window.get_height()), pygame.SRCALPHA
         )
+        self.target = game.window
 
     def clear(self):
         self.surface.fill((0, 0, 0, 0))
 
-    def blit(self, surface, position):
+    def place_surface(self, surface, position):
         self.surface.blit(surface, position)
 
-    def draw(self, target_surface):
-        target_surface.blit(self.surface, (0, 0))
+    def blit(self, position=(0, 0)):
+        self.target.blit(self.surface, position)

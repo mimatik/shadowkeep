@@ -16,14 +16,14 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.background_layer = Layer(self)
+        self.dynamic_layer = Layer(self)
+
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [Monster(self)]
 
-        self.background_layer = Layer(self)
-        self.dynamic_layer = Layer(self)
-
-        self.map.blit(self.background_layer)
+        self.map.blit()
 
     def turn(self):
         for monster in self.monsters:
@@ -31,14 +31,14 @@ class Game:
 
     def update(self):
         self.dynamic_layer.clear()
-        self.player.blit(self.dynamic_layer)
+        self.player.blit()
 
         for monster in self.monsters:
-            monster.blit(self.dynamic_layer)
+            monster.blit()
 
-    def draw(self):
-        self.background_layer.draw(self.window)
-        self.dynamic_layer.draw(self.window)
+    def blit_layers(self):
+        self.background_layer.blit()
+        self.dynamic_layer.blit()
         pygame.display.update()
 
     def run(self):
@@ -49,5 +49,5 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     self.player.move()
             self.update()
-            self.draw()
+            self.blit_layers()
             self.clock.tick(config.FPS)
