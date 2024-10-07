@@ -9,6 +9,7 @@ class Player:
         self.x = 10
         self.y = 10
         self.game = game
+        self.layer = game.dynamic_layer
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface.fill((255, 250, 250))
         self.last_pressed = 0
@@ -34,4 +35,4 @@ class Player:
         self.game.turn()
 
     def blit(self):
-        self.game.window.blit(self.surface, coords_transform_pair(self.x, self.y))
+        self.layer.place_surface(self.surface, coords_transform_pair(self.x, self.y))
