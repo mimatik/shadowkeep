@@ -1,8 +1,9 @@
 import pygame
-from shadowkeep.map import Map
-from shadowkeep.player import Player
 from shadowkeep import config
+from shadowkeep.layer import Layer
+from shadowkeep.map import Map
 from shadowkeep.monster import Monster
+from shadowkeep.player import Player
 
 
 class Game:
@@ -15,19 +16,29 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.background_layer = Layer(self)
+        self.dynamic_layer = Layer(self)
+
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [Monster(self)]
+
+        self.map.blit()
 
     def turn(self):
         for monster in self.monsters:
             monster.turn()
 
-    def blit(self):
-        self.map.blit()
+    def update(self):
+        self.dynamic_layer.clear()
         self.player.blit()
+
         for monster in self.monsters:
             monster.blit()
+
+    def blit_layers(self):
+        self.background_layer.blit()
+        self.dynamic_layer.blit()
         pygame.display.update()
 
     def run(self):
@@ -37,5 +48,6 @@ class Game:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     self.player.move()
-            self.blit()
+            self.update()
+            self.blit_layers()
             self.clock.tick(config.FPS)
