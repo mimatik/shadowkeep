@@ -32,10 +32,3 @@ class Game:
                     self.player.move()
             self.blit()
             self.clock.tick(config.FPS)
-
-    def blit(self):
-        self.map.blit()
-        self.player.blit()
-        for monster in self.monsters:
-            monster.blit()
-        pygame.display.update()
