@@ -23,6 +23,13 @@ class Game:
         for monster in self.monsters:
             monster.turn()
 
+    def blit(self):
+        self.map.blit()
+        self.player.blit()
+        for monster in self.monsters:
+            monster.blit()
+        pygame.display.update()
+
     def run(self):
         while self.running:
             for event in pygame.event.get():
