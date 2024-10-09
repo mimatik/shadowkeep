@@ -18,26 +18,27 @@ class Coordinates(list):
     def y(self, value):
         self[1] = value
 
-    @property
-    def pos(self):
-        return self.x, self.y
-
     def __add__(self, other):
-        return Coordinates(self.x + other.x, self.y + other.y)
+        return self.x + other.x, self.y + other.y
 
     def __iadd__(self, other):
         self.x += other.x
         self.y += other.y
-        return Coordinates(self.x, self.y)
+        return self
 
     def __str__(self):
         return f"Coordinates({self.x}, {self.y})"
 
     def is_neighbour(self, other):
-        return abs(self.x - other.x) == 1 and abs(self.y - other.y) == 1
+        return (
+            abs(self.x - other.x) == 1
+            and abs(self.y - other.y) == 0
+            or abs(self.x - other.x) == 0
+            and abs(self.y - other.y) == 1
+        )
 
 
-# # Příklad použití
+# Příklad použití
 # coordinates1 = Coordinates(1, 3)
 # print(coordinates1.x)  # Vypíše: 1
 # print(coordinates1)  # Vypíše: Coordinates(1, 2)
@@ -60,3 +61,10 @@ class Coordinates(list):
 # print(coordinates1.pos)
 # print(coordinates2.pos)
 # print(coordinates1 + coordinates2)  # Vypíše: Coordinates(10, 20)
+
+# test1 = Coordinates(2, 2)
+# # test2 = Coordinates(3, 3)
+# # test2 += test1
+# # test2 = test2 + test2
+# # i = test2
+# # print(i[0])
