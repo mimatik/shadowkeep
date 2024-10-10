@@ -3,9 +3,7 @@ import pygame
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.grid import coords_transform_pair, coords_transform_single
 from shadowkeep.lib.coordinates import Coordinates
-
 from src.shadowkeep.lib.coordinates import Coordinates
-
 
 class Monster:
     def __init__(self, game):
