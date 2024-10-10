@@ -1,6 +1,5 @@
 import pygame
 from pygame.examples.cursors import image
-from shadowkeep import grid
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
@@ -17,7 +16,6 @@ class Map:
         self.game = game
         self.data = []
         self.load_map_from_image()
-        self.layer = game.background_layer
 
     def load_map_from_image(self):
         with Image.open(IMG_DIR / "map.png") as image:
@@ -36,15 +34,15 @@ class Map:
     def blit(self):
         for y, row in enumerate(self.data):
             for x, cell in enumerate(row):
-                self.layer.place_surface(
+                self.game.background_layer.place_surface(
                     self.SURFACES[cell], (x * TILE_WIDTH, y * TILE_HEIGHT)
                 )
+
     def is_floor(self, coordinates):
         try:
             return self.data[coordinates.y][coordinates.x] == self.FLOOR
         except IndexError:
             return False
-
 
 
 # Tiles

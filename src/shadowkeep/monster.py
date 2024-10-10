@@ -1,19 +1,16 @@
 import random
 import pygame
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
-from shadowkeep.grid import coords_transform_pair
 from shadowkeep.lib.coordinates import Coordinates
-from src.shadowkeep.lib.coordinates import Coordinates
+
 
 class Monster:
     def __init__(self, game):
         self.game = game
-        self.layer = game.dynamic_layer
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface.fill((255, 0, 0))
         self.choose_random_velocity()
         self.choose_random_position()
-
 
     def choose_random_position(self):
         while True:
@@ -22,23 +19,28 @@ class Monster:
                 self.position = position
                 return
 
-
     def choose_random_velocity(self):
-        self.velocity = random.choice([Coordinates(x=-1), Coordinates(x=+1), Coordinates(y=-1), Coordinates(x=+1)])
+        self.velocity = random.choice(
+            [Coordinates(x=-1), Coordinates(x=+1), Coordinates(y=-1), Coordinates(x=+1)]
+        )
 
     def move(self):
         next_position = self.position + self.velocity
+
         if self.game.map.is_floor(next_position):
             self.position = next_position
         else:
             self.choose_random_velocity()
 
-        if self.position.is_neighbour(self.game.player.position) or self.position == self.game.player.position:
+        if (
+            self.position.is_neighbour(self.game.player.position)
+            or self.position == self.game.player.position
+        ):
             self.game.text_input.is_open = True
 
     def blit(self):
-        self.layer.place_surface(
-            self.surface, coords_transform_pair(self.position.x, self.position.y)
+        self.game.dynamic_layer.place_surface(
+            self.surface, self.position.transformed_pair()
         )
 
     def turn(self):

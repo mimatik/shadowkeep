@@ -1,3 +1,6 @@
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
+
+
 class Coordinates(list):
     def __init__(self, x=0, y=0):
         super().__init__([x, y])
@@ -36,6 +39,9 @@ class Coordinates(list):
             or self.x == other.x
             and abs(self.y - other.y) == 1
         )
+
+    def transformed_pair(self):
+        return self.x * TILE_WIDTH, self.y * TILE_HEIGHT
 
 
 # Příklad použití
