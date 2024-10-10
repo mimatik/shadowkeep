@@ -32,8 +32,8 @@ class Coordinates(list):
     def is_neighbour(self, other):
         return (
             abs(self.x - other.x) == 1
-            and abs(self.y - other.y) == 0
-            or abs(self.x - other.x) == 0
+            and self.y == other.y
+            or self.x == other.x
             and abs(self.y - other.y) == 1
         )
 
@@ -62,8 +62,9 @@ class Coordinates(list):
 # print(coordinates2.pos)
 # print(coordinates1 + coordinates2)  # Vypíše: Coordinates(10, 20)
 
-# test1 = Coordinates(2, 2)
-# # test2 = Coordinates(3, 3)
+test1 = Coordinates(2, 2)
+test2 = Coordinates(3, 2)
+print(test2.is_neighbour(test1))
 # # test2 += test1
 # # test2 = test2 + test2
 # # i = test2
