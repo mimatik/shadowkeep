@@ -1,5 +1,4 @@
 import pygame
-import time
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.grid import coords_transform_pair, coords_transform_single
 from shadowkeep.lib.coordinates import Coordinates
@@ -15,25 +14,24 @@ class Player:
         self.surface.fill((255, 250, 250))
         self.last_pressed = 0
         self.position = Coordinates(self.x, self.y)
-
     def move(self):
         current_time = pygame.time.get_ticks()
+        movement = Coordinates()
         if current_time - self.last_pressed < 40:
             return
         self.last_pressed = current_time
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[pygame.K_w]:
-            if self.game.map.data[self.position.y - 1][self.position.x] == 0:
-                self.position.y -= 1
+            movement = Coordinates(y=-1)
         if pressed_keys[pygame.K_s]:
-            if self.game.map.data[self.position.y + 1][self.position.x] == 0:
-                self.position.y += 1
+            movement = Coordinates(y=+1)
         if pressed_keys[pygame.K_d]:
-            if self.game.map.data[self.position.y][self.position.x + 1] == 0:
-                self.position.x += 1
+            movement = Coordinates(x=+1)
         if pressed_keys[pygame.K_a]:
-            if self.game.map.data[self.position.y][self.position.x - 1] == 0:
-                self.position.x -= 1
+            movement = Coordinates(x=-1)
+        next_movement = self.position + movement
+        if self.game.map.is_floor(next_movement):
+            self.position = next_movement
         self.game.turn()
 
     def blit(self):

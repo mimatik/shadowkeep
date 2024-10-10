@@ -4,8 +4,7 @@ from shadowkeep.layer import Layer
 from shadowkeep.map import Map
 from shadowkeep.monster import Monster
 from shadowkeep.player import Player
-from shadowkeep.lib.coordinates import Coordinates
-
+from shadowkeep.text import TextInput
 
 class Game:
     def __init__(self):
@@ -19,10 +18,13 @@ class Game:
 
         self.background_layer = Layer(self)
         self.dynamic_layer = Layer(self)
+        self.ui_layer = Layer(self)
 
         self.map = Map(self)
         self.player = Player(self)
-        self.monsters = [Monster(self)]
+        self.monsters = [Monster(self) for x in range(10)]
+
+        self.text_input = TextInput(self)
 
         self.map.blit()
 
@@ -32,7 +34,9 @@ class Game:
 
     def update(self):
         self.dynamic_layer.clear()
+        self.ui_layer.clear()
         self.player.blit()
+        self.text_input.blit()
 
         for monster in self.monsters:
             monster.blit()
@@ -40,6 +44,7 @@ class Game:
     def blit_layers(self):
         self.background_layer.blit()
         self.dynamic_layer.blit()
+        self.ui_layer.blit()
         pygame.display.update()
 
     def run(self):
@@ -48,7 +53,11 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
-                    self.player.move()
+                    if self.text_input.is_open:
+                        self.text_input.read_key(event)
+                    else:
+                        self.player.move()
+
             self.update()
             self.blit_layers()
             self.clock.tick(config.FPS)

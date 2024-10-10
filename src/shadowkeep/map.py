@@ -39,6 +39,12 @@ class Map:
                 self.layer.place_surface(
                     self.SURFACES[cell], (x * TILE_WIDTH, y * TILE_HEIGHT)
                 )
+    def is_floor(self, coordinates):
+        try:
+            return self.data[coordinates.y][coordinates.x] == self.FLOOR
+        except IndexError:
+            return False
+
 
 
 # Tiles
