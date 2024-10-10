@@ -4,6 +4,7 @@ from shadowkeep.layer import Layer
 from shadowkeep.map import Map
 from shadowkeep.monster import Monster
 from shadowkeep.player import Player
+from shadowkeep.lib.coordinates import Coordinates
 
 
 class Game:
