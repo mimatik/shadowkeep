@@ -60,6 +60,7 @@ class Game:
                     else:
                         self.player.move()
 
+            self.text_input.backspace_update()  # enables multiple chars deletion by holding backspace
             self.update()
             self.blit_layers()
             self.clock.tick(config.FPS)

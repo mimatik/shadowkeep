@@ -1,5 +1,4 @@
 import pygame
-import time
 
 
 class TextInput:
@@ -12,6 +11,8 @@ class TextInput:
         self.font = pygame.font.Font(None, 18)
         self.maximum_letters = 250 / 18
         self.text_position = (10, 10)
+        self.backspace_timer = 0
+        self.backspace_pressed = False
 
     def surface_set(self, surface, text, font, position):
         self.surface.fill((255, 255, 255))
@@ -39,8 +40,19 @@ class TextInput:
             self.text2 = ""
         elif pressed_keys[pygame.K_ESCAPE]:
             self.text2 = ""
+            self.is_open = False
         elif pressed_keys[pygame.K_BACKSPACE]:
-            if self.text2:
-                self.text2 = self.text2[:-1]
+            self.text2 = self.text2[:-1]
+            self.backspace_pressed = True
+            self.backspace_timer = pygame.time.get_ticks()
         else:
             self.text2 += event.unicode
+
+    def backspace_update(self):
+        if self.backspace_pressed:
+            if pygame.time.get_ticks() - self.backspace_timer > 80:
+                self.text2 = self.text2[:-1]
+                self.backspace_timer = pygame.time.get_ticks()
+
+        if not pygame.key.get_pressed()[pygame.K_BACKSPACE]:
+            self.backspace_pressed = False
