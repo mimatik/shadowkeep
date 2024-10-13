@@ -11,6 +11,7 @@ class Monster:
         self.surface.fill((255, 0, 0))
         self.choose_random_velocity()
         self.choose_random_position()
+        self.next_position = 0
 
     def choose_random_position(self):
         while True:
@@ -25,10 +26,10 @@ class Monster:
         )
 
     def move(self):
-        next_position = self.position + self.velocity
+        self.next_position = self.position + self.velocity
 
-        if self.game.map.is_floor(next_position):
-            self.position = next_position
+        if self.game.map.is_floor(self.next_position):
+            self.position = self.next_position
         else:
             self.choose_random_velocity()
 
