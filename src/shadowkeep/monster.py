@@ -21,7 +21,7 @@ class Monster:
 
     def choose_random_velocity(self):
         self.velocity = random.choice(
-            [Coordinates(x=-1), Coordinates(x=+1), Coordinates(y=-1), Coordinates(x=+1)]
+            [Coordinates(x=-1), Coordinates(x=+1), Coordinates(y=-1), Coordinates(y=+1)]
         )
 
     def move(self):

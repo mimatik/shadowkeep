@@ -6,6 +6,7 @@ from shadowkeep.monster import Monster
 from shadowkeep.player import Player
 from shadowkeep.text import TextInput
 
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -39,7 +40,8 @@ class Game:
         self.text_input.blit()
 
         for monster in self.monsters:
-            monster.blit()
+            if self.map.is_floor(monster.position):
+                monster.blit()
 
     def blit_layers(self):
         self.background_layer.blit()
