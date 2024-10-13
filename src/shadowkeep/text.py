@@ -1,4 +1,5 @@
 import pygame
+import textwrap
 
 
 class TextInput:
@@ -7,27 +8,35 @@ class TextInput:
         self.is_open = False
         self.text1 = "Jake je heslo"
         self.text2 = ""
-        self.surface = pygame.surface.Surface((250, 150))
-        self.font = pygame.font.Font(None, 18)
+        self.bg_surface = pygame.surface.Surface((250, 150))
+        self.font_size = 20
+        self.line_height = round(self.font_size * 0.9)
+        print(self.line_height)
+        self.font = pygame.font.Font(None, self.font_size)
         self.maximum_letters = 250 / 18
         self.text_position = (10, 10)
         self.backspace_timer = 0
         self.backspace_pressed = False
 
-    def surface_set(self, surface, text, font, position):
-        self.surface.fill((255, 255, 255))
-        text_surface = font.render(text, True, (0, 0, 0))
-        surface.blit(text_surface, (position))
-        return surface
+    def surface_set(self, bg_surface, text, font, position):
+        self.bg_surface.fill((255, 255, 255))
+        wrapped_text = textwrap.wrap(text, width=32)
+
+        for line in wrapped_text:
+            text_surface = font.render(line, True, (0, 0, 0))
+            bg_surface.blit(text_surface, (position))
+            position = (position[0], position[1] + self.line_height)
+
+        return bg_surface
 
     def blit(self):
         if self.is_open:
             self.surface1 = self.surface_set(
-                self.surface, self.text1, self.font, (10, 10)
+                self.bg_surface, self.text1, self.font, (10, 10)
             )
             self.game.ui_layer.place_surface(self.surface1, (20, 200))
             self.surface2 = self.surface_set(
-                self.surface, self.text2, self.font, (10, 10)
+                self.bg_surface, self.text2, self.font, (10, 10)
             )
             self.game.ui_layer.place_surface(self.surface2, (500, 200))
 
