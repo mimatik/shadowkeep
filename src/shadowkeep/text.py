@@ -11,7 +11,6 @@ class TextInput:
         self.bg_surface = pygame.surface.Surface((250, 150))
         self.font_size = 20
         self.line_height = round(self.font_size * 0.9)
-        print(self.line_height)
         self.font = pygame.font.Font(None, self.font_size)
         self.maximum_letters = 250 / 18
         self.text_position = (10, 10)
