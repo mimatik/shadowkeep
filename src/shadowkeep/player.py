@@ -1,5 +1,5 @@
 import pygame
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR
 from shadowkeep.lib.coordinates import Coordinates
 
 
@@ -9,7 +9,7 @@ class Player:
         self.y = 10
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
-        self.surface.fill((255, 250, 250))
+        self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
         self.position = Coordinates(self.x, self.y)
 

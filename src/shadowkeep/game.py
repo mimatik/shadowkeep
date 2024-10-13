@@ -6,6 +6,7 @@ from shadowkeep.monster import Monster
 from shadowkeep.player import Player
 from shadowkeep.text import TextInput
 
+
 class Game:
     def __init__(self):
         pygame.init()
