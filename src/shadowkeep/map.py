@@ -1,6 +1,4 @@
-import pygame
-from pandas.io.formats.format import return_docstring
-from pygame.examples.cursors import image
+import pygames
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
