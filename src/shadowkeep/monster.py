@@ -41,7 +41,7 @@ class Monster:
             self.position.is_neighbour(self.game.player.position)
             or self.position == self.game.player.position
         ):
-            self.game.text_input.is_open = True
+            self.game.dialog.is_open = True
 
     def blit(self):
         self.game.dynamic_layer.place_surface(

@@ -4,7 +4,7 @@ from shadowkeep.layer import Layer
 from shadowkeep.map import Map
 from shadowkeep.monster import Monster
 from shadowkeep.player import Player
-from shadowkeep.text import TextInput
+from shadowkeep.dialog import Dialog
 
 
 class Game:
@@ -25,7 +25,7 @@ class Game:
         self.player = Player(self)
         self.monsters = [Monster(self) for x in range(10)]
 
-        self.text_input = TextInput(self)
+        self.dialog = Dialog(self)
 
         self.map.blit()
 
@@ -37,7 +37,7 @@ class Game:
         self.dynamic_layer.clear()
         self.ui_layer.clear()
         self.player.blit()
-        self.text_input.blit()
+        self.dialog.blit()
 
         for monster in self.monsters:
             if self.map.is_floor(monster.position):
@@ -55,12 +55,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
-                    if self.text_input.is_open:
-                        self.text_input.read_key(event)
+                    if self.dialog.is_open:
+                        self.dialog.read_key(event)
                     else:
                         self.player.move()
 
-            self.text_input.backspace_update()  # enables multiple chars deletion by holding backspace
+            self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace
             self.update()
             self.blit_layers()
             self.clock.tick(config.FPS)
