@@ -7,8 +7,6 @@ class TextInput:
         self.game = game
         self.text = ""
 
-        self.bg_surface = pygame.surface.Surface((0, 0))
-
         self.font_size = 20
         self.line_height = round(self.font_size * 0.9)
         self.font = pygame.font.Font(None, self.font_size)
@@ -20,7 +18,7 @@ class TextInput:
         }
         self.theme_color = self.themes[theme]
 
-    def surface_set(self, bg_surface, text, position):
+    def surface_set(self, text, position):
         height = 0
         width = 0
 
@@ -49,5 +47,5 @@ class TextInput:
         return bg_surface
 
     def blit(self, text, bubble_position):
-        surface = self.surface_set(self.bg_surface, text, (10, 10))
+        surface = self.surface_set(text, (10, 10))
         self.game.ui_layer.place_surface(surface, (bubble_position))
