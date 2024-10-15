@@ -1,5 +1,4 @@
 import pygame
-
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
