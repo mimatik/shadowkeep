@@ -23,7 +23,6 @@ class TextInput:
     def surface_set(self, bg_surface, text, position):
         height = 0
         width = 0
-        width = 0
 
         wrapped_text_surface = pygame.surface.Surface((250, 500), pygame.SRCALPHA)
         wrapped_text_surface.fill((0, 0, 0, 0))
