@@ -1,4 +1,4 @@
-#!/bin/bash
+w#!/bin/bash
 source ./config
 
 source "$VENV_DIR/bin/activate"
