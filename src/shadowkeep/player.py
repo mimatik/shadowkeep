@@ -38,7 +38,9 @@ class Player:
 
         next_movement = self.position + movement
 
-        if self.game.map.is_floor(next_movement):
+        if self.game.map.is_floor(next_movement) and not any(
+            monster.position == next_movement for monster in self.game.monsters
+        ):
             self.position = next_movement
 
         self.game.turn()

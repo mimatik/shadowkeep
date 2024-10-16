@@ -23,7 +23,7 @@ class TextInput:
         width = 0
         position = (self.padding, self.padding)
 
-        wrapped_text_surface = pygame.surface.Surface((300, 500), pygame.SRCALPHA)
+        wrapped_text_surface = pygame.surface.Surface((500, 500), pygame.SRCALPHA)
         wrapped_text_surface.fill((0, 0, 0, 0))
         wrapped_text = textwrap.wrap(text, width=32)
 
