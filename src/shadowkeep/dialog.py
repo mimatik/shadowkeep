@@ -44,4 +44,7 @@ class Dialog:
     def blit(self):
         if self.is_open:
             self.bubble_moster.blit(self.text_moster, (20, 20))
-            self.bubble_player.blit(self.text_player, (20, 180))
+            self.bubble_player.blit(
+                self.text_player,
+                (20, self.bubble_moster.surface_height + 40),
+            )

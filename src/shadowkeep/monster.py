@@ -28,10 +28,14 @@ class Monster:
     def move(self):
         next_position = self.position + self.velocity
 
-        if self.game.map.is_floor(next_position) and not any(
-            other_monster.position == next_position
-            for other_monster in self.game.monsters
-            if other_monster != self
+        if (
+            self.game.map.is_floor(next_position)
+            and not any(
+                other_monster.position == next_position
+                for other_monster in self.game.monsters
+                if other_monster != self
+            )
+            and next_position != self.game.player.position
         ):
             self.position = next_position
         else:
