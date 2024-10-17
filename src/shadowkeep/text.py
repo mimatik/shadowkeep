@@ -18,6 +18,8 @@ class TextInput:
         }
         self.theme_color = self.themes[theme]
 
+        self.max_symbols = 32
+
     def surface_set(self, text):
         height = 0
         width = 0
@@ -25,7 +27,7 @@ class TextInput:
 
         wrapped_text_surface = pygame.surface.Surface((500, 500), pygame.SRCALPHA)
         wrapped_text_surface.fill((0, 0, 0, 0))
-        wrapped_text = textwrap.wrap(text, width=32)
+        wrapped_text = textwrap.wrap(text, width=self.max_symbols)
 
         if wrapped_text:
             for line in wrapped_text:

@@ -5,13 +5,11 @@ from shadowkeep.lib.coordinates import Coordinates
 
 class Player:
     def __init__(self, game):
-        self.x = 10
-        self.y = 10
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
-        self.position = Coordinates(self.x, self.y)
+        self.position = Coordinates(11, 10)
 
     def move(self):
         current_time = pygame.time.get_ticks()

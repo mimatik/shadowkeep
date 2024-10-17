@@ -2,12 +2,14 @@ import pygame
 from shadowkeep import config
 from shadowkeep.layer import Layer
 from shadowkeep.map import Map
-from shadowkeep.monster import Monster
+from shadowkeep.monster import TalkingMonster, BadMonster
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
-
+from shadowkeep.lib.open_ai import open_ai_get_response
 
 class Game:
+
+
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Platformer")
@@ -23,11 +25,14 @@ class Game:
 
         self.map = Map(self)
         self.player = Player(self)
-        self.monsters = [Monster(self) for x in range(10)]
+        self.monsters = [TalkingMonster(self) for x in range(7)]
+        self.monsters += [BadMonster(self) for x in range(4)]
 
         self.dialog = Dialog(self)
 
         self.map.blit()
+
+        print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         for monster in self.monsters:

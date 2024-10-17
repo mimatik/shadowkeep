@@ -5,13 +5,16 @@ from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.config import IMG_DIR
 
 
-class Monster:
+class Entity:
     def __init__(self, game):
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
-        self.surface = pygame.image.load(IMG_DIR / "Enemy.png")
+        self.surface = pygame.image.load(IMG_DIR / self.get_image())
         self.choose_random_velocity()
         self.choose_random_position()
+
+    def get_image(self):
+        raise NotImplementedError
 
     def choose_random_position(self):
         while True:
@@ -33,7 +36,7 @@ class Monster:
             and not any(
                 other_monster.position == next_position
                 for other_monster in self.game.monsters
-                if other_monster != self
+                # if other_monster != self
             )
             and next_position != self.game.player.position
         ):
@@ -45,7 +48,10 @@ class Monster:
             self.position.is_neighbour(self.game.player.position)
             or self.position == self.game.player.position
         ):
-            self.game.dialog.is_open = True
+            self.meet_player()
+
+    def meet_player(self):
+        raise NotImplementedError
 
     def blit(self):
         self.game.dynamic_layer.place_surface(
@@ -56,3 +62,16 @@ class Monster:
         if random.random() < 0.25:
             self.choose_random_velocity()
         self.move()
+class TalkingMonster(Entity):
+    def get_image(self):
+        return "Friend.png"
+
+    def meet_player(self):
+        self.game.dialog.is_open = True
+
+class BadMonster(Entity):
+    def get_image(self):
+        return "Enemy.png"
+
+    def meet_player(self):
+        self.game.running = False
