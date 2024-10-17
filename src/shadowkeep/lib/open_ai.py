@@ -17,4 +17,4 @@ def open_ai_get_response(text):
         ],
         model="gpt-4o-mini",
     )
-    return chat_completion
+    return chat_completion.choices[0].message.content
