@@ -5,7 +5,8 @@ from shadowkeep.map import Map
 from shadowkeep.monster import TalkingMonster, BadMonster
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
-from shadowkeep.lib.open_ai import open_ai_get_response
+from shadowkeep.lib.open_ai import ChatGTP
+
 
 class Game:
 
@@ -27,12 +28,11 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
+        self.chatGTP = ChatGTP(self)
 
         self.dialog = Dialog(self)
 
         self.map.blit()
-
-        print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         for monster in self.monsters:

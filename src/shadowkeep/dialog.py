@@ -8,7 +8,7 @@ class Dialog:
         self.is_open = False
 
         self.bubble_moster = TextInput(game, theme="dark")
-        self.text_moster = "Jake je heslo?"
+        self.text_moster = "Zeptej se na neco"
 
         self.bubble_player = TextInput(game)
         self.text_player = ""
@@ -19,12 +19,15 @@ class Dialog:
     def read_key(self, event):
         pressed_keys = pygame.key.get_pressed()
 
-        if pressed_keys[pygame.K_RETURN]:
+        if pressed_keys[pygame.K_ESCAPE]:
             self.is_open = False
             self.text_player = ""
-        elif pressed_keys[pygame.K_ESCAPE]:
-            self.text_player = ""
+        elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
+            self.game.chatGTP.text = self.text_player
+            self.text_player = ""
+            self.text_moster = self.game.chatGTP.open_ai_get_response()
+            self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:
             self.text_player = self.text_player[:-1]
             self.backspace_pressed = True
