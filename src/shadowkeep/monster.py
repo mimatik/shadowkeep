@@ -1,5 +1,6 @@
 import random
 import pygame
+from PIL.ImageCms import Direction
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.config import IMG_DIR
@@ -62,6 +63,8 @@ class Entity:
         if random.random() < 0.25:
             self.choose_random_velocity()
         self.move()
+
+
 class TalkingMonster(Entity):
     def get_image(self):
         return "Friend.png"
@@ -69,9 +72,28 @@ class TalkingMonster(Entity):
     def meet_player(self):
         self.game.dialog.is_open = True
 
+
 class BadMonster(Entity):
     def get_image(self):
         return "Enemy.png"
 
     def meet_player(self):
         self.game.running = False
+
+
+class Fireball(Entity):
+    def get_image(self):
+        return "Fireball.png"
+
+    def __init__(self, game):
+        self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
+        self.game = game
+        self.velocity = Coordinates(0, 1)
+        self.position = Coordinates(2, 2)
+
+    def turn(self):
+        self.position += self.velocity
+        if self.game.map.is_floor(self.position):
+            pass
+        elif self.position == self.game.player.position:
+            self.game.running = False

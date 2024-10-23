@@ -2,13 +2,14 @@ import pygame
 from shadowkeep import config
 from shadowkeep.layer import Layer
 from shadowkeep.map import Map
-from shadowkeep.monster import TalkingMonster, BadMonster
+from shadowkeep.monster import TalkingMonster, BadMonster, Fireball
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
+
 from shadowkeep.lib.open_ai import open_ai_get_response
 
-class Game:
 
+class Game:
 
     def __init__(self):
         pygame.init()
@@ -27,12 +28,13 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
+        self.monsters += [Fireball(self)]
 
         self.dialog = Dialog(self)
 
         self.map.blit()
 
-        print(open_ai_get_response("jak se mas"))
+        # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         for monster in self.monsters:
@@ -47,6 +49,8 @@ class Game:
         for monster in self.monsters:
             if self.map.is_floor(monster.position):
                 monster.blit()
+            else:
+                self.monsters[i].pop()
 
     def blit_layers(self):
         self.background_layer.blit()
