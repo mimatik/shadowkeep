@@ -5,11 +5,11 @@ from shadowkeep.map import Map
 from shadowkeep.monster import TalkingMonster, BadMonster, Fireball
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
-
-from shadowkeep.lib.open_ai import open_ai_get_response
+from shadowkeep.lib.open_ai import ChatGTP
 
 
 class Game:
+
 
     def __init__(self):
         pygame.init()
@@ -29,6 +29,7 @@ class Game:
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
         self.monsters += [Fireball(self)]
+        self.chatGTP = ChatGTP(self)
 
         self.dialog = Dialog(self)
 
@@ -49,8 +50,6 @@ class Game:
         for monster in self.monsters:
             if self.map.is_floor(monster.position):
                 monster.blit()
-            else:
-                self.monsters[i].pop()
 
     def blit_layers(self):
         self.background_layer.blit()
