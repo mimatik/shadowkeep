@@ -9,8 +9,6 @@ from shadowkeep.lib.open_ai import ChatGTP
 
 
 class Game:
-
-
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Platformer")
