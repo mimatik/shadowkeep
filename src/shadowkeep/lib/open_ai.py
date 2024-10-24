@@ -19,7 +19,7 @@ class ChatGTP:
             messages=[
                 {
                     "role": "system",
-                    "content": "Jses prisera, vznikla zkrizenim monstra a ucitele cestiny, ktery rad vtipkuje. Mluv v hadankach a vyhodnocuj odpovedi. Komunikuj v cestine. Jako prvni vytvor otazku, na kterou neni snadne odpovedet",
+                    "content": "Jses prisera, vznikla zkrizenim monstra a ucitele cestiny, ktery rad vtipkuje. Mluv v hadankach a vyhodnocuj odpovedi. Komunikuj v cestine s hanackym moravskym dialektem. Jako prvni vytvor otazku, na kterou neni snadne odpovedet",
                 },
             ],
             model=self.model,
