@@ -7,12 +7,12 @@ from shadowkeep.config import IMG_DIR
 
 
 class Entity:
-    def __init__(self, game):
+    def __init__(self, game, position=None, velocity=Coordinates(0, 0)):
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface = pygame.image.load(IMG_DIR / self.get_image())
-        self.choose_random_velocity()
-        self.choose_random_position()
+        self.velocity = velocity
+        self.position = position
 
     def get_image(self):
         raise NotImplementedError
@@ -23,11 +23,36 @@ class Entity:
             if self.game.map.is_floor(position):
                 self.position = position
                 return
+    def meet_player(self):
+        pass
+
+
+    def blit(self):
+        self.game.dynamic_layer.place_surface(
+            self.surface, self.position.transformed_pair()
+        )
+    def destroy(self):
+        self.game.monsters.remove(self)
+
+class Monster(Entity):
+
+    def __init__(self, game):
+        super().__init__(game)
+        self.choose_random_position()
+        self.choose_random_velocity()
+
+    def turn(self):
+        if random.random() < 0.25:
+            self.choose_random_velocity()
+        self.move()
 
     def choose_random_velocity(self):
         self.velocity = random.choice(
             [Coordinates(x=-1), Coordinates(x=+1), Coordinates(y=-1), Coordinates(y=+1)]
         )
+
+    def choose_initial_velocity(self):
+        self.choose_random_velocity()
 
     def move(self):
         next_position = self.position + self.velocity
@@ -35,10 +60,10 @@ class Entity:
         if (
             self.game.map.is_floor(next_position)
             and not any(
-                other_monster.position == next_position
-                for other_monster in self.game.monsters
-                # if other_monster != self
-            )
+            other_monster.position == next_position
+            for other_monster in self.game.monsters
+            # if other_monster != self
+        )
             and next_position != self.game.player.position
         ):
             self.position = next_position
@@ -51,30 +76,19 @@ class Entity:
         ):
             self.meet_player()
 
-    def meet_player(self):
-        raise NotImplementedError
-
-    def blit(self):
-        self.game.dynamic_layer.place_surface(
-            self.surface, self.position.transformed_pair()
-        )
-
-    def turn(self):
-        if random.random() < 0.25:
-            self.choose_random_velocity()
-        self.move()
 
 
-class TalkingMonster(Entity):
+
+class TalkingMonster(Monster):
+
     def get_image(self):
         return "Friend.png"
 
     def meet_player(self):
         self.game.dialog.is_open = True
-        self.game.dialog.monster_text_loader()
 
 
-class BadMonster(Entity):
+class BadMonster(Monster):
     def get_image(self):
         return "Enemy.png"
 
@@ -86,15 +100,28 @@ class Fireball(Entity):
     def get_image(self):
         return "Fireball.png"
 
-    def __init__(self, game):
-        self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
-        self.game = game
-        self.velocity = Coordinates(0, 1)
-        self.position = Coordinates(2, 2)
+    # def __init__(self, game):
+    #     super().__init__()
+    #     self.velocity = Coordinates(0, 1)
+    #     self.position = Coordinates(2, 2)
 
     def turn(self):
         self.position += self.velocity
-        if self.game.map.is_floor(self.position):
-            pass
+        if not self.game.map.is_floor(self.position):
+            self.destroy()
+
         elif self.position == self.game.player.position:
             self.game.running = False
+
+class FireballLauncher(Entity):
+    def __init__(self, game):
+        super().__init__(game)
+        self.position = Coordinates(3,1)
+        self.direction = Coordinates(0,1)
+    def get_image(self):
+        return "Fireball_launcher.png"
+
+    def turn(self):
+        if self.game.current_turn % 3 == 0:
+            self.game.monsters += [Fireball(self.game,position=self.position + self.direction,velocity=self.direction)]
+

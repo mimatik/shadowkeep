@@ -6,11 +6,9 @@ from PIL import Image
 class Map:
     FLOOR = 0
     WALL = 1
-    LAUNCHER = 2
     SURFACES = {
         FLOOR: pygame.image.load(IMG_DIR / "Floor.png"),
         WALL: pygame.image.load(IMG_DIR / "Wall.png"),
-        LAUNCHER: pygame.image.load(IMG_DIR / "Fireball Launcher.png"),
     }
 
     def __init__(self, game):
@@ -31,7 +29,7 @@ class Map:
                     elif self.pixel == (255, 255, 255, 255):
                         row.append(self.FLOOR)
                     elif self.pixel == (255, 0, 0, 255):
-                        row.append(self.LAUNCHER)
+                        row.append(self.FLOOR)
                 self.data.append(row)
 
     def blit(self):

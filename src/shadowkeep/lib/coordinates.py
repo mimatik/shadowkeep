@@ -43,6 +43,9 @@ class Coordinates(list):
     def transformed_pair(self):
         return self.x * TILE_WIDTH, self.y * TILE_HEIGHT
 
+    def copy(self):
+        return Coordinates(self.x, self.y)
+
 
 # Příklad použití
 # coordinates1 = Coordinates(1, 3)
