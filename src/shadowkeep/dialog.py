@@ -8,7 +8,7 @@ class Dialog:
         self.is_open = False
 
         self.bubble_monster = TextInput(game, theme="dark")
-        self.text_monster_full = "Zeptej se na neco"
+        self.text_monster_full = self.game.chatGTP.openai_get_init_response()
         self.text_monster_display = ""
         self.text_monster_index = 0
         self.text_monster_timer = 0
@@ -27,6 +27,7 @@ class Dialog:
         if pressed_keys[pygame.K_ESCAPE]:
             self.is_open = False
             self.text_player = ""
+            self.text_monster_full = ""
 
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
@@ -37,7 +38,8 @@ class Dialog:
 
             self.text_monster_display = ""
             self.text_monster_index = 0
-            self.text_monster_full = self.game.chatGTP.open_ai_get_response()
+            self.text_monster_full = self.game.chatGTP.openai_get_response()
+
             self.text_monster_timer = pygame.time.get_ticks()
 
             self.is_open = True
