@@ -1,5 +1,7 @@
 import pygame
+from pygame.examples.video import answer
 from shadowkeep.text import TextInput
+
 
 class Dialog:
     def __init__(self, game):
@@ -16,26 +18,6 @@ class Dialog:
         self.backspace_pressed = False
 
         self.go = True
-
-    # def monster_text_loader(self):
-    #     self.letters = 0
-    #     self.go = True
-    #     self.with_one = 0
-    #     current_time = pygame.time.get_ticks()
-    #     self.last_loaded = 0
-    #     self.monster_text = []
-    #     self.with_one = 0
-    #     for letter in self.text_moster_to_print:
-    #         self.monster_text += letter
-    #         self.letters += 1
-    #
-    #     while self.go:
-    #         if current_time > self.last_loaded:
-    #             self.last_loaded += 0.2
-    #             self.text_moster += self.monster_text[self.with_one]
-    #             self.with_one += 1
-    #             if self.with_one > self.letters:
-    #                 self.go = False
 
     def read_key(self, event):
         pressed_keys = pygame.key.get_pressed()

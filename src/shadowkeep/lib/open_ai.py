@@ -1,5 +1,6 @@
 from openai import OpenAI
 from shadowkeep.config import OPENAI_API_KEY
+import json
 
 client = OpenAI(
     api_key=OPENAI_API_KEY,
@@ -10,7 +11,12 @@ class ChatGTP:
     def __init__(self, game):
         self.game = game
         self.text = ""
-        self.conversation_history = []
+        self.conversation_history = [
+            {
+                "role": "system",
+                "content": "Jste monster, ktery dava hadanky a který vrací odpovědi ve formátu JSON. pouzivej jenom Answers, True or False,",
+            }
+        ]
 
     def open_ai_get_response(self):
 
@@ -28,6 +34,9 @@ class ChatGTP:
                 "content": ai_response,
             }
         )
+        json_response = ai_response
+        parsed_json = json.loads(json_response)
 
+        print(parsed_json)
         print(self.conversation_history)
         return ai_response
