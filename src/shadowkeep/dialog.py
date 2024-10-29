@@ -1,5 +1,4 @@
 import pygame
-from pygame.examples.video import answer
 from shadowkeep.text import TextInput
 
 
@@ -29,7 +28,7 @@ class Dialog:
             self.is_open = False
             self.game.chatGTP.text = self.text_player
             self.text_player = ""
-            self.text_moster = self.game.chatGTP.open_ai_get_response()
+            self.text_moster = self.game.chatGTP.open_ai_get_response()["Answers"]
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:
             self.text_player = self.text_player[:-1]

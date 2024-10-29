@@ -34,9 +34,9 @@ class ChatGTP:
                 "content": ai_response,
             }
         )
-        json_response = ai_response
-        parsed_json = json.loads(json_response)
+        self.json_response = ai_response
+        self.parsed_json = json.loads(self.json_response)
 
-        print(parsed_json)
+        print(self.parsed_json)
         print(self.conversation_history)
-        return ai_response
+        return self.parsed_json
