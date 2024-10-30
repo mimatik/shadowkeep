@@ -2,6 +2,8 @@ import pygame
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
+from src.shadowkeep.lib.coordinates import Coordinates
+
 
 class Map:
     FLOOR = 0
@@ -30,6 +32,7 @@ class Map:
                         row.append(self.FLOOR)
                     elif self.pixel == (255, 0, 0, 255):
                         row.append(self.FLOOR)
+
                 self.data.append(row)
 
     def blit(self):

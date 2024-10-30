@@ -7,6 +7,8 @@ from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
 from shadowkeep.lib.open_ai import ChatGTP
 
+from src.shadowkeep.lib.coordinates import Coordinates
+
 
 class Game:
 
@@ -27,8 +29,9 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
-        self.monsters += [FireballLauncher(self)]
-        self.monsters_bin = []
+        self.monsters += [
+            FireballLauncher(self, rotation=0, position=Coordinates(12, 1))
+        ]
         self.chatGTP = ChatGTP(self)
 
         self.current_turn = 0
@@ -43,7 +46,6 @@ class Game:
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
-
 
     def update(self):
         self.dynamic_layer.clear()

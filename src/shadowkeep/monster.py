@@ -1,18 +1,20 @@
 import random
 import pygame
-from PIL.ImageCms import Direction
+
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.config import IMG_DIR
 
 
 class Entity:
-    def __init__(self, game, position=None, velocity=Coordinates(0, 0)):
+    def __init__(self, game, position=None, velocity=Coordinates(0, 0), rotation=0):
+        self.rotation = rotation
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface = pygame.image.load(IMG_DIR / self.get_image())
         self.velocity = velocity
         self.position = position
+        self.surface = pygame.transform.rotate(self.surface, self.rotation)
 
     def get_image(self):
         raise NotImplementedError
@@ -23,16 +25,18 @@ class Entity:
             if self.game.map.is_floor(position):
                 self.position = position
                 return
+
     def meet_player(self):
         pass
-
 
     def blit(self):
         self.game.dynamic_layer.place_surface(
             self.surface, self.position.transformed_pair()
         )
+
     def destroy(self):
         self.game.monsters.remove(self)
+
 
 class Monster(Entity):
 
@@ -60,10 +64,10 @@ class Monster(Entity):
         if (
             self.game.map.is_floor(next_position)
             and not any(
-            other_monster.position == next_position
-            for other_monster in self.game.monsters
-            # if other_monster != self
-        )
+                other_monster.position == next_position
+                for other_monster in self.game.monsters
+                # if other_monster != self
+            )
             and next_position != self.game.player.position
         ):
             self.position = next_position
@@ -75,8 +79,6 @@ class Monster(Entity):
             or self.position == self.game.player.position
         ):
             self.meet_player()
-
-
 
 
 class TalkingMonster(Monster):
@@ -97,6 +99,7 @@ class BadMonster(Monster):
 
 
 class Fireball(Entity):
+
     def get_image(self):
         return "Fireball.png"
 
@@ -113,15 +116,35 @@ class Fireball(Entity):
         elif self.position == self.game.player.position:
             self.game.running = False
 
+
 class FireballLauncher(Entity):
-    def __init__(self, game):
-        super().__init__(game)
-        self.position = Coordinates(3,1)
-        self.direction = Coordinates(0,1)
+    def __init__(self, game, rotation=0, position=Coordinates(0, 0)):
+        super().__init__(game, rotation=rotation)
+        self.position = position
+        self.get_direction()
+
+    def get_direction(self):
+        if self.rotation == 0:
+            self.direction = Coordinates(0, 1)
+        elif self.rotation == 90:
+            self.direction = Coordinates(1, 0)
+        elif self.rotation == 180:
+            self.direction = Coordinates(0, -1)
+        elif self.rotation == 270:
+            self.direction = Coordinates(-1, 0)
+        else:
+            return Coordinates(0, 0)
+
     def get_image(self):
         return "Fireball_launcher.png"
 
     def turn(self):
         if self.game.current_turn % 3 == 0:
-            self.game.monsters += [Fireball(self.game,position=self.position + self.direction,velocity=self.direction)]
-
+            self.game.monsters += [
+                Fireball(
+                    self.game,
+                    position=self.position + self.direction,
+                    velocity=self.direction,
+                    rotation=self.rotation,
+                )
+            ]
