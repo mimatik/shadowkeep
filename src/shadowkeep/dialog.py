@@ -18,6 +18,8 @@ class Dialog:
 
         self.go = True
 
+        self.guesses = 0
+
     def read_key(self, event):
         pressed_keys = pygame.key.get_pressed()
 
@@ -27,8 +29,16 @@ class Dialog:
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
             self.game.chatGTP.text = self.text_player
-            self.text_player = ""
             self.text_moster = self.game.chatGTP.open_ai_get_response()["Answers"]
+            if self.text_moster == "False":
+                self.guesses += 1
+                self.text_moster = "Spatne, skus jeste jednou"
+            if self.text_moster == "True":
+                self.guesses = 0
+                self.text_moster = "Spravne"
+            if self.guesses == 3:
+                self.game.running = False
+            self.text_player = ""
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:
             self.text_player = self.text_player[:-1]
