@@ -1,4 +1,5 @@
 import pygame
+import random
 from shadowkeep import config
 from shadowkeep.layer import Layer
 from shadowkeep.map import Map
@@ -37,13 +38,21 @@ class Game:
 
         self.map.blit()
 
+        self.backround_sfx = pygame.mixer.Sound("shadowkeep/backround_music.mp3")
+        self.backround_sfx.set_volume(0.2)
+
+        self.random_sfx = pygame.mixer.Sound("shadowkeep/random_sound.mp3")
+        self.random_sfx.set_volume(0.1)
+
+        self.random_sfx2 = pygame.mixer.Sound("shadowkeep/random_sound2.mp3")
+        self.random_sfx2.set_volume(0.2)
+
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
-
 
     def update(self):
         self.dynamic_layer.clear()
@@ -62,7 +71,13 @@ class Game:
         pygame.display.update()
 
     def run(self):
+        self.backround_sfx.play(-1)
         while self.running:
+            random_number = random.randint(0, 1000)
+            if random.randint(0, 1000) == 1:
+                self.random_sfx.play()
+            if random.randint(0, 10000) == 1:
+                self.random_sfx2.play()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

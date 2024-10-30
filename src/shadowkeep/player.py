@@ -10,6 +10,8 @@ class Player:
         self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
         self.position = Coordinates(11, 10)
+        self.player_move_sfx = pygame.mixer.Sound("shadowkeep/player_move.mp3")
+        self.player_move_sfx.set_volume(0.3)
 
     def move(self):
         current_time = pygame.time.get_ticks()
@@ -41,6 +43,7 @@ class Player:
         ):
             self.position = next_movement
 
+        self.player_move_sfx.play()
         self.game.turn()
 
     def blit(self):

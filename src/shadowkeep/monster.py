@@ -85,6 +85,7 @@ class TalkingMonster(Monster):
 
     def meet_player(self):
         self.game.dialog.is_open = True
+        self.game.dialog.text_moster = "Zeptej se na neco"
 
 
 class BadMonster(Monster):
