@@ -50,6 +50,11 @@ class Game:
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
+        if self.map.is_floor(self.player.next_movement) and not any(
+            monster.position == self.player.next_movement for monster in self.monsters
+        ):
+            self.player.position = self.player.next_movement
+
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
