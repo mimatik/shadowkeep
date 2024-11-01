@@ -6,6 +6,8 @@ from shadowkeep.monster import TalkingMonster, BadMonster, Fireball, FireballLau
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
 from shadowkeep.lib.open_ai import ChatGTP
+from PIL import Image
+from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 
 from src.shadowkeep.lib.coordinates import Coordinates
 
@@ -29,9 +31,9 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
-        self.monsters += [
-            FireballLauncher(self, rotation=0, position=Coordinates(12, 1))
-        ]
+        # self.monsters += [
+        #     FireballLauncher(self, rotation=0, position=Coordinates(12, 1))
+        # ]
         self.chatGTP = ChatGTP(self)
 
         self.current_turn = 0
@@ -40,12 +42,26 @@ class Game:
 
         self.map.blit()
 
+        self.load_data()
+
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
+
+    def load_data(self):
+        with Image.open(IMG_DIR / "map.png") as self.image:
+            self.width, self.height = self.image.size
+
+        for y in range(self.height):
+            for x in range(self.width):
+                self.pixel = self.image.getpixel((x, y))
+                if self.pixel == (255, 0, 0, 255):
+                    self.monsters.append(
+                        FireballLauncher(self, rotation=0, position=Coordinates(x, y))
+                    )
 
     def update(self):
         self.dynamic_layer.clear()
