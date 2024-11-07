@@ -1,12 +1,15 @@
-import pygame
 import random
+
+import pygame
+
 from shadowkeep import config
-from shadowkeep.layer import Layer
-from shadowkeep.map import Map
-from shadowkeep.monster import TalkingMonster, BadMonster, Fireball, FireballLauncher
-from shadowkeep.player import Player
+from shadowkeep.config import AUDIO_DIR
 from shadowkeep.dialog import Dialog
+from shadowkeep.layer import Layer
 from shadowkeep.lib.open_ai import ChatGTP
+from shadowkeep.map import Map
+from shadowkeep.monster import BadMonster, Fireball, FireballLauncher, TalkingMonster
+from shadowkeep.player import Player
 
 
 class Game:
@@ -38,13 +41,13 @@ class Game:
 
         self.map.blit()
 
-        self.backround_sfx = pygame.mixer.Sound("shadowkeep/backround_music.mp3")
+        self.backround_sfx = pygame.mixer.Sound(AUDIO_DIR / "backround_music.mp3")
         self.backround_sfx.set_volume(0.2)
 
-        self.random_sfx = pygame.mixer.Sound("shadowkeep/random_sound.mp3")
+        self.random_sfx = pygame.mixer.Sound(AUDIO_DIR / "random_sound.mp3")
         self.random_sfx.set_volume(0.1)
 
-        self.random_sfx2 = pygame.mixer.Sound("shadowkeep/random_sound2.mp3")
+        self.random_sfx2 = pygame.mixer.Sound(AUDIO_DIR / "random_sound2.mp3")
         self.random_sfx2.set_volume(0.2)
 
         # print(open_ai_get_response("jak se mas"))

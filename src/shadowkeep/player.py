@@ -1,5 +1,6 @@
 import pygame
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR
+
+from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 
 
@@ -10,7 +11,7 @@ class Player:
         self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
         self.position = Coordinates(11, 10)
-        self.player_move_sfx = pygame.mixer.Sound("shadowkeep/player_move.mp3")
+        self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
         self.player_move_sfx.set_volume(0.3)
 
     def move(self):
