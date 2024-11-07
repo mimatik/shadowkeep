@@ -1,8 +1,7 @@
 import pygame
-from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from PIL import Image
 
-from src.shadowkeep.lib.coordinates import Coordinates
+from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 
 
 class Map:

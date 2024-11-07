@@ -1,15 +1,15 @@
 import pygame
-from shadowkeep import config
-from shadowkeep.layer import Layer
-from shadowkeep.map import Map
-from shadowkeep.monster import TalkingMonster, BadMonster, Fireball, FireballLauncher
-from shadowkeep.player import Player
-from shadowkeep.dialog import Dialog
-from shadowkeep.lib.open_ai import ChatGTP
 from PIL import Image
-from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 
-from src.shadowkeep.lib.coordinates import Coordinates
+from shadowkeep import config
+from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.dialog import Dialog
+from shadowkeep.layer import Layer
+from shadowkeep.lib.coordinates import Coordinates
+from shadowkeep.lib.open_ai import ChatGTP
+from shadowkeep.map import Map
+from shadowkeep.monster import BadMonster, Fireball, FireballLauncher, TalkingMonster
+from shadowkeep.player import Player
 
 
 class Game:
