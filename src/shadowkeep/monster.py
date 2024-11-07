@@ -148,3 +148,6 @@ class FireballLauncher(Entity):
                     rotation=self.rotation,
                 )
             ]
+
+    class Rotator(Entity):
+        pass
