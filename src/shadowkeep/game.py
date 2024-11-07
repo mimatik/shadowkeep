@@ -60,7 +60,19 @@ class Game:
                     self.pixel = image.getpixel((x, y))
                     if self.pixel == (255, 0, 0, 255):
                         self.monsters.append(
+                            FireballLauncher(self, rotation=270, position=Coordinates(x, y))
+                        )
+                    if self.pixel == (255, 0, 1, 255):
+                        self.monsters.append(
                             FireballLauncher(self, rotation=0, position=Coordinates(x, y))
+                        )
+                    if self.pixel == (255, 0, 2, 255):
+                        self.monsters.append(
+                            FireballLauncher(self, rotation=90, position=Coordinates(x, y))
+                        )
+                    if self.pixel == (255, 0, 3, 255):
+                        self.monsters.append(
+                            FireballLauncher(self, rotation=180, position=Coordinates(x, y))
                         )
     def update(self):
         self.dynamic_layer.clear()

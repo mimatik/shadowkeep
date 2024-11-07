@@ -29,7 +29,7 @@ class Map:
                         row.append(self.WALL)
                     elif self.pixel == (255, 255, 255, 255):
                         row.append(self.FLOOR)
-                    elif self.pixel == (255, 0, 0, 255):
+                    elif self.pixel == (255, 0, 0, 255) or self.pixel == (255, 0, 1, 255) or self.pixel == (255, 0, 2, 255) or self.pixel == (255, 0, 3, 255):
                         row.append(self.FLOOR)
 
                 self.data.append(row)
