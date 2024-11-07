@@ -52,17 +52,16 @@ class Game:
             monster.turn()
 
     def load_data(self):
-        with Image.open(IMG_DIR / "map.png") as self.image:
-            self.width, self.height = self.image.size
+        with Image.open(IMG_DIR / "map.png") as image:
+            self.width, self.height = image.size
 
-        for y in range(self.height):
-            for x in range(self.width):
-                self.pixel = self.image.getpixel((x, y))
-                if self.pixel == (255, 0, 0, 255):
-                    self.monsters.append(
-                        FireballLauncher(self, rotation=0, position=Coordinates(x, y))
-                    )
-
+            for y in range(self.height):
+                for x in range(self.width):
+                    self.pixel = image.getpixel((x, y))
+                    if self.pixel == (255, 0, 0, 255):
+                        self.monsters.append(
+                            FireballLauncher(self, rotation=0, position=Coordinates(x, y))
+                        )
     def update(self):
         self.dynamic_layer.clear()
         self.ui_layer.clear()
