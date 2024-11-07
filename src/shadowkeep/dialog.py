@@ -1,6 +1,7 @@
 import pygame
 from shadowkeep.text import TextInput
 
+
 class Dialog:
     def __init__(self, game):
         self.game = game
@@ -17,25 +18,21 @@ class Dialog:
 
         self.go = True
 
-    # def monster_text_loader(self):
-    #     self.letters = 0
-    #     self.go = True
-    #     self.with_one = 0
-    #     current_time = pygame.time.get_ticks()
-    #     self.last_loaded = 0
-    #     self.monster_text = []
-    #     self.with_one = 0
-    #     for letter in self.text_moster_to_print:
-    #         self.monster_text += letter
-    #         self.letters += 1
-    #
-    #     while self.go:
-    #         if current_time > self.last_loaded:
-    #             self.last_loaded += 0.2
-    #             self.text_moster += self.monster_text[self.with_one]
-    #             self.with_one += 1
-    #             if self.with_one > self.letters:
-    #                 self.go = False
+        self.guesses = 0
+
+    def start(self, text):
+        self.is_open = True
+        self.text_moster = text
+        self.game.chatGTP.conversation_history = [
+            {
+                "role": "system",
+                "content": """Jste monster, ktery dava hadanky a který vrací odpovědi ve formátu JSON.
+                 Pouzivej key Answers.Hodnota bude vzdy string.
+                 Kdyz mi das hadanku(jenom kdys se te zeptam abys mi ji dal) a ja ti odpovim spatne,
+                 tak hodnota bude Lez, pokud odpovim spravne, tak hodnota bude Pravda,
+                 a pokud nebudu odpovidat na hadanku, tak hodnotu vymyslis ty.""",
+            }
+        ]
 
     def read_key(self, event):
         pressed_keys = pygame.key.get_pressed()
@@ -46,8 +43,16 @@ class Dialog:
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
             self.game.chatGTP.text = self.text_player
+            self.text_moster = self.game.chatGTP.open_ai_get_response()["Answers"]
+            if self.text_moster == "Lez":
+                self.guesses += 1
+                self.text_moster = "Spatne, skus jeste jednou"
+            if self.text_moster == "Pravda":
+                self.guesses = 0
+                self.text_moster = "Spravne"
+            if self.guesses == 3:
+                self.game.running = False
             self.text_player = ""
-            self.text_moster = self.game.chatGTP.open_ai_get_response()
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:
             self.text_player = self.text_player[:-1]

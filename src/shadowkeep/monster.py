@@ -87,7 +87,7 @@ class TalkingMonster(Monster):
         return "Friend.png"
 
     def meet_player(self):
-        self.game.dialog.is_open = True
+        self.game.dialog.start("Zeptej se na neco")
 
 
 class BadMonster(Monster):

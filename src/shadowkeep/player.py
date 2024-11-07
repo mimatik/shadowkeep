@@ -1,5 +1,6 @@
 import pygame
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR
+
+from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 
 
@@ -10,17 +11,16 @@ class Player:
         self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
         self.position = Coordinates(11, 10)
+        self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
+        self.player_move_sfx.set_volume(0.3)
 
     def move(self):
-        current_time = pygame.time.get_ticks()
         movement = Coordinates()
 
-        if current_time - self.last_pressed < 40:
-            return
-
-        self.last_pressed = current_time
-
         pressed_keys = pygame.key.get_pressed()
+
+        if sum(pressed_keys) > 1:
+            return
 
         if pressed_keys[pygame.K_w]:
             movement = Coordinates(y=-1)
@@ -34,13 +34,9 @@ class Player:
         if pressed_keys[pygame.K_a]:
             movement = Coordinates(x=-1)
 
-        next_movement = self.position + movement
+        self.next_movement = self.position + movement
 
-        if self.game.map.is_floor(next_movement) and not any(
-            monster.position == next_movement for monster in self.game.monsters
-        ):
-            self.position = next_movement
-
+        self.player_move_sfx.play()
         self.game.turn()
 
     def blit(self):
