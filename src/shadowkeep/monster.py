@@ -116,6 +116,9 @@ class Fireball(Entity):
         elif self.position == self.game.player.position:
             self.game.running = False
 
+    def destroy(self):
+        self.game.firebals.remove(self)
+
 
 class FireballLauncher(Entity):
     def __init__(self, game, rotation=0, position=Coordinates(0, 0)):
@@ -140,7 +143,7 @@ class FireballLauncher(Entity):
 
     def turn(self):
         if self.game.current_turn % 4 == 0:
-            self.game.monsters += [
+            self.game.firebals += [
                 Fireball(
                     self.game,
                     position=self.position + self.direction,
@@ -180,3 +183,16 @@ class Key(Entity):
 
     def get_image(self):
         return "Key.png"
+
+
+class End(Entity):
+    def turn(self):
+        if self.position == self.game.player.next_movement:
+            self.meet_player()
+
+    def meet_player(self):
+        self.destroy()
+        self.game.running = False
+
+    def get_image(self):
+        return "Goal.png"

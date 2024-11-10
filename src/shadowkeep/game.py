@@ -16,6 +16,7 @@ from shadowkeep.monster import (
     TalkingMonster,
     Key,
     Door,
+    End,
 )
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
@@ -41,13 +42,10 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
-        self.monsters += [
-            Door(self, position=Coordinates(1, 1)),
-            Door(self, position=Coordinates(1, 2)),
-            Key(self, position=Coordinates(12, 1)),
-        ]
         self.monsters_bin = []
         self.chatGTP = ChatGTP(self)
+
+        self.firebals = []
 
         self.current_turn = 0
         self.keys = 1
@@ -75,9 +73,17 @@ class Game:
         ):
             self.player.position = self.player.next_movement
 
+        elif any(
+            firebal.position == self.player.next_movement for firebal in self.firebals
+        ):
+            self.player.position = self.player.next_movement
+
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
+
+        for fireball in self.firebals[:]:
+            fireball.turn()
 
     def load_data(self):
         with Image.open(IMG_DIR / "map.png") as image:
@@ -116,6 +122,12 @@ class Game:
                     if self.pixel == (255, 255, 1, 255):
                         self.monsters.append(Key(self, position=Coordinates(x, y)))
 
+                    if self.pixel == (0, 255, 0, 255):
+                        self.monsters.append(End(self, position=Coordinates(x, y)))
+
+                    if self.pixel == (0, 0, 255, 255):
+                        self.player.position = Coordinates(x, y)
+
     def update(self):
         self.dynamic_layer.clear()
         self.ui_layer.clear()
@@ -125,6 +137,9 @@ class Game:
         for monster in self.monsters:
             if monster.position and self.map.is_floor(monster.position):
                 monster.blit()
+        for firebal in self.firebals:
+            if firebal.position and self.map.is_floor(firebal.position):
+                firebal.blit()
 
     def blit_layers(self):
         self.background_layer.blit()
