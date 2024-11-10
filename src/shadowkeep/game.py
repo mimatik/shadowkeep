@@ -9,7 +9,14 @@ from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH, AUDIO_DIR
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.map import Map
-from shadowkeep.monster import BadMonster, Fireball, FireballLauncher, TalkingMonster
+from shadowkeep.monster import (
+    BadMonster,
+    Fireball,
+    FireballLauncher,
+    TalkingMonster,
+    Key,
+    Door,
+)
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
 from shadowkeep.lib.open_ai import ChatGTP
@@ -34,11 +41,16 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
-        self.monsters += [FireballLauncher(self)]
+        self.monsters += [
+            Door(self, position=Coordinates(1, 1)),
+            Door(self, position=Coordinates(1, 2)),
+            Key(self, position=Coordinates(12, 1)),
+        ]
         self.monsters_bin = []
         self.chatGTP = ChatGTP(self)
 
         self.current_turn = 0
+        self.keys = 1
 
         self.dialog = Dialog(self)
 
@@ -76,20 +88,34 @@ class Game:
                     self.pixel = image.getpixel((x, y))
                     if self.pixel == (255, 0, 0, 255):
                         self.monsters.append(
-                            FireballLauncher(self, rotation=270, position=Coordinates(x, y))
+                            FireballLauncher(
+                                self, rotation=270, position=Coordinates(x, y)
+                            )
                         )
                     if self.pixel == (255, 0, 1, 255):
                         self.monsters.append(
-                            FireballLauncher(self, rotation=0, position=Coordinates(x, y))
+                            FireballLauncher(
+                                self, rotation=0, position=Coordinates(x, y)
+                            )
                         )
                     if self.pixel == (255, 0, 2, 255):
                         self.monsters.append(
-                            FireballLauncher(self, rotation=90, position=Coordinates(x, y))
+                            FireballLauncher(
+                                self, rotation=90, position=Coordinates(x, y)
+                            )
                         )
                     if self.pixel == (255, 0, 3, 255):
                         self.monsters.append(
-                            FireballLauncher(self, rotation=180, position=Coordinates(x, y))
+                            FireballLauncher(
+                                self, rotation=180, position=Coordinates(x, y)
+                            )
                         )
+                    if self.pixel == (255, 255, 0, 255):
+                        self.monsters.append(Door(self, position=Coordinates(x, y)))
+
+                    if self.pixel == (255, 255, 1, 255):
+                        self.monsters.append(Key(self, position=Coordinates(x, y)))
+
     def update(self):
         self.dynamic_layer.clear()
         self.ui_layer.clear()

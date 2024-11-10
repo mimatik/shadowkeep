@@ -139,7 +139,7 @@ class FireballLauncher(Entity):
         return "Fireball_launcher.png"
 
     def turn(self):
-        if self.game.current_turn % 3 == 0:
+        if self.game.current_turn % 4 == 0:
             self.game.monsters += [
                 Fireball(
                     self.game,
@@ -149,5 +149,34 @@ class FireballLauncher(Entity):
                 )
             ]
 
-    class Rotator(Entity):
-        pass
+
+class Rotator(Entity):
+    pass
+
+
+class Door(Entity):
+
+    def turn(self):
+        if self.position == self.game.player.next_movement:
+            self.meet_player()
+
+    def meet_player(self):
+        if self.game.keys > 0:
+            self.game.keys -= 1
+            self.destroy()
+
+    def get_image(self):
+        return "Door.png"
+
+
+class Key(Entity):
+    def turn(self):
+        if self.position == self.game.player.next_movement:
+            self.meet_player()
+
+    def meet_player(self):
+        self.destroy()
+        self.game.keys += 1
+
+    def get_image(self):
+        return "Key.png"
