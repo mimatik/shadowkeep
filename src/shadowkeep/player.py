@@ -1,3 +1,5 @@
+from dis import Positions
+
 import pygame
 
 from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
@@ -13,9 +15,11 @@ class Player:
         self.position = Coordinates(11, 10)
         self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
         self.player_move_sfx.set_volume(0.3)
+        self.last_movement = Coordinates()
+        self.movement = Coordinates()
 
     def move(self):
-        movement = Coordinates()
+        self.movement = Coordinates()
 
         pressed_keys = pygame.key.get_pressed()
 

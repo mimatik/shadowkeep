@@ -2,7 +2,7 @@ import random
 
 import pygame
 from PIL import Image
-
+from pygame import Surface
 
 from shadowkeep import config
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH, AUDIO_DIR
@@ -68,6 +68,7 @@ class Game:
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
+        self.player.last_movement = self.player.position
         if self.map.is_floor(self.player.next_movement) and not any(
             monster.position == self.player.next_movement for monster in self.monsters
         ):

@@ -66,7 +66,7 @@ class Monster(Entity):
             and not any(
                 other_monster.position == next_position
                 for other_monster in self.game.monsters
-                # if other_monster != self
+                if other_monster != self
             )
             and next_position != self.game.player.position
         ):
@@ -103,18 +103,29 @@ class Fireball(Entity):
     def get_image(self):
         return "Fireball.png"
 
-    # def __init__(self, game):
-    #     super().__init__()
-    #     self.velocity = Coordinates(0, 1)
-    #     self.position = Coordinates(2, 2)
+    def __init__(self, game, position, velocity, rotation):
+        super().__init__(position, velocity, rotation)
+        self.game = game
+        self.position = position
+        self.velocity = velocity
+        self.rotation = rotation
+        self.next_position = self.position
 
     def turn(self):
-        self.position += self.velocity
-        if not self.game.map.is_floor(self.position):
+        if self.next_position == self.game.player.position:
+            self.game.running = False
+
+        elif not self.game.map.is_floor(self.next_position):
             self.destroy()
 
-        elif self.position == self.game.player.position:
+        if (
+            self.next_position == self.game.player.last_movement
+            and self.position == self.game.player.position
+        ):
             self.game.running = False
+
+        self.position = self.next_position
+        self.next_position = self.position + self.velocity
 
     def destroy(self):
         self.game.firebals.remove(self)
