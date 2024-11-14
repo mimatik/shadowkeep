@@ -32,6 +32,9 @@ class Coordinates(list):
     def __str__(self):
         return f"Coordinates({self.x}, {self.y})"
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
     def is_neighbour(self, other):
         return (
             abs(self.x - other.x) == 1
@@ -66,7 +69,7 @@ class Coordinates(list):
 #
 # coordinates1.x = 1
 # coordinates1.y = 2
-# coordinates2 = Coordinates(3, 4)
+# coordinates2 = Coordinates(3, 4mi)
 # print(coordinates1.pos)
 # print(coordinates2.pos)
 # print(coordinates1 + coordinates2)  # Vypíše: Coordinates(10, 20)
@@ -78,3 +81,9 @@ print(test2.is_neighbour(test1))
 # # test2 = test2 + test2
 # # i = test2
 # # print(i[0])
+
+dictionary = {}
+dictionary[test1] = "Ahoj"
+print(dictionary)
+
+

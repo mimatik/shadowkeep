@@ -34,7 +34,7 @@ class Player:
         if pressed_keys[pygame.K_a]:
             movement = Coordinates(x=-1)
 
-        self.next_movement = self.position + movement
+        self.next_position = self.position + movement
         self.moved_dir = movement
 
         self.player_move_sfx.play()
