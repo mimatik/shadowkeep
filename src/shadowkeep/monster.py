@@ -95,7 +95,7 @@ class BadMonster(Monster):
         return "Enemy.png"
 
     def meet_player(self):
-        self.game.running = False
+        pass
 
 
 class Fireball(Entity):
@@ -119,7 +119,7 @@ class Fireball(Entity):
             self.destroy()
 
         if (
-            self.next_position == self.game.player.last_movement
+            self.next_position == self.game.player.last_position
             and self.position == self.game.player.position
         ):
             self.game.running = False
@@ -171,7 +171,7 @@ class Rotator(Entity):
 class Door(Entity):
 
     def turn(self):
-        if self.position == self.game.player.next_movement:
+        if self.position == self.game.player.next_position:
             self.meet_player()
 
     def meet_player(self):
@@ -185,7 +185,7 @@ class Door(Entity):
 
 class Key(Entity):
     def turn(self):
-        if self.position == self.game.player.next_movement:
+        if self.position == self.game.player.next_position:
             self.meet_player()
 
     def meet_player(self):
@@ -198,7 +198,7 @@ class Key(Entity):
 
 class End(Entity):
     def turn(self):
-        if self.position == self.game.player.next_movement:
+        if self.position == self.game.player.next_position:
             self.meet_player()
 
     def meet_player(self):

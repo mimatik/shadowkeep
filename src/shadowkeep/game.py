@@ -68,16 +68,15 @@ class Game:
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
-        self.player.last_movement = self.player.position
-        if self.map.is_floor(self.player.next_movement) and not any(
-            monster.position == self.player.next_movement for monster in self.monsters
+        if self.map.is_floor(self.player.next_position) and not any(
+            monster.position == self.player.next_position for monster in self.monsters
         ):
-            self.player.position = self.player.next_movement
+            self.player.position = self.player.next_position
 
         elif any(
-            firebal.position == self.player.next_movement for firebal in self.firebals
+            firebal.position == self.player.next_position for firebal in self.firebals
         ):
-            self.player.position = self.player.next_movement
+            self.player.position = self.player.next_position
 
         self.current_turn += 1
         for monster in self.monsters[:]:
