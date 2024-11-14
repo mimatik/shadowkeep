@@ -1,30 +1,27 @@
 import random
-from logging import exception
-from re import findall
-from typing import final
 
 import pygame
 from PIL import Image
-from numpy.lib.recfunctions import find_duplicates
+
 
 from shadowkeep import config
-from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH, AUDIO_DIR
+from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.dialog import Dialog
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
+from shadowkeep.lib.open_ai import ChatGTP
 from shadowkeep.map import Map
 from shadowkeep.monster import (
     BadMonster,
     Fireball,
     FireballLauncher,
-    TalkingMonster,
     Key,
+    TalkingMonster,
     Door,
     End,
     Box,
 )
 from shadowkeep.player import Player
-from shadowkeep.dialog import Dialog
-from shadowkeep.lib.open_ai import ChatGTP
 
 
 class Game:
@@ -53,7 +50,7 @@ class Game:
         self.firebals = []
 
         self.current_turn = 0
-        self.keys = 1
+        self.keys = 0
 
         self.dialog = Dialog(self)
 
