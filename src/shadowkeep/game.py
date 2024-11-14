@@ -1,8 +1,11 @@
 import random
+from logging import exception
+from re import findall
+from typing import final
 
 import pygame
 from PIL import Image
-
+from numpy.lib.recfunctions import find_duplicates
 
 from shadowkeep import config
 from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH, AUDIO_DIR
@@ -17,6 +20,7 @@ from shadowkeep.monster import (
     Key,
     Door,
     End,
+    Box,
 )
 from shadowkeep.player import Player
 from shadowkeep.dialog import Dialog
@@ -42,7 +46,8 @@ class Game:
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
         self.monsters += [BadMonster(self) for x in range(4)]
-        self.monsters_bin = []
+        self.logic = []
+        self.monsters += [Box(self, position=Coordinates(2, 13))]
         self.chatGTP = ChatGTP(self)
 
         self.firebals = []
@@ -55,6 +60,7 @@ class Game:
         self.map.blit()
 
         self.load_data()
+        self.load_logic()
 
         self.backround_sfx = pygame.mixer.Sound(AUDIO_DIR / "backround_music.mp3")
         self.backround_sfx.set_volume(0.2)
@@ -84,6 +90,17 @@ class Game:
 
         for fireball in self.firebals[:]:
             fireball.turn()
+
+    def load_logic(self):
+        try:
+            with Image.open(IMG_DIR / "logic.png") as image:
+                self.width, self.height = image.size
+
+                for y in range(self.height):
+                    for x in range(self.width):
+                        self.pixel = image.getpixel((x, y))
+        except:
+            print("error")
 
     def load_data(self):
         with Image.open(IMG_DIR / "map.png") as image:

@@ -1,4 +1,6 @@
 import random
+from symtable import Class
+
 import pygame
 
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
@@ -36,6 +38,14 @@ class Entity:
 
     def destroy(self):
         self.game.monsters.remove(self)
+
+
+class Logic(Entity):
+    def send_update(directions=[], exclucions=[]):
+        pass
+
+    def recive_update():
+        pass
 
 
 class Monster(Entity):
@@ -167,6 +177,7 @@ class Door(Entity):
         if self.game.keys > 0:
             self.game.keys -= 1
             self.destroy()
+            self.game.player.ghost_step()
 
     def get_image(self):
         return "Door.png"
@@ -179,6 +190,7 @@ class Key(Entity):
 
     def meet_player(self):
         self.destroy()
+        self.game.player.ghost_step()
         self.game.keys += 1
 
     def get_image(self):
@@ -192,7 +204,23 @@ class End(Entity):
 
     def meet_player(self):
         self.destroy()
+        self.game.player.ghost_step()
         self.game.running = False
 
     def get_image(self):
         return "Goal.png"
+
+
+class Box(Entity):
+
+    def get_image(self):
+        return "Box.png"
+
+    def turn(self):
+        if self.position == self.game.player.next_movement:
+            self.meet_player()
+
+    def meet_player(self):
+        if self.game.map.is_floor(self.position + self.game.player.moved_dir):
+            self.position += self.game.player.moved_dir
+            self.game.player.ghost_step()
