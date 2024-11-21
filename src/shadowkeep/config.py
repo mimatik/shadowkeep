@@ -6,6 +6,7 @@ ASSETS_DIR = SRC_DIR / "assets"
 IMG_DIR = ASSETS_DIR / "img"
 AUDIO_DIR = ASSETS_DIR / "audio"
 KEYS_DIR = ROOT_DIR / "keys"
+GENERATED_IMG_DIR = ASSETS_DIR / "generated_img"
 
 # Size of a tile note: must be >= 32
 TILE_WIDTH = 32
@@ -19,3 +20,5 @@ WINDOW_HEIGHT = TILE_HEIGHT * 24
 FPS = 60
 
 OPENAI_API_KEY = open(KEYS_DIR / "openai_api_key.txt").read().strip()
+
+LOG_FILE = ROOT_DIR/ "shadowkeep.log"

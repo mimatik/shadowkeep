@@ -1,5 +1,5 @@
 import random
-
+import logging
 import pygame
 from PIL import Image
 from pygame import Surface
@@ -24,6 +24,7 @@ from shadowkeep.monster import (
 )
 from shadowkeep.player import Player
 
+logger = logging.getLogger("shadowkeep")
 
 class Game:
 
@@ -40,8 +41,7 @@ class Game:
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
-        self.entities = Entities()
-        self.entities
+        self.entities = Entities(self)
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
@@ -71,6 +71,8 @@ class Game:
         self.random_sfx2 = pygame.mixer.Sound(AUDIO_DIR / "random_sound2.mp3")
         self.random_sfx2.set_volume(0.2)
 
+        logger.info("game:start")
+
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
@@ -90,6 +92,7 @@ class Game:
 
         for fireball in self.firebals[:]:
             fireball.turn()
+
 
     def load_logic(self):
         try:

@@ -104,7 +104,7 @@ class BadMonster(Monster):
     def get_image(self):
         return "Enemy.png"
 
-    def meet_player(self):
+    def _meet_player(self):
         pass
 
 
