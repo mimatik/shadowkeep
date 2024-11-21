@@ -38,16 +38,17 @@ class Player:
             movement = Coordinates(x=-1)
 
         if movement:
+            self.moved_dir = movement
             self.next_position = self.position + movement
             self.player_move_sfx.play()
             self.game.turn()
             self.last_position = self.position
-            self.moved_dir = movement
+
 
 
 
     def ghost_step(self):
-        self.position += self.moved_dir
+        self.position = self.next_position
 
     def blit(self):
         self.game.dynamic_layer.place_surface(

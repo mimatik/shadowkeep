@@ -1,13 +1,13 @@
 import random
 from symtable import Class
-
 import pygame
+import logging
 
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.config import IMG_DIR
 
-
+logger = logging.getLogger("shadowkeep")
 class Entity:
     def __init__(self, game, position=None, velocity=Coordinates(0, 0), rotation=0):
         self.rotation = rotation
@@ -27,9 +27,6 @@ class Entity:
             if self.game.map.is_floor(position):
                 self.position = position
                 return
-
-    def meet_player(self):
-        pass
 
     def blit(self):
         self.game.dynamic_layer.place_surface(
@@ -182,7 +179,7 @@ class Door(Entity):
 
     def turn(self):
         if self.position == self.game.player.next_position:
-            self.meet_player()
+            self._meet_player()
 
     def _meet_player(self):
         if self.game.keys > 0:
@@ -197,12 +194,13 @@ class Door(Entity):
 class Key(Entity):
     def turn(self):
         if self.position == self.game.player.next_position:
-            self.meet_player()
+            self._meet_player()
 
     def _meet_player(self):
         self.destroy()
         self.game.player.ghost_step()
         self.game.keys += 1
+        logger.info("added key")
 
     def get_image(self):
         return "Key.png"
@@ -211,7 +209,7 @@ class Key(Entity):
 class End(Entity):
     def turn(self):
         if self.position == self.game.player.next_position:
-            self.meet_player()
+            self._meet_player()
 
     def _meet_player(self):
         self.destroy()

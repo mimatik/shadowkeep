@@ -73,6 +73,7 @@ class Game:
 
         logger.info("game:start")
 
+
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
