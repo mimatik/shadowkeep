@@ -28,7 +28,7 @@ class Entity:
                 self.position = position
                 return
 
-    def _meet_player(self):
+    def meet_player(self):
         pass
 
     def blit(self):
@@ -76,6 +76,7 @@ class Monster(Entity):
             and not any(
                 other_monster.position == next_position
                 for other_monster in self.game.monsters
+                if other_monster != self
             )
             and next_position != self.game.player.position
         ):
@@ -103,8 +104,8 @@ class BadMonster(Monster):
     def get_image(self):
         return "Enemy.png"
 
-    def _meet_player(self):
-        self.game.running = False
+    def meet_player(self):
+        pass
 
 
 class Fireball(Entity):
@@ -112,13 +113,29 @@ class Fireball(Entity):
     def get_image(self):
         return "Fireball.png"
 
+    def __init__(self, game, position, velocity, rotation):
+        super().__init__(position, velocity, rotation)
+        self.game = game
+        self.position = position
+        self.velocity = velocity
+        self.rotation = rotation
+        self.next_position = self.position
+
     def turn(self):
-        self.position += self.velocity
-        if not self.game.map.is_floor(self.position):
+        if self.next_position == self.game.player.position:
+            self.game.running = False
+
+        elif not self.game.map.is_floor(self.next_position):
             self.destroy()
 
-        elif self.position == self.game.player.position:
+        if (
+            self.next_position == self.game.player.last_position
+            and self.position == self.game.player.position
+        ):
             self.game.running = False
+
+        self.position = self.next_position
+        self.next_position = self.position + self.velocity
 
     def destroy(self):
         self.game.firebals.remove(self)
@@ -165,7 +182,7 @@ class Door(Entity):
 
     def turn(self):
         if self.position == self.game.player.next_position:
-            self._meet_player()
+            self.meet_player()
 
     def _meet_player(self):
         if self.game.keys > 0:
@@ -180,7 +197,7 @@ class Door(Entity):
 class Key(Entity):
     def turn(self):
         if self.position == self.game.player.next_position:
-            self._meet_player()
+            self.meet_player()
 
     def _meet_player(self):
         self.destroy()
@@ -194,7 +211,7 @@ class Key(Entity):
 class End(Entity):
     def turn(self):
         if self.position == self.game.player.next_position:
-            self._meet_player()
+            self.meet_player()
 
     def _meet_player(self):
         self.destroy()

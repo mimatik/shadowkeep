@@ -1,3 +1,4 @@
+from dis import Positions
 import pygame
 
 from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
@@ -11,11 +12,13 @@ class Player:
         self.surface = pygame.image.load(IMG_DIR / "Player.png")
         self.last_pressed = 0
         self.position = Coordinates(11, 10)
+        self.last_position = Coordinates()
+        self.next_position = Coordinates()
         self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
         self.player_move_sfx.set_volume(0.3)
 
     def move(self):
-        movement = Coordinates()
+        movement = None
 
         pressed_keys = pygame.key.get_pressed()
 
@@ -34,11 +37,14 @@ class Player:
         if pressed_keys[pygame.K_a]:
             movement = Coordinates(x=-1)
 
-        self.next_position = self.position + movement
-        self.moved_dir = movement
+        if movement:
+            self.next_position = self.position + movement
+            self.player_move_sfx.play()
+            self.game.turn()
+            self.last_position = self.position
+            self.moved_dir = movement
 
-        self.player_move_sfx.play()
-        self.game.turn()
+
 
     def ghost_step(self):
         self.position += self.moved_dir

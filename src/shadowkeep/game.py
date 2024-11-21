@@ -2,7 +2,7 @@ import random
 
 import pygame
 from PIL import Image
-
+from pygame import Surface
 
 from shadowkeep import config
 from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
