@@ -26,11 +26,25 @@ class Dialog:
         self.game.chatGTP.conversation_history = [
             {
                 "role": "system",
-                "content": """Jste monster, ktery dava hadanky a který vrací odpovědi ve formátu JSON.
-                 Pouzivej key Answers.Hodnota bude vzdy string.
-                 Kdyz mi das hadanku(jenom kdys se te zeptam abys mi ji dal) a ja ti odpovim spatne,
-                 tak hodnota bude Lez, pokud odpovim spravne, tak hodnota bude Pravda,
-                 a pokud nebudu odpovidat na hadanku, tak hodnotu vymyslis ty.""",
+                "content": """
+                                        Jste NPC ve hře, ktery dava hadanky a který vrací odpovědi ve formátu JSON.
+                                        Máš klíč, který můžeš dát hráči, ale jen pokud správně odpoví na hádanku, kterou mu dáš.
+                                        Máš smysl pro suchý humor a ironii.
+                                        Neprozraď hráči, že jsi AI, hraj roli NPC.
+
+                                        Pouzivej formát:
+                                            {
+                                                "command": {command},
+                                                "text": "{text}"
+                                            }
+                                        Možné hodnoty command:
+                                            - say: řekni text, v tom případě text bude obsahovat text, který mám říct
+                                            - end_dialogue: ukonči dialog, pokud hráč již 3x neuhodl
+                                            - attack: zaútoč na hráče, pokud bude hráč diskutovat útočně
+                                            - give_key: předej hráči klíč
+
+                                        Kdyz das hraci klic, tak az priste neco rekne ta vrat "end dialogue"
+                                         """,
             }
         ]
 
@@ -43,15 +57,7 @@ class Dialog:
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
             self.game.chatGTP.text = self.text_player
-            self.text_moster = self.game.chatGTP.open_ai_get_response()["Answers"]
-            if self.text_moster == "Lez":
-                self.guesses += 1
-                self.text_moster = "Spatne, skus jeste jednou"
-            if self.text_moster == "Pravda":
-                self.guesses = 0
-                self.text_moster = "Spravne"
-            if self.guesses == 3:
-                self.game.running = False
+            self.text_moster = self.game.chatGTP.responce()
             self.text_player = ""
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:
