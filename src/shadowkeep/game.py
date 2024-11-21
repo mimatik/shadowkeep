@@ -11,6 +11,7 @@ from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGTP
 from shadowkeep.map import Map
+from shadowkeep.entities import Entities
 from shadowkeep.monster import (
     BadMonster,
     Fireball,
@@ -39,6 +40,8 @@ class Game:
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
+        self.entities = Entities()
+        self.entities
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
