@@ -12,6 +12,9 @@ class TextInput:
         self.font = pygame.font.Font(None, self.font_size)
         self.padding = round(self.font_size * 0.5)
 
+        self.surface_width = 1
+        self.surface_height = 1
+
         self.themes = {
             "dark": {"background": (0, 0, 0), "text": (255, 255, 255)},
             "light": {"background": (255, 255, 255), "text": (0, 0, 0)},

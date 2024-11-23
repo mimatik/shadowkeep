@@ -28,4 +28,3 @@ while running:
     url = generate(text)
     print(url)
     download_image(url, GENERATED_IMG_DIR / f"{text}.jpg")
-s
