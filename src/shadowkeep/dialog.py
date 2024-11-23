@@ -1,5 +1,8 @@
 import pygame
+from pygame.examples.cursors import image
 from shadowkeep.text import TextInput
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR, GENERATED_IMG_DIR
+from PIL import Image
 
 
 class Dialog:
@@ -19,6 +22,15 @@ class Dialog:
         self.go = True
 
         self.guesses = 0
+
+        self.image = Image.open(
+            GENERATED_IMG_DIR / "monster in pixel art, no small details.jpg"
+        )
+        self.image.thumbnail((100, 100))
+        self.image.save(IMG_DIR / "monster.jpg")
+
+        self.surface = pygame.surface.Surface((TILE_WIDTH * 3, TILE_HEIGHT * 3))
+        self.surface = pygame.image.load(IMG_DIR / "monster.jpg")
 
     def start(self, text):
         self.is_open = True
@@ -82,4 +94,8 @@ class Dialog:
             self.bubble_player.blit(
                 self.text_player,
                 (20, self.bubble_moster.surface_height + 40),
+            )
+            self.game.dynamic_layer.place_surface(
+                self.surface,
+                (self.bubble_moster.surface_width + 50, 20),
             )

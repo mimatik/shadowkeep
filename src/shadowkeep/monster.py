@@ -3,11 +3,13 @@ from symtable import Class
 import pygame
 import logging
 
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR
 from shadowkeep.lib.coordinates import Coordinates
-from shadowkeep.config import IMG_DIR
+
 
 logger = logging.getLogger("shadowkeep")
+
+
 class Entity:
     def __init__(self, game, position=None, velocity=Coordinates(0, 0), rotation=0):
         self.rotation = rotation
@@ -65,19 +67,32 @@ class Monster(Entity):
     def choose_initial_velocity(self):
         self.choose_random_velocity()
 
+    def _meet_fireball(self):
+        if any(
+            self.position == firebal.next_position for firebal in self.game.firebals
+        ):
+            self.move()
+            self._meet_fireball()
+        else:
+            return
+
     def move(self):
-        next_position = self.position + self.velocity
+        self.next_position = self.position + self.velocity
 
         if (
-            self.game.map.is_floor(next_position)
+            self.game.map.is_floor(self.next_position)
             and not any(
-                other_monster.position == next_position
+                other_monster.position == self.next_position
                 for other_monster in self.game.monsters
                 if other_monster != self
             )
-            and next_position != self.game.player.position
+            and self.next_position != self.game.player.position
+            and not any(
+                firebal.next_position == self.next_position
+                for firebal in self.game.firebals
+            )
         ):
-            self.position = next_position
+            self.position = self.next_position
         else:
             self.choose_random_velocity()
 
@@ -86,6 +101,11 @@ class Monster(Entity):
             or self.position == self.game.player.position
         ):
             self._meet_player()
+
+        if any(
+            self.position == firebal.next_position for firebal in self.game.firebals
+        ):
+            self._meet_fireball()
 
 
 class TalkingMonster(Monster):
@@ -230,9 +250,12 @@ class Box(Entity):
             self._meet_player()
 
     def _meet_player(self):
-        if self.game.map.is_floor(self.position + self.game.player.moved_dir) and not any(
-                other_monster.position == self.game.player.moved_dir
-                for other_monster in self.game.monsters):
+        if self.game.map.is_floor(
+            self.position + self.game.player.moved_dir
+        ) and not any(
+            other_monster.position == self.game.player.moved_dir
+            for other_monster in self.game.monsters
+        ):
 
             self.position += self.game.player.moved_dir
             self.game.player.ghost_step()

@@ -26,6 +26,7 @@ from shadowkeep.player import Player
 
 logger = logging.getLogger("shadowkeep")
 
+
 class Game:
 
     def __init__(self):
@@ -73,7 +74,6 @@ class Game:
 
         logger.info("game:start")
 
-
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
@@ -93,7 +93,6 @@ class Game:
 
         for fireball in self.firebals[:]:
             fireball.turn()
-
 
     def load_logic(self):
         try:

@@ -3,4 +3,5 @@ venv/
 .venv/
 __pycache__
 keys/
-src/assets/generated_img
+
+
