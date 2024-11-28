@@ -1,11 +1,10 @@
-import random
-from symtable import Class
-import pygame
 import logging
+import random
 
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR
+import pygame
+
+from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
-
 
 logger = logging.getLogger("shadowkeep")
 
@@ -15,7 +14,6 @@ class Entity:
         self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
     ):
         self.solid = solid
-        self.non_solid = not solid
         self.rotation = rotation
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
@@ -23,6 +21,10 @@ class Entity:
         self.velocity = velocity
         self.position = position
         self.surface = pygame.transform.rotate(self.surface, self.rotation)
+
+    @property
+    def non_solid(self):
+        return not self.solid
 
     def get_image(self):
         raise NotImplementedError
