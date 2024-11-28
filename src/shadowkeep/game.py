@@ -85,11 +85,6 @@ class Game:
         ):
             self.player.position = self.player.next_position
 
-        elif any(
-            firebal.position == self.player.next_position for firebal in self.firebals
-        ):
-            self.player.position = self.player.next_position
-
         self.current_turn += 1
         for monster in self.monsters[:]:
             monster.turn()
