@@ -43,6 +43,8 @@ class Game:
         self.ui_layer = Layer(self)
 
         self.entities = Entities(self)
+        self.entities += Box(self, position=Coordinates(2, 13))
+        print(self.entities.solid)
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]

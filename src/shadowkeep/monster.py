@@ -11,7 +11,11 @@ logger = logging.getLogger("shadowkeep")
 
 
 class Entity:
-    def __init__(self, game, position=None, velocity=Coordinates(0, 0), rotation=0):
+    def __init__(
+        self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
+    ):
+        self.solid = solid
+        self.non_solid = not solid
         self.rotation = rotation
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
