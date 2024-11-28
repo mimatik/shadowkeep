@@ -32,7 +32,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Platformer")
+        pygame.display.set_caption("Shadowkeep")
         self.window = pygame.display.set_mode(
             (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
         )
