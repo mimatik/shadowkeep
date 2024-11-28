@@ -38,6 +38,9 @@ class Entity:
     def destroy(self):
         self.game.monsters.remove(self)
 
+    def _meet_fireball(self):
+        pass
+
 
 class Logic(Entity):
     def send_update(self, directions=[], exclucions=[]):
@@ -189,6 +192,8 @@ class FireballLauncher(Entity):
                     rotation=self.rotation,
                 )
             ]
+            for monster in self.game.monsters:
+                monster._meet_fireball()
 
 
 class Rotator(Entity):
