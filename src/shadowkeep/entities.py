@@ -25,3 +25,10 @@ class Entities:
 
     def __iter__(self):
         return itertools.chain(self.solid.values(), self.non_solid.values())
+
+    def __iadd__(self, other):
+        if other.solid:
+            self.solid[other.position] = other
+
+        elif other.non_solid:
+            self.non_solid[other.position] = other

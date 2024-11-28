@@ -9,7 +9,11 @@ from shadowkeep.config import IMG_DIR
 
 
 class Entity:
-    def __init__(self, game, position=None, velocity=Coordinates(0, 0), rotation=0):
+    def __init__(
+        self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
+    ):
+        self.solid = solid
+        self.non_solid = not solid
         self.rotation = rotation
         self.game = game
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
@@ -215,9 +219,12 @@ class Box(Entity):
             self._meet_player()
 
     def _meet_player(self):
-        if self.game.map.is_floor(self.position + self.game.player.moved_dir) and not any(
-                other_monster.position == self.game.player.moved_dir
-                for other_monster in self.game.monsters):
+        if self.game.map.is_floor(
+            self.position + self.game.player.moved_dir
+        ) and not any(
+            other_monster.position == self.game.player.moved_dir
+            for other_monster in self.game.monsters
+        ):
 
             self.position += self.game.player.moved_dir
             self.game.player.ghost_step()
