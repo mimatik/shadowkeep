@@ -43,9 +43,6 @@ class Game:
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
-        self.entities = Entities(self)
-        self.entities += Box(self, position=Coordinates(2, 13))
-        print(self.entities.solid)
         self.map = Map(self)
         self.player = Player(self)
         self.monsters = [TalkingMonster(self) for x in range(7)]
@@ -53,6 +50,15 @@ class Game:
         self.logic = []
         self.monsters += [Box(self, position=Coordinates(2, 13))]
         self.chatGTP = ChatGTP(self)
+
+        self.entities = Entities(self)
+        self.entities += Box(self, position=Coordinates(2, 13))
+        for i in range(7):
+            self.entities += BadMonster(self)
+            self.entities += TalkingMonster(self)
+
+        for key,value in self.entities.solid.items():
+            print(key, value)
 
         self.firebals = []
 
@@ -64,10 +70,10 @@ class Game:
         self.map.blit()
 
         self.load_data()
-        self.load_logic()
+        # self.load_logic()
 
         self.backround_sfx = pygame.mixer.Sound(AUDIO_DIR / "backround_music.mp3")
-        self.backround_sfx.set_volume(0.2)
+        self.backround_sfx.set_volume(0.05)
 
         self.random_sfx = pygame.mixer.Sound(AUDIO_DIR / "random_sound.mp3")
         self.random_sfx.set_volume(0.1)
@@ -92,16 +98,16 @@ class Game:
         for fireball in self.firebals[:]:
             fireball.turn()
 
-    def load_logic(self):
-        try:
-            with Image.open(IMG_DIR / "logic.png") as image:
-                self.width, self.height = image.size
-
-                for y in range(self.height):
-                    for x in range(self.width):
-                        self.pixel = image.getpixel((x, y))
-        except:
-            print("error")
+    # def load_logic(self):
+    #     try:
+    #         with Image.open(IMG_DIR / "logic.png") as image:
+    #             self.width, self.height = image.size
+    #
+    #             for y in range(self.height):
+    #                 for x in range(self.width):
+    #                     self.pixel = image.getpixel((x, y))
+    #     except:
+    #         print("error")
 
     def load_data(self):
         with Image.open(IMG_DIR / "map.png") as image:
