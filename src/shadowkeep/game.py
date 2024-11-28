@@ -1,8 +1,8 @@
 import random
-
+import logging
 import pygame
 from PIL import Image
-
+from pygame import Surface
 
 from shadowkeep import config
 from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
@@ -23,6 +23,8 @@ from shadowkeep.monster import (
     Box,
 )
 from shadowkeep.player import Player
+
+logger = logging.getLogger("shadowkeep")
 
 
 class Game:
@@ -71,6 +73,8 @@ class Game:
 
         self.random_sfx2 = pygame.mixer.Sound(AUDIO_DIR / "random_sound2.mp3")
         self.random_sfx2.set_volume(0.2)
+
+        logger.info("game:start")
 
         # print(open_ai_get_response("jak se mas"))
 

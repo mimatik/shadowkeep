@@ -29,7 +29,7 @@ class ChatGTP:
                                 - say: řekni text, v tom případě text bude obsahovat text, který mám říct
                                 - end_dialogue: ukonči dialog, pokud hráč již 3x neuhodl
                                 - attack: zaútoč na hráče, pokud bude hráč diskutovat útočně
-                                - give_key: předej hráči klíč
+                                - give_key: předej hráči klíč kdyz odpovy zapravne na otazku
 
                             Kdyz das hraci klic, tak az priste neco rekne ta vrat "end dialogue"
                              """,

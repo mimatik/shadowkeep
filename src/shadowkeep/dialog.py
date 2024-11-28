@@ -1,5 +1,8 @@
 import pygame
+from pygame.examples.cursors import image
 from shadowkeep.text import TextInput
+from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR, GENERATED_IMG_DIR
+from PIL import Image
 
 
 class Dialog:
@@ -19,6 +22,24 @@ class Dialog:
         self.go = True
 
         self.guesses = 0
+
+        self.monster_image = Image.open(
+            GENERATED_IMG_DIR / "monster in pixel art, no small details.jpg"
+        )
+        self.monster_image.thumbnail((80, 80))
+        self.monster_image.save(IMG_DIR / "monster.jpg")
+
+        self.monster_surface = pygame.surface.Surface((400, 400))
+        self.monster_surface = pygame.image.load(IMG_DIR / "monster.jpg")
+
+        self.player_image = Image.open(
+            GENERATED_IMG_DIR / "player in a dungeon pixel art, no small details.jpg"
+        )
+        self.player_image.thumbnail((80, 80))
+        self.player_image.save(IMG_DIR / "player.jpg")
+
+        self.player_surface = pygame.surface.Surface((400, 400))
+        self.player_surface = pygame.image.load(IMG_DIR / "player.jpg")
 
     def start(self, text):
         self.is_open = True
@@ -41,7 +62,7 @@ class Dialog:
                                             - say: řekni text, v tom případě text bude obsahovat text, který mám říct
                                             - end_dialogue: ukonči dialog, pokud hráč již 3x neuhodl
                                             - attack: zaútoč na hráče, pokud bude hráč diskutovat útočně
-                                            - give_key: předej hráči klíč
+                                            - give_key: předej hráči klíč, kdyz odpovy zapravne na otazku nobo jeho odpovet sedi
 
                                         Kdyz das hraci klic, tak az priste neco rekne ta vrat "end dialogue"
                                          """,
@@ -82,4 +103,23 @@ class Dialog:
             self.bubble_player.blit(
                 self.text_player,
                 (20, self.bubble_moster.surface_height + 40),
+            )
+            self.game.ui_layer.place_surface(
+                self.monster_surface,
+                (
+                    max(
+                        self.bubble_moster.surface_width,
+                        self.bubble_player.surface_width,
+                    )
+                    + 50,
+                    10,
+                ),
+            )
+
+            self.game.ui_layer.place_surface(
+                self.player_surface,
+                (
+                    self.bubble_player.surface_width + 50,
+                    self.bubble_moster.surface_height + 70,
+                ),
             )
