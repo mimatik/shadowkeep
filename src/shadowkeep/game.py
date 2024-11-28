@@ -43,15 +43,15 @@ class Game:
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
-        self.entities = Entities(self)
-        self.entities += Box(self, position=Coordinates(2, 13))
-        print(self.entities.solid)
         self.map = Map(self)
         self.player = Player(self)
-        self.monsters = [TalkingMonster(self) for x in range(7)]
-        self.monsters += [BadMonster(self) for x in range(4)]
+
+        self.entities = Entities()
+        self.entities += [Box(self, position=Coordinates(2, 13))]
+        self.entities += [TalkingMonster(self) for x in range(7)]
+        self.entities += [BadMonster(self) for x in range(4)]
+
         self.logic = []
-        self.monsters += [Box(self, position=Coordinates(2, 13))]
         self.chatGTP = ChatGTP(self)
 
         self.firebals = []
@@ -81,13 +81,14 @@ class Game:
 
     def turn(self):
         if self.map.is_floor(self.player.next_position) and not any(
-            monster.position == self.player.next_position for monster in self.monsters
+            entity.position == self.player.next_position
+            for entity in self.entities.solid
         ):
             self.player.position = self.player.next_position
 
         self.current_turn += 1
-        for monster in self.monsters[:]:
-            monster.turn()
+        for entity in self.entities[:]:
+            entity.turn()
 
         for fireball in self.firebals[:]:
             fireball.turn()
@@ -111,37 +112,37 @@ class Game:
                 for x in range(self.width):
                     self.pixel = image.getpixel((x, y))
                     if self.pixel == (255, 0, 0, 255):
-                        self.monsters.append(
+                        self.entities.append(
                             FireballLauncher(
                                 self, rotation=270, position=Coordinates(x, y)
                             )
                         )
                     if self.pixel == (255, 0, 1, 255):
-                        self.monsters.append(
+                        self.entities.append(
                             FireballLauncher(
                                 self, rotation=0, position=Coordinates(x, y)
                             )
                         )
                     if self.pixel == (255, 0, 2, 255):
-                        self.monsters.append(
+                        self.entities.append(
                             FireballLauncher(
                                 self, rotation=90, position=Coordinates(x, y)
                             )
                         )
                     if self.pixel == (255, 0, 3, 255):
-                        self.monsters.append(
+                        self.entities.append(
                             FireballLauncher(
                                 self, rotation=180, position=Coordinates(x, y)
                             )
                         )
                     if self.pixel == (255, 255, 0, 255):
-                        self.monsters.append(Door(self, position=Coordinates(x, y)))
+                        self.entities.append(Door(self, position=Coordinates(x, y)))
 
                     if self.pixel == (255, 255, 1, 255):
-                        self.monsters.append(Key(self, position=Coordinates(x, y)))
+                        self.entities.append(Key(self, position=Coordinates(x, y)))
 
                     if self.pixel == (0, 255, 0, 255):
-                        self.monsters.append(End(self, position=Coordinates(x, y)))
+                        self.entities.append(End(self, position=Coordinates(x, y)))
 
                     if self.pixel == (0, 0, 255, 255):
                         self.player.position = Coordinates(x, y)
@@ -152,9 +153,9 @@ class Game:
         self.player.blit()
         self.dialog.blit()
 
-        for monster in self.monsters:
-            if monster.position and self.map.is_floor(monster.position):
-                monster.blit()
+        for entity in self.entities:
+            if entity.position and self.map.is_floor(entity.position):
+                entity.blit()
         for firebal in self.firebals:
             if firebal.position and self.map.is_floor(firebal.position):
                 firebal.blit()
