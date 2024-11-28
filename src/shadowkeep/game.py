@@ -1,5 +1,6 @@
-import random
 import logging
+import random
+
 import pygame
 from PIL import Image
 from pygame import Surface
@@ -7,20 +8,20 @@ from pygame import Surface
 from shadowkeep import config
 from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
+from shadowkeep.entities import Entities
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGTP
 from shadowkeep.map import Map
-from shadowkeep.entities import Entities
 from shadowkeep.monster import (
     BadMonster,
+    Box,
+    Door,
+    End,
     Fireball,
     FireballLauncher,
     Key,
     TalkingMonster,
-    Door,
-    End,
-    Box,
 )
 from shadowkeep.player import Player
 
