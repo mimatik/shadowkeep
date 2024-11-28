@@ -32,5 +32,6 @@ class Entities:
 
         elif other.non_solid:
             self.non_solid[other.position] = other
+        return self
 
         return self

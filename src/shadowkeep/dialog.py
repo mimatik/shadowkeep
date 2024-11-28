@@ -26,7 +26,7 @@ class Dialog:
         self.monster_image = Image.open(
             GENERATED_IMG_DIR / "monster in pixel art, no small details.jpg"
         )
-        self.monster_image.thumbnail((80, 80))
+        self.monster_image.thumbnail((40, 40))
         self.monster_image.save(IMG_DIR / "monster.jpg")
 
         self.monster_surface = pygame.surface.Surface((400, 400))
@@ -35,7 +35,7 @@ class Dialog:
         self.player_image = Image.open(
             GENERATED_IMG_DIR / "player in a dungeon pixel art, no small details.jpg"
         )
-        self.player_image.thumbnail((80, 80))
+        self.player_image.thumbnail((40, 40))
         self.player_image.save(IMG_DIR / "player.jpg")
 
         self.player_surface = pygame.surface.Surface((400, 400))
@@ -99,19 +99,15 @@ class Dialog:
 
     def blit(self):
         if self.is_open:
-            self.bubble_moster.blit(self.text_moster, (20, 20))
+            self.bubble_moster.blit(self.text_moster, (80, 20))
             self.bubble_player.blit(
                 self.text_player,
-                (20, self.bubble_moster.surface_height + 40),
+                (80, self.bubble_moster.surface_height + 40),
             )
             self.game.ui_layer.place_surface(
                 self.monster_surface,
                 (
-                    max(
-                        self.bubble_moster.surface_width,
-                        self.bubble_player.surface_width,
-                    )
-                    + 50,
+                    20,
                     10,
                 ),
             )
@@ -119,7 +115,7 @@ class Dialog:
             self.game.ui_layer.place_surface(
                 self.player_surface,
                 (
-                    self.bubble_player.surface_width + 50,
-                    self.bubble_moster.surface_height + 70,
+                    20,
+                    self.bubble_moster.surface_height + 40,
                 ),
             )
