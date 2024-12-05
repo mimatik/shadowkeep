@@ -67,7 +67,7 @@ class Game:
         # self.load_logic()
 
         self.backround_sfx = pygame.mixer.Sound(AUDIO_DIR / "backround_music.mp3")
-        self.backround_sfx.set_volume(0.05)
+        self.backround_sfx.set_volume(0.2)
 
         self.random_sfx = pygame.mixer.Sound(AUDIO_DIR / "random_sound.mp3")
         self.random_sfx.set_volume(0.1)
@@ -92,6 +92,9 @@ class Game:
 
         for fireball in self.firebals[:]:
             fireball.turn()
+
+        if self.player.lives == 0:
+            self.running = False
 
     # def load_logic(self):
     #     try:
