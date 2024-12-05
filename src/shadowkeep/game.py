@@ -54,15 +54,6 @@ class Game:
         self.logic = []
         self.chatGTP = ChatGTP(self)
 
-        self.entities = Entities(self)
-        self.entities += Box(self, position=Coordinates(2, 13))
-        for i in range(7):
-            self.entities += BadMonster(self)
-            self.entities += TalkingMonster(self)
-
-        for key,value in self.entities.solid.items():
-            print(key, value)
-
         self.firebals = []
 
         self.current_turn = 0
