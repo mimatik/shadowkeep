@@ -13,13 +13,16 @@ class Entity:
     def __init__(
         self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
     ):
-        self.solid = solid
-        self.rotation = rotation
         self.game = game
+
+        self.solid = solid
+
+        self.rotation = rotation
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.surface = pygame.image.load(IMG_DIR / self.get_image())
         self.velocity = velocity
         self.position = position
+
         self.surface = pygame.transform.rotate(self.surface, self.rotation)
 
     @property
@@ -42,7 +45,7 @@ class Entity:
         )
 
     def destroy(self):
-        self.game.monsters.remove(self)
+        self.game.entities.remove(self)
 
     def _meet_fireball(self):
         pass
@@ -82,9 +85,9 @@ class Monster(Entity):
         if (
             self.game.map.is_floor(self.next_position)
             and not any(
-                other_monster.position == self.next_position
-                for other_monster in self.game.monsters
-                if other_monster != self
+                other_entity.position == self.next_position
+                for other_entity in self.game.entities.solid
+                if other_entity != self
             )
             and self.next_position != self.game.player.position
             and not any(
@@ -134,9 +137,9 @@ class Fireball(Entity):
         self.next_position = self.position
 
     def turn(self):
-        for monster in self.game.monsters:
-            if self.next_position == monster.position:
-                monster.destroy()
+        for entity in self.game.entities.solid:
+            if self.next_position == entity.position:
+                entity.destroy()
                 self.destroy()
 
         if self.next_position == self.game.player.position:
@@ -191,10 +194,10 @@ class FireballLauncher(Entity):
                     rotation=self.rotation,
                 )
             ]
-            for monster in self.game.monsters:
+            for entity in self.game.entities.solid:
                 for firebal in self.game.firebals:
-                    if monster.position == firebal.position:
-                        monster.destroy()
+                    if entity.position == firebal.position:
+                        entity.destroy()
                         firebal.destroy()
 
 
@@ -260,8 +263,8 @@ class Box(Entity):
         if self.game.map.is_floor(
             self.position + self.game.player.moved_dir
         ) and not any(
-            other_monster.position == self.game.player.moved_dir
-            for other_monster in self.game.monsters
+            other_entity.position == self.game.player.moved_dir
+            for other_entity in self.game.entities.solid
         ):
 
             self.position += self.game.player.moved_dir
