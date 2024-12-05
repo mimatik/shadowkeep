@@ -54,10 +54,6 @@ class Game:
         self.logic = []
         self.chatGTP = ChatGTP(self)
 
-        for i in range(7):
-            self.entities += [BadMonster(self)]
-            self.entities += [TalkingMonster(self)]
-
         self.firebals = []
 
         self.current_turn = 0
