@@ -92,6 +92,9 @@ class Game:
         for fireball in self.firebals[:]:
             fireball.turn()
 
+        if self.player.lives == 0:
+            self.running = False
+
     def load_logic(self):
         try:
             with Image.open(IMG_DIR / "logic.png") as image:

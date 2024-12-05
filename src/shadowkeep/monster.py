@@ -76,15 +76,6 @@ class Monster(Entity):
     def choose_initial_velocity(self):
         self.choose_random_velocity()
 
-    def _meet_fireball(self):
-        if any(
-            self.position == firebal.next_position for firebal in self.game.firebals
-        ):
-            self.move()
-            self._meet_fireball()
-        else:
-            return
-
     def move(self):
         self.next_position = self.position + self.velocity
 
@@ -111,11 +102,6 @@ class Monster(Entity):
         ):
             self._meet_player()
 
-        if any(
-            self.position == firebal.next_position for firebal in self.game.firebals
-        ):
-            self._meet_fireball()
-
 
 class TalkingMonster(Monster):
 
@@ -131,7 +117,7 @@ class BadMonster(Monster):
         return "Enemy.png"
 
     def _meet_player(self):
-        pass
+        self.game.player.lives -= 1
 
 
 class Fireball(Entity):
@@ -148,8 +134,14 @@ class Fireball(Entity):
         self.next_position = self.position
 
     def turn(self):
+        for monster in self.game.monsters:
+            if self.next_position == monster.position:
+                monster.destroy()
+                self.destroy()
+
         if self.next_position == self.game.player.position:
-            self.game.running = False
+            self.game.player.lives -= 1
+            self.destroy()
 
         elif not self.game.map.is_floor(self.next_position):
             self.destroy()
@@ -158,7 +150,8 @@ class Fireball(Entity):
             self.next_position == self.game.player.last_position
             and self.position == self.game.player.position
         ):
-            self.game.running = False
+            self.game.player.lives -= 1
+            self.destroy()
 
         self.position = self.next_position
         self.next_position = self.position + self.velocity
@@ -199,7 +192,10 @@ class FireballLauncher(Entity):
                 )
             ]
             for monster in self.game.monsters:
-                monster._meet_fireball()
+                for firebal in self.game.firebals:
+                    if monster.position == firebal.position:
+                        monster.destroy()
+                        firebal.destroy()
 
 
 class Rotator(Entity):

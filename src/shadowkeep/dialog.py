@@ -1,8 +1,6 @@
 import pygame
-from pygame.examples.cursors import image
 from shadowkeep.text import TextInput
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR, GENERATED_IMG_DIR
-from PIL import Image
 
 
 class Dialog:
@@ -23,20 +21,8 @@ class Dialog:
 
         self.guesses = 0
 
-        self.monster_image = Image.open(
-            GENERATED_IMG_DIR / "monster in pixel art, no small details.jpg"
-        )
-        self.monster_image.thumbnail((40, 40))
-        self.monster_image.save(IMG_DIR / "monster.jpg")
-
         self.monster_surface = pygame.surface.Surface((400, 400))
         self.monster_surface = pygame.image.load(IMG_DIR / "monster.jpg")
-
-        self.player_image = Image.open(
-            GENERATED_IMG_DIR / "player in a dungeon pixel art, no small details.jpg"
-        )
-        self.player_image.thumbnail((40, 40))
-        self.player_image.save(IMG_DIR / "player.jpg")
 
         self.player_surface = pygame.surface.Surface((400, 400))
         self.player_surface = pygame.image.load(IMG_DIR / "player.jpg")
