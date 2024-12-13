@@ -1,6 +1,6 @@
 import pygame
 
-from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH, WINDOW_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 
 
@@ -19,7 +19,8 @@ class Player:
         self.next_position = Coordinates()
         self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
         self.player_move_sfx.set_volume(0.3)
-        self.lives = 3
+        self.max_lives = 4
+        self.lives = 4
 
     def move(self):
         movement = None
@@ -51,19 +52,19 @@ class Player:
     def ghost_step(self):
         self.position = self.next_position
 
+    def _blit_health_surface(self, lives):
+        if self.lives >= lives:
+            surface = self.health_surface
+        else:
+            surface = self.broken_health_surface
+
+        self.game.ui_layer.place_surface(surface, ((WINDOW_WIDTH - 2 * TILE_WIDTH) - (self.max_lives - lives) * 40, TILE_HEIGHT))
+
     def blit(self):
         self.game.dynamic_layer.place_surface(
             self.surface, self.position.transformed_pair()
         )
-        if self.lives == 3:
-            self.game.ui_layer.place_surface(self.health_surface, (600, 20))
-            self.game.ui_layer.place_surface(self.health_surface, (640, 20))
-            self.game.ui_layer.place_surface(self.health_surface, (680, 20))
-        if self.lives == 2:
-            self.game.ui_layer.place_surface(self.health_surface, (600, 20))
-            self.game.ui_layer.place_surface(self.health_surface, (640, 20))
-            self.game.ui_layer.place_surface(self.broken_health_surface, (680, 20))
-        if self.lives == 1:
-            self.game.ui_layer.place_surface(self.health_surface, (600, 20))
-            self.game.ui_layer.place_surface(self.broken_health_surface, (640, 20))
-            self.game.ui_layer.place_surface(self.broken_health_surface, (680, 20))
+        for i in range(1, self.max_lives + 1):
+            self._blit_health_surface(i)
+
+

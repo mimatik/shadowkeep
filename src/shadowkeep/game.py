@@ -13,16 +13,21 @@ from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGTP
 from shadowkeep.map import Map
-from shadowkeep.monster import (
+from shadowkeep.entities.monsters import (
     BadMonster,
-    Box,
+    TalkingMonster,
+    Monster,
+)
+from shadowkeep.entities.base import End
+from shadowkeep.entities.doors_keys import (
     Door,
-    End,
+    Key,
+)
+from shadowkeep.entities.fireballs import (
     Fireball,
     FireballLauncher,
-    Key,
-    TalkingMonster,
 )
+from shadowkeep.entities.interactable import Box
 from shadowkeep.player import Player
 
 logger = logging.getLogger("shadowkeep")
@@ -50,11 +55,10 @@ class Game:
         self.entities += [Box(self, position=Coordinates(2, 13))]
         self.entities += [TalkingMonster(self) for x in range(7)]
         self.entities += [BadMonster(self) for x in range(4)]
+        print(self.entities.of_type(Box,BadMonster))
 
         self.logic = []
         self.chatGTP = ChatGTP(self)
-
-        self.firebals = []
 
         self.current_turn = 0
         self.keys = 0
@@ -89,9 +93,6 @@ class Game:
         self.current_turn += 1
         for entity in self.entities[:]:
             entity.turn()
-
-        for fireball in self.firebals[:]:
-            fireball.turn()
 
         if self.player.lives == 0:
             self.running = False
@@ -159,7 +160,7 @@ class Game:
         for entity in self.entities:
             if entity.position and self.map.is_floor(entity.position):
                 entity.blit()
-        for firebal in self.firebals:
+        for firebal in self.entities.of_type(Fireball):
             if firebal.position and self.map.is_floor(firebal.position):
                 firebal.blit()
 

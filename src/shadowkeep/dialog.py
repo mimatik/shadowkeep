@@ -64,7 +64,7 @@ class Dialog:
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
             self.game.chatGTP.text = self.text_player
-            self.text_moster = self.game.chatGTP.responce()
+            self.text_moster = self.game.chatGTP.response()
             self.text_player = ""
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:

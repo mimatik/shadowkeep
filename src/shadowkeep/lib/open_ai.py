@@ -59,7 +59,7 @@ class ChatGTP:
         print(self.conversation_history)
         return self.parsed_json
 
-    def responce(self):
+    def response(self):
         self.open_ai_get_response()
         if "command" in self.parsed_json:
             if self.parsed_json["command"] == "say":
