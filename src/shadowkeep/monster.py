@@ -29,6 +29,9 @@ class Entity:
     def non_solid(self):
         return not self.solid
 
+NEw    def toggle_state(self):
+        self.solid = not (self.solid)
+
     def get_image(self):
         raise NotImplementedError
 
