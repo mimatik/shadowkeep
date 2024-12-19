@@ -33,11 +33,17 @@ class Entities(list):
 
 class Entity:
     def __init__(
-        self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
+        self,
+        game,
+        position=None,
+        velocity=Coordinates(0, 0),
+        rotation=0,
+        solid=True,
+        movable=False,
     ):
         self.game = game
         self.solid = solid
-        self.was_solid = self.solid
+        self.movable = movable
 
         self.rotation = rotation
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
@@ -50,6 +56,16 @@ class Entity:
         self.dead_time = 0
 
         self.initial_position = self.position
+
+    def try_move(self, dir=Coordinates(0, 0)):
+        print("moving " + self)
+        if self.game.map.is_floor(
+            self.position + dir
+        ) and not self.game.entities.on_position(self.position + dir):
+            self.position += dir
+            return True
+        else:
+            return False
 
     @property
     def non_solid(self):
@@ -79,6 +95,7 @@ class Entity:
     def destroy(self):
         self.game.entities.remove(self)
 
+
     def hit(self):
         self.dead = True
         self.position = self.initial_position
@@ -98,3 +115,4 @@ class End(Entity):
 
     def get_image(self):
         return "Goal.png"
+
