@@ -54,6 +54,7 @@ class Game:
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
+        self.entities += [Door(self, position=Coordinates(12, 16))]
         self.entities += [TalkingMonster(self) for x in range(7)]
         self.entities += [BadMonster(self) for x in range(4)]
 

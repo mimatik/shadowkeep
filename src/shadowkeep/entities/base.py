@@ -43,6 +43,7 @@ class Entity:
     ):
         self.game = game
         self.solid = solid
+        self.initial_solid = solid
         self.movable = movable
 
         self.rotation = rotation
@@ -58,11 +59,22 @@ class Entity:
         self.dead = False
         self.dead_time = 0
 
+    respawn_time = None
+
     def interact(self, dir):
         pass
 
     def turn(self):
-        pass
+        self._check_respawn()
+
+    def _check_respawn(self):
+        if self.dead and self.respawn_time is not None:
+            self.dead_time += 1
+            if self.dead_time == self.respawn_time:
+                self.dead_time = 0
+                self.dead = False
+                self.solid = self.initial_solid
+
 
     @property
     def non_solid(self):

@@ -10,22 +10,17 @@ logger = logging.getLogger("shadowkeep")
 
 class Monster(Entity):
 
+    respawn_time = 15
     def __init__(self, game):
         super().__init__(game)
         self.choose_random_position()
         self.choose_random_velocity()
 
     def turn(self):
-        if self.dead:
-            self.dead_time += 1
-            if self.dead_time == 10:
-                self.dead_time = 0
-                self.dead = False
-                self.solid = True
-        else:
-            if random.random() < 0.25:
-                self.choose_random_velocity()
-            self.move()
+        super().turn()
+        if random.random() < 0.25:
+            self.choose_random_velocity()
+        self.move()
 
     def choose_random_velocity(self):
         self.velocity = random.choice(

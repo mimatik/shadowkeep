@@ -81,6 +81,9 @@ class FireballLauncher(Entity):
             self.game.entities += [fireball]
             fireball.turn()
 
+    def hit(self):
+        pass
+
 
 class Rotator(Entity):
     pass
