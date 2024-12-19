@@ -8,6 +8,7 @@ from shadowkeep.lib.coordinates import Coordinates
 
 logger = logging.getLogger("shadowkeep")
 
+
 class Entities(list):
     @property
     def solid(self):
@@ -21,15 +22,22 @@ class Entities(list):
         return Entities([entity for entity in self if entity.position == position])
 
     def of_type(self, *args):
-        return Entities([entity for entity in self if any([isinstance(entity,cls) for cls in args])])
+        return Entities(
+            [
+                entity
+                for entity in self
+                if any([isinstance(entity, cls) for cls in args])
+            ]
+        )
+
 
 class Entity:
     def __init__(
         self, game, position=None, velocity=Coordinates(0, 0), rotation=0, solid=True
     ):
         self.game = game
-
         self.solid = solid
+        self.was_solid = self.solid
 
         self.rotation = rotation
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
@@ -38,6 +46,10 @@ class Entity:
         self.position = position
 
         self.surface = pygame.transform.rotate(self.surface, self.rotation)
+        self.dead = False
+        self.dead_time = 0
+
+        self.initial_position = self.position
 
     @property
     def non_solid(self):
@@ -57,12 +69,22 @@ class Entity:
                 return
 
     def blit(self):
-        self.game.dynamic_layer.place_surface(
-            self.surface, self.position.transformed_pair()
-        )
+        if self.dead:
+            pass
+        else:
+            self.game.dynamic_layer.place_surface(
+                self.surface, self.position.transformed_pair()
+            )
 
     def destroy(self):
         self.game.entities.remove(self)
+
+    def hit(self):
+        self.dead = True
+        self.position = self.initial_position
+        if self.solid:
+            self.solid = False
+
 
 class End(Entity):
     def turn(self):
@@ -76,4 +98,3 @@ class End(Entity):
 
     def get_image(self):
         return "Goal.png"
-

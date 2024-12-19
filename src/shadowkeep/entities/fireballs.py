@@ -5,6 +5,7 @@ from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
+
 class Fireball(Entity):
 
     def get_image(self):
@@ -22,8 +23,11 @@ class Fireball(Entity):
     def turn(self):
         for entity in self.game.entities.solid:
             if self.next_position == entity.position:
-                entity.destroy()
-                self.destroy()
+                if entity.dead:
+                    pass
+                else:
+                    entity.hit()
+                    self.destroy()
 
         if self.next_position == self.game.player.position:
             self.game.player.lives -= 1
@@ -70,13 +74,14 @@ class FireballLauncher(Entity):
     def turn(self):
         if self.game.current_turn % 4 == 0:
             fireball = Fireball(
-                    self.game,
-                    position=self.position + self.direction,
-                    velocity=self.direction,
-                    rotation=self.rotation,
-                )
+                self.game,
+                position=self.position + self.direction,
+                velocity=self.direction,
+                rotation=self.rotation,
+            )
             self.game.entities += [fireball]
             fireball.turn()
+
 
 class Rotator(Entity):
     pass
