@@ -30,7 +30,7 @@ class Dialog:
     def start(self, text):
         self.is_open = True
         self.text_moster = text
-        self.game.chatGTP.conversation_history = [
+        self.game.chatGPT.conversation_history = [
             {
                 "role": "system",
                 "content": """
@@ -63,8 +63,8 @@ class Dialog:
             self.text_player = ""
         elif pressed_keys[pygame.K_RETURN]:
             self.is_open = False
-            self.game.chatGTP.text = self.text_player
-            self.text_moster = self.game.chatGTP.response()
+            self.game.chatGPT.text = self.text_player
+            self.text_moster = self.game.chatGPT.response()
             self.text_player = ""
             self.is_open = True
         elif pressed_keys[pygame.K_BACKSPACE]:

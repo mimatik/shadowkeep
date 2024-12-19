@@ -16,7 +16,7 @@ class Player:
         self.last_pressed = 0
         self.position = Coordinates(11, 10)
         self.last_position = Coordinates()
-        self.next_position = Coordinates()
+        self.position = Coordinates()
         self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
         self.player_move_sfx.set_volume(0.3)
         self.max_lives = 4
@@ -44,13 +44,27 @@ class Player:
 
         if movement:
             self.moved_dir = movement
-            self.next_position = self.position + movement
+            next_position = self.position + movement
             self.player_move_sfx.play()
-            self.game.turn()
             self.last_position = self.position
 
+            if not self.game.map.is_floor(next_position):
+                self.move_failed()
+            else:
+                obstacles = self.game.entities.on_position(next_position).solid
+                for obstacle in obstacles:
+                    obstacle.interact(self.moved_dir)
+                if not self.game.entities.on_position(next_position).solid:
+                    self.position = next_position
+                else:
+                    self.move_failed()
+            self.game.turn()
+
     def ghost_step(self):
-        self.position = self.next_position
+        self.position = self.position
+
+    def move_failed(self):
+        print("Move failed - TODO")
 
     def _blit_health_surface(self, lives):
         if self.lives >= lives:

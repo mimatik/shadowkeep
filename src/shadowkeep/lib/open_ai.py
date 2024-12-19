@@ -7,7 +7,7 @@ client = OpenAI(
 )
 
 
-class ChatGTP:
+class ChatGPT:
     def __init__(self, game):
         self.game = game
         self.text = ""

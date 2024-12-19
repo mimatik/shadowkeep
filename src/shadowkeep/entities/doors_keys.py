@@ -14,11 +14,11 @@ class Door(Entity):
                 self.dead_time = 0
                 self.dead = False
                 self.solid = True
-        else:
-            if self.position == self.game.player.next_position:
-                self._meet_player()
+        # else:
+        #     if self.position == self.game.player.position:
+        #         self._meet_player()
 
-    def _meet_player(self):
+    def interact(self, *args, **kwargs):
         if self.game.keys > 0:
             self.game.keys -= 1
             self.destroy()
@@ -34,11 +34,11 @@ class Key(Entity):
             self.dead_time += 1
             if self.dead_time == 10:
                 self.dead_time = 0
-        else:
-            if self.position == self.game.player.next_position:
-                self._meet_player()
+        # else:
+        #     if self.position == self.game.player.position:
+        #         self._meet_player()
 
-    def _meet_player(self):
+    def interact(self, *args, **kwargs):
         self.destroy()
         self.game.player.ghost_step()
         self.game.keys += 1

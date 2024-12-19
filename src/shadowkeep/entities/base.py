@@ -58,15 +58,11 @@ class Entity:
         self.dead = False
         self.dead_time = 0
 
-    def try_move(self, dir=Coordinates(0, 0)):
-        print("moving " + self)
-        if self.game.map.is_floor(
-            self.position + dir
-        ) and not self.game.entities.on_position(self.position + dir):
-            self.position += dir
-            return True
-        else:
-            return False
+    def interact(self, dir):
+        pass
+
+    def turn(self):
+        pass
 
     @property
     def non_solid(self):
@@ -104,11 +100,8 @@ class Entity:
 
 
 class End(Entity):
-    def turn(self):
-        if self.position == self.game.player.next_position:
-            self._meet_player()
 
-    def _meet_player(self):
+    def interact(self, *args, **kwargs):
         self.destroy()
         self.game.player.ghost_step()
         self.game.running = False

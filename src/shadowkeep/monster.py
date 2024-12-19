@@ -211,7 +211,7 @@ class Rotator(Entity):
 class Door(Entity):
 
     def turn(self):
-        if self.position == self.game.player.next_position:
+        if self.position == self.game.player.position:
             self._meet_player()
 
     def _meet_player(self):
@@ -226,7 +226,7 @@ class Door(Entity):
 
 class Key(Entity):
     def turn(self):
-        if self.position == self.game.player.next_position:
+        if self.position == self.game.player.position:
             self._meet_player()
 
     def _meet_player(self):
@@ -241,7 +241,7 @@ class Key(Entity):
 
 class End(Entity):
     def turn(self):
-        if self.position == self.game.player.next_position:
+        if self.position == self.game.player.position:
             self._meet_player()
 
     def _meet_player(self):
@@ -261,7 +261,7 @@ class Box(Entity):
         return "Box.png"
 
     def turn(self):
-        if self.position == self.game.player.next_position:
+        if self.position == self.game.player.position:
             self._meet_player()
 
     def _meet_player(self):

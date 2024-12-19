@@ -17,38 +17,37 @@ class Fireball(Entity):
         self.position = position
         self.velocity = velocity
         self.rotation = rotation
-        self.next_position = self.position
+        next_position = self.position
         self.solid = False
 
     def turn(self):
+        next_position = self.next_position
         for entity in self.game.entities.solid:
-            if self.next_position == entity.position:
+            if next_position == entity.position:
                 if entity.dead:
                     pass
                 else:
                     entity.hit()
                     self.destroy()
-
-        if self.next_position == self.game.player.position:
-            self.game.player.lives -= 1
-            self.destroy()
-
-        elif not self.game.map.is_floor(self.next_position):
-            self.destroy()
+                    return
 
         if (
-            self.next_position == self.game.player.last_position
+            next_position == self.game.player.last_position
             and self.position == self.game.player.position
-        ):
+        ) or (next_position == self.game.player.position):
             self.game.player.lives -= 1
             self.destroy()
-
-        self.position = self.next_position
-        self.next_position = self.position + self.velocity
+        elif not self.game.map.is_floor(next_position):
+            self.destroy()
+        else:
+            self.position = next_position
 
     def destroy(self):
         self.game.entities.remove(self)
 
+    @property
+    def next_position(self):
+        return self.position + self.velocity
 
 class FireballLauncher(Entity):
     def __init__(self, game, rotation=0, position=Coordinates(0, 0)):

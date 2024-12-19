@@ -11,7 +11,7 @@ from shadowkeep.dialog import Dialog
 from shadowkeep.entities import Entities
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
-from shadowkeep.lib.open_ai import ChatGTP
+from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.entities.monsters import (
     BadMonster,
@@ -54,13 +54,11 @@ class Game:
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
-        print(self.entities.of_type(Box))
         self.entities += [TalkingMonster(self) for x in range(7)]
         self.entities += [BadMonster(self) for x in range(4)]
-        print(self.entities.of_type(Box, BadMonster))
 
         self.logic = []
-        self.chatGTP = ChatGTP(self)
+        self.chatGPT = ChatGPT(self)
 
         self.audio = Audio(self)
 
@@ -79,11 +77,6 @@ class Game:
         # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
-        if self.map.is_floor(self.player.next_position) and not any(
-            entity.position == self.player.next_position
-            for entity in self.entities.solid
-        ):
-            self.player.position = self.player.next_position
 
         self.current_turn += 1
         for entity in self.entities[:]:

@@ -20,9 +20,18 @@ class Box(Entity):
                 self.dead_time = 0
                 self.dead = False
                 self.solid = True
-        else:
-            if self.position == self.game.player.next_position:
-                self._meet_player()
+        # else:
+        #     if self.position == self.game.player.position:
+        #         self._meet_player()
+
+    def interact(self, dir=Coordinates(0, 0)):
+        if self.movable and self.game.map.is_floor(
+            self.position + dir
+        ) and not self.game.entities.on_position(self.position + dir):
+            self.position += dir
+
+    def hit(self):
+        pass
 
     def _meet_player(self):
-        pass
+        self.interact(dir=self.game.player.moved_dir)
