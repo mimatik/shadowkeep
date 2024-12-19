@@ -39,6 +39,7 @@ class Monster(Entity):
         if self.dead:
             pass
         else:
+            print(self.position, self.velocity)
             self.next_position = self.position + self.velocity
 
             if (

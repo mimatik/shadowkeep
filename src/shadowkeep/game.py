@@ -54,7 +54,7 @@ class Game:
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
-        print(self.entities.of_type(Box(self)))
+        print(self.entities.of_type(Box))
         self.entities += [TalkingMonster(self) for x in range(7)]
         self.entities += [BadMonster(self) for x in range(4)]
         print(self.entities.of_type(Box, BadMonster))

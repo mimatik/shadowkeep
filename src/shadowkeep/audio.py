@@ -15,7 +15,6 @@ class Audio:
 
     def play(self):
         self.random = random.randint(1, 9)
-        print(random)
         self.backround_sfx = pygame.mixer.Sound(
             AUDIO_DIR / f"background_music{self.random}.mp3"
         )

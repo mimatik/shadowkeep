@@ -50,12 +50,13 @@ class Entity:
         self.surface = pygame.image.load(IMG_DIR / self.get_image())
         self.velocity = velocity
         self.position = position
+        if self.position is None:
+            self.choose_random_position()
+        self.initial_position = self.position
 
         self.surface = pygame.transform.rotate(self.surface, self.rotation)
         self.dead = False
         self.dead_time = 0
-
-        self.initial_position = self.position
 
     def try_move(self, dir=Coordinates(0, 0)):
         print("moving " + self)
@@ -95,7 +96,6 @@ class Entity:
     def destroy(self):
         self.game.entities.remove(self)
 
-
     def hit(self):
         self.dead = True
         self.position = self.initial_position
@@ -115,4 +115,3 @@ class End(Entity):
 
     def get_image(self):
         return "Goal.png"
-
