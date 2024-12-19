@@ -21,7 +21,7 @@ class Entities(list):
     def on_position(self, position):
         return Entities([entity for entity in self if entity.position == position])
 
-    def of_type(self, cls, *args):
+    def of_type(self, *args):
         return Entities(
             [
                 entity
@@ -42,7 +42,6 @@ class Entity:
         movable=False,
     ):
         self.game = game
-
         self.solid = solid
         self.movable = movable
 
@@ -51,8 +50,13 @@ class Entity:
         self.surface = pygame.image.load(IMG_DIR / self.get_image())
         self.velocity = velocity
         self.position = position
+        if self.position is None:
+            self.choose_random_position()
+        self.initial_position = self.position
 
         self.surface = pygame.transform.rotate(self.surface, self.rotation)
+        self.dead = False
+        self.dead_time = 0
 
     def try_move(self, dir=Coordinates(0, 0)):
         print("moving " + self)
@@ -82,12 +86,21 @@ class Entity:
                 return
 
     def blit(self):
-        self.game.dynamic_layer.place_surface(
-            self.surface, self.position.transformed_pair()
-        )
+        if self.dead:
+            pass
+        else:
+            self.game.dynamic_layer.place_surface(
+                self.surface, self.position.transformed_pair()
+            )
 
     def destroy(self):
         self.game.entities.remove(self)
+
+    def hit(self):
+        self.dead = True
+        self.position = self.initial_position
+        if self.solid:
+            self.solid = False
 
 
 class End(Entity):

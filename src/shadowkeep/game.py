@@ -29,6 +29,7 @@ from shadowkeep.entities.fireballs import (
 )
 from shadowkeep.entities.interactable import Box
 from shadowkeep.player import Player
+from shadowkeep.audio import Audio
 
 logger = logging.getLogger("shadowkeep")
 
@@ -53,13 +54,15 @@ class Game:
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
-        print(self.entities.of_type(Box(self)))
+        print(self.entities.of_type(Box))
         self.entities += [TalkingMonster(self) for x in range(7)]
         self.entities += [BadMonster(self) for x in range(4)]
         print(self.entities.of_type(Box, BadMonster))
 
         self.logic = []
         self.chatGTP = ChatGTP(self)
+
+        self.audio = Audio(self)
 
         self.current_turn = 0
         self.keys = 0
@@ -70,15 +73,6 @@ class Game:
 
         self.load_data()
         # self.load_logic()
-
-        self.backround_sfx = pygame.mixer.Sound(AUDIO_DIR / "backround_music.mp3")
-        self.backround_sfx.set_volume(0.2)
-
-        self.random_sfx = pygame.mixer.Sound(AUDIO_DIR / "random_sound.mp3")
-        self.random_sfx.set_volume(0.1)
-
-        self.random_sfx2 = pygame.mixer.Sound(AUDIO_DIR / "random_sound2.mp3")
-        self.random_sfx2.set_volume(0.2)
 
         logger.info("game:start")
 
@@ -172,13 +166,9 @@ class Game:
         pygame.display.update()
 
     def run(self):
-        self.backround_sfx.play(-1)
+        self.audio.play()
         while self.running:
-            random_number = random.randint(0, 1000)
-            if random.randint(0, 1000) == 1:
-                self.random_sfx.play()
-            if random.randint(0, 10000) == 1:
-                self.random_sfx2.play()
+            self.audio.random_sfx_play()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

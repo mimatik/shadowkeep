@@ -4,7 +4,9 @@ import random
 from shadowkeep.lib.coordinates import Coordinates
 from .base import Entity
 from shadowkeep.entities.fireballs import Fireball
+
 logger = logging.getLogger("shadowkeep")
+
 
 class Monster(Entity):
 
@@ -14,9 +16,16 @@ class Monster(Entity):
         self.choose_random_velocity()
 
     def turn(self):
-        if random.random() < 0.25:
-            self.choose_random_velocity()
-        self.move()
+        if self.dead:
+            self.dead_time += 1
+            if self.dead_time == 10:
+                self.dead_time = 0
+                self.dead = False
+                self.solid = True
+        else:
+            if random.random() < 0.25:
+                self.choose_random_velocity()
+            self.move()
 
     def choose_random_velocity(self):
         self.velocity = random.choice(
@@ -27,30 +36,34 @@ class Monster(Entity):
         self.choose_random_velocity()
 
     def move(self):
-        self.next_position = self.position + self.velocity
-
-        if (
-            self.game.map.is_floor(self.next_position)
-            and not any(
-                other_entity.position == self.next_position
-                for other_entity in self.game.entities.solid
-                if other_entity != self
-            )
-            and self.next_position != self.game.player.position
-            and not any(
-                firebal.next_position == self.next_position
-                for firebal in self.game.entities.of_type(Fireball)
-            )
-        ):
-            self.position = self.next_position
+        if self.dead:
+            pass
         else:
-            self.choose_random_velocity()
+            print(self.position, self.velocity)
+            self.next_position = self.position + self.velocity
 
-        if (
-            self.position.is_neighbour(self.game.player.position)
-            or self.position == self.game.player.position
-        ):
-            self._meet_player()
+            if (
+                self.game.map.is_floor(self.next_position)
+                and not any(
+                    other_entity.position == self.next_position
+                    for other_entity in self.game.entities.solid
+                    if other_entity != self
+                )
+                and self.next_position != self.game.player.position
+                and not any(
+                    firebal.next_position == self.next_position
+                    for firebal in self.game.entities.of_type(Fireball)
+                )
+            ):
+                self.position = self.next_position
+            else:
+                self.choose_random_velocity()
+
+            if (
+                self.position.is_neighbour(self.game.player.position)
+                or self.position == self.game.player.position
+            ):
+                self._meet_player()
 
 
 class TalkingMonster(Monster):

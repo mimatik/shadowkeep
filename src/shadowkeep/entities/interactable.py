@@ -14,8 +14,15 @@ class Box(Entity):
         return "Box.png"
 
     def turn(self):
-        if self.position == self.game.player.next_position:
-            self._meet_player()
+        if self.dead:
+            self.dead_time += 1
+            if self.dead_time == 10:
+                self.dead_time = 0
+                self.dead = False
+                self.solid = True
+        else:
+            if self.position == self.game.player.next_position:
+                self._meet_player()
 
     def _meet_player(self):
         pass
