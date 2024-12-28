@@ -1,13 +1,13 @@
 import logging
 
 from shadowkeep.lib.coordinates import Coordinates
+
 from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
 
 class Fireball(Entity):
-
     def get_image(self):
         return "Fireball.png"
 
@@ -48,6 +48,7 @@ class Fireball(Entity):
     @property
     def next_position(self):
         return self.position + self.velocity
+
 
 class FireballLauncher(Entity):
     def __init__(self, game, rotation=0, position=Coordinates(0, 0)):

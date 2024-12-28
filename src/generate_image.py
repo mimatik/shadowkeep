@@ -1,9 +1,10 @@
-from pygame.transform import scale
-from PIL import Image
-from shadowkeep.config import OPENAI_API_KEY, GENERATED_IMG_DIR, IMG_DIR
-from openai import OpenAI
 import urllib.request
 
+from openai import OpenAI
+from PIL import Image
+from pygame.transform import scale
+
+from shadowkeep.config import GENERATED_IMG_DIR, IMG_DIR, OPENAI_API_KEY
 
 client = OpenAI(
     api_key=OPENAI_API_KEY,

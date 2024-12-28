@@ -1,6 +1,7 @@
 import pygame
+
+from shadowkeep.config import IMG_DIR
 from shadowkeep.text import TextInput
-from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH, IMG_DIR, GENERATED_IMG_DIR
 
 
 class Dialog:
@@ -34,10 +35,10 @@ class Dialog:
             {
                 "role": "system",
                 "content": """
-                    Jste NPC ve hře, ktery dava hadanky a který vrací odpovědi ve formátu JSON.
-                    Máš klíč, který můžeš dát hráči, ale jen pokud správně odpoví na hádanku, kterou mu dáš.
-                    Máš smysl pro suchý humor a ironii.
-                    Neprozraď hráči, že jsi AI, hraj roli NPC.
+                    Jste NPC ve hře, ktery dava hadanky a který vrací odpovědi
+                    ve formátu JSON.  Máš klíč, který můžeš dát hráči, ale jen pokud
+                    správně odpoví na hádanku, kterou mu dáš.  Máš smysl pro suchý
+                    humor a ironii. Neprozraď hráči, že jsi AI, hraj roli NPC.
 
                     Pouzivej formát:
                         {
@@ -45,10 +46,12 @@ class Dialog:
                             "text": "{text}"
                         }
                     Možné hodnoty command:
-                        - say: řekni text, v tom případě text bude obsahovat text, který mám říct
+                        - say: řekni text, v tom případě text bude obsahovat text,
+                          který mám říct
                         - end_dialogue: ukonči dialog, pokud hráč již 3x neuhodl
                         - attack: zaútoč na hráče, pokud bude hráč diskutovat útočně
-                        - give_key: předej hráči klíč, kdyz odpovy zapravne na otazku nobo jeho odpovet sedi
+                        - give_key: předej hráči klíč, kdyz odpovy zapravne na otazku
+                          nebo jeho odpovet sedi
 
                     Kdyz das hraci klic, tak az priste neco rekne ta vrat "end dialogue"
                      """,

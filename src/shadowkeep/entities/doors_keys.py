@@ -1,11 +1,11 @@
 import logging
+
 from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
 
 class Door(Entity):
-
     def interact(self, *args, **kwargs):
         if self.game.keys > 0:
             self.game.keys -= 1
@@ -17,7 +17,6 @@ class Door(Entity):
 
 
 class Key(Entity):
-
     def interact(self, *args, **kwargs):
         self.destroy()
         self.game.player.ghost_step()
