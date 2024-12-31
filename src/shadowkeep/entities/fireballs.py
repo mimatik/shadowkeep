@@ -23,7 +23,7 @@ class Fireball(Entity):
     def turn(self):
         next_position = self.next_position
         for entity in self.game.entities.solid:
-            if next_position == entity.position:
+            if next_position == entity.position or self.position == entity.position:
                 if entity.dead:
                     pass
                 else:
@@ -48,6 +48,7 @@ class Fireball(Entity):
     @property
     def next_position(self):
         return self.position + self.velocity
+
 
 class FireballLauncher(Entity):
     def __init__(self, game, rotation=0, position=Coordinates(0, 0)):
