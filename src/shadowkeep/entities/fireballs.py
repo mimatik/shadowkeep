@@ -32,9 +32,13 @@ class Fireball(Entity):
                     return
 
         if (
-            next_position == self.game.player.last_position
-            and self.position == self.game.player.position
-        ) or (next_position == self.game.player.position):
+            (
+                next_position == self.game.player.last_position
+                and self.position == self.game.player.position
+            )
+            or (next_position == self.game.player.position)
+            or (self.position == self.game.player.position)
+        ):
             self.game.player.lives -= 1
             self.destroy()
         elif not self.game.map.is_floor(next_position):
