@@ -75,7 +75,6 @@ class Entity:
                 self.dead = False
                 self.solid = self.initial_solid
 
-
     @property
     def non_solid(self):
         return not self.solid
