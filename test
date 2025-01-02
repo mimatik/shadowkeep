@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Exit on error
+set -e
+
+uv sync
+uv pip install -e ".[test]"
+uv run pytest "$@"

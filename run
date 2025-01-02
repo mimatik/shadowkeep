@@ -1,7 +1,2 @@
 #!/bin/bash
 uv run --frozen main
-
-# source ".venv/bin/activate"
-# python src/main.py
-
-# deactivate

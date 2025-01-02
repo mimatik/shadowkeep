@@ -1,6 +1,11 @@
 # shadowkeep
 Python course - game dev 
 
+# prerequisiteis
+
+- `uv` - https://docs.astral.sh/uv/
+
+
 # setup
 Run `./setup` in the root directory. That will create the virtual environment and install the required packages.
 
