@@ -34,13 +34,21 @@ class Button:
             self.increase_volume()
         elif self.text == "Decrease Volume":
             self.decreace_volume()
+        elif self.text == "Decrease Volume":
+            self.decreace_volume()
+        elif self.text == "Decrease Volume":
+            self.decreace_volume()
+        elif self.text == "Decrease Volume":
+            self.decreace_volume()
+        elif self.text == "Decrease Volume":
+            self.decreace_volume()
 
     def increase_volume(self):
-        if self.game.audio.global_volume < 1.5:
+        if self.game.audio.global_volume <= 2:
             self.game.audio.global_volume += 0.05
             self.game.audio.set_volume(self.game.audio.global_volume)
 
     def decreace_volume(self):
-        if self.game.audio.global_volume > 0.04:
+        if self.game.audio.global_volume >= 0.0:
             self.game.audio.global_volume -= 0.05
             self.game.audio.set_volume(self.game.audio.global_volume)

@@ -160,29 +160,40 @@ class Game:
         self.ui_layer.blit()
         pygame.display.update()
 
+    def draw_settings_title(self):
+        pygame.init()
+        title_font = pygame.font.Font(None, 110)
+        title_surface = title_font.render("settings", True, (255, 255, 255))
+        self.window.blit(title_surface, (7 * TILE_WIDTH, TILE_HEIGHT))
+
     def run(self):
         self.audio.play()
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN:
+                    pressed_key = pygame.key.get_pressed()
+                    if self.dialog.is_open:
+                        self.dialog.read_key(event)
+                    elif pressed_key[pygame.K_ESCAPE]:
+                        if self.in_menu:
+                            self.in_menu = False
+                        else:
+                            self.in_menu = True
+                    elif not self.in_menu:
+                        self.player.move()
+
             if self.in_menu:
+                self.draw_settings_title()
                 mouse_pos = pygame.mouse.get_pos()
                 for button in self.buttons:
                     button.draw(self.window)
                     if button.is_hovered(mouse_pos):
                         if pygame.mouse.get_pressed()[0]:
                             button.click()
-
             else:
                 self.audio.random_sfx_play()
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if self.dialog.is_open:
-                            self.dialog.read_key(event)
-                        else:
-                            self.player.move()
-
                 self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace
                 self.update()
                 self.blit_layers()
