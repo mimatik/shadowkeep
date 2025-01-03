@@ -1,10 +1,11 @@
 import pygame
+from pygame import Surface
 
 
 class Layer:
     def __init__(self, game):
         self.game = game
-        self.surface = pygame.Surface(
+        self.surface = pygame.surface.Surface(
             (game.window.get_width(), game.window.get_height()), pygame.SRCALPHA
         )
         self.target = game.window

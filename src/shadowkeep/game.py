@@ -30,6 +30,8 @@ from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
+from shadowkeep.settings import Button
+from shadowkeep.text import TextInput
 
 logger = logging.getLogger("shadowkeep")
 
@@ -50,6 +52,7 @@ class Game:
 
         self.map = Map(self)
         self.player = Player(self)
+        self.textInput = TextInput(self, "dark")
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
@@ -59,6 +62,24 @@ class Game:
 
         self.logic = []
         self.chatGPT = ChatGPT(self)
+        self.buttons = [
+            Button(
+                self,
+                100,
+                200,
+                200,
+                50,
+                "Increase Volume",
+            ),
+            Button(
+                self,
+                100,
+                300,
+                200,
+                50,
+                "Decrease Volume",
+            ),
+        ]
 
         self.audio = Audio(self)
 
@@ -72,9 +93,9 @@ class Game:
         self.load_data()
         # self.load_logic()
 
-        logger.info("game:start")
+        self.in_menu = True
 
-        # print(open_ai_get_response("jak se mas"))
+        logger.info("game:start")
 
     def turn(self):
         self.current_turn += 1
@@ -142,17 +163,27 @@ class Game:
     def run(self):
         self.audio.play()
         while self.running:
-            self.audio.random_sfx_play()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                elif event.type == pygame.KEYDOWN:
-                    if self.dialog.is_open:
-                        self.dialog.read_key(event)
-                    else:
-                        self.player.move()
+            if self.in_menu:
+                mouse_pos = pygame.mouse.get_pos()
+                for button in self.buttons:
+                    button.draw(self.window)
+                    if button.is_hovered(mouse_pos):
+                        if pygame.mouse.get_pressed()[0]:
+                            button.click()
 
-            self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace
-            self.update()
-            self.blit_layers()
+            else:
+                self.audio.random_sfx_play()
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if self.dialog.is_open:
+                            self.dialog.read_key(event)
+                        else:
+                            self.player.move()
+
+                self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace
+                self.update()
+                self.blit_layers()
             self.clock.tick(config.FPS)
