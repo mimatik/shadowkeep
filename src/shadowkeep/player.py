@@ -72,7 +72,13 @@ class Player:
         else:
             surface = self.broken_health_surface
 
-        self.game.ui_layer.place_surface(surface, ((WINDOW_WIDTH - 2 * TILE_WIDTH) - (self.max_lives - lives) * 40, TILE_HEIGHT))
+        self.game.ui_layer.place_surface(
+            surface,
+            (
+                (WINDOW_WIDTH - 2 * TILE_WIDTH) - (self.max_lives - lives) * 40,
+                TILE_HEIGHT,
+            ),
+        )
 
     def blit(self):
         self.game.dynamic_layer.place_surface(
@@ -80,5 +86,3 @@ class Player:
         )
         for i in range(1, self.max_lives + 1):
             self._blit_health_surface(i)
-
-

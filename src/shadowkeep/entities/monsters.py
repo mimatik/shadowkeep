@@ -1,16 +1,17 @@
 import logging
 import random
 
-from shadowkeep.lib.coordinates import Coordinates
-from .base import Entity
 from shadowkeep.entities.fireballs import Fireball
+from shadowkeep.lib.coordinates import Coordinates
+
+from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
 
 class Monster(Entity):
-
     respawn_time = 15
+
     def __init__(self, game):
         super().__init__(game)
         self.choose_random_position()
@@ -61,7 +62,6 @@ class Monster(Entity):
 
 
 class TalkingMonster(Monster):
-
     def get_image(self):
         return "Friend.png"
 

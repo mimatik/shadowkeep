@@ -4,6 +4,7 @@ import random
 import pygame
 from PIL import Image
 from pygame import Surface
+from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
@@ -22,7 +23,6 @@ from shadowkeep.entities.fireballs import (
 from shadowkeep.entities.interactable import Box
 from shadowkeep.entities.monsters import (
     BadMonster,
-    Monster,
     TalkingMonster,
 )
 from shadowkeep.layer import Layer
@@ -30,6 +30,7 @@ from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
+from shadowkeep.lib.inventory import Inventory
 from shadowkeep.settings import Button
 from shadowkeep.text import TextInput
 
@@ -52,7 +53,7 @@ class Game:
 
         self.map = Map(self)
         self.player = Player(self)
-        self.textInput = TextInput(self, "dark")
+        self.inventory = Inventory()
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
@@ -132,10 +133,18 @@ class Game:
                                     position=Coordinates(x, y),
                                 )
                             )
-                        case (255, 255, 0, 255):
-                            self.entities.append(Door(self, position=Coordinates(x, y)))
-                        case (255, 255, 1, 255):
-                            self.entities.append(Key(self, position=Coordinates(x, y)))
+                        case (187, 187, pair, 255):
+                            self.entities.append(
+                                Door(self, position=Coordinates(x, y), pair=pair)
+                            )
+                        case (170, 170, pair, 255):
+                            self.entities.append(
+                                Key(
+                                    self,
+                                    position=Coordinates(x, y),
+                                    pair=pair,
+                                )
+                            )
                         case (0, 255, 0, 255):
                             self.entities.append(End(self, position=Coordinates(x, y)))
                         case (0, 0, 255, 255):
@@ -169,6 +178,7 @@ class Game:
     def run(self):
         self.audio.play()
         while self.running:
+            self.audio.random_sfx_play()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

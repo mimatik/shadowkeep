@@ -1,5 +1,6 @@
-import pygame
 import textwrap
+
+import pygame
 
 
 class TextInput:
