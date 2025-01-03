@@ -63,7 +63,6 @@ class Logic(Entity):
 
 
 class Monster(Entity):
-
     def __init__(self, game):
         super().__init__(game)
         self.choose_random_position()
@@ -110,7 +109,6 @@ class Monster(Entity):
 
 
 class TalkingMonster(Monster):
-
     def get_image(self):
         return "Friend.png"
 
@@ -127,7 +125,6 @@ class BadMonster(Monster):
 
 
 class Fireball(Entity):
-
     def get_image(self):
         return "Fireball.png"
 
@@ -209,7 +206,6 @@ class Rotator(Entity):
 
 
 class Door(Entity):
-
     def turn(self):
         if self.position == self.game.player.position:
             self._meet_player()
@@ -271,6 +267,5 @@ class Box(Entity):
             other_entity.position == self.game.player.moved_dir
             for other_entity in self.game.entities.solid
         ):
-
             self.position += self.game.player.moved_dir
             self.game.player.ghost_step()

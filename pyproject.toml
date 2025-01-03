@@ -1,0 +1,18 @@
+[project]
+name = "shadowkeep"
+version = "0.1.0"
+readme = "README.md"
+requires-python = "~=3.11"  # keep this in sync with file .python-version
+dependencies = [
+    "openai>=0.8.0",
+    "pillow>=9.5.0",
+    "pygame>=2.6.1",
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+main = "main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

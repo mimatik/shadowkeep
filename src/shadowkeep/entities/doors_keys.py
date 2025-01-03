@@ -1,4 +1,5 @@
 import logging
+
 from .base import Entity
 from shadowkeep.lib.coordinates import Coordinates
 

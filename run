@@ -1,7 +1,7 @@
 #!/bin/bash
-source ./config
+uv run --frozen main
 
-source "$VENV_DIR/bin/activate"
-python src/main.py
+# source ".venv/bin/activate"
+# python src/main.py
 
-deactivate
+# deactivate

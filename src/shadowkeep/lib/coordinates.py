@@ -48,5 +48,3 @@ class Coordinates(list):
 
     def copy(self):
         return Coordinates(self.x, self.y)
-
-

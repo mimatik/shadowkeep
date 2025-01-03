@@ -1,5 +1,4 @@
 import logging
-import random
 
 import pygame
 from PIL import Image
@@ -8,7 +7,7 @@ from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
-from shadowkeep.config import AUDIO_DIR, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import IMG_DIR
 from shadowkeep.dialog import Dialog
 from shadowkeep.entities import Entities
 from shadowkeep.entities.base import End
@@ -23,7 +22,6 @@ from shadowkeep.entities.fireballs import (
 from shadowkeep.entities.interactable import Box
 from shadowkeep.entities.monsters import (
     BadMonster,
-    Monster,
     TalkingMonster,
 )
 from shadowkeep.layer import Layer

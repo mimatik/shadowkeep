@@ -1,13 +1,13 @@
 import logging
 
 from shadowkeep.lib.coordinates import Coordinates
+
 from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
 
 class Fireball(Entity):
-
     def get_image(self):
         return "Fireball.png"
 

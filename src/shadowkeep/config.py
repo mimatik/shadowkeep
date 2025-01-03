@@ -21,4 +21,4 @@ FPS = 60
 
 OPENAI_API_KEY = open(KEYS_DIR / "openai_api_key.txt").read().strip()
 
-LOG_FILE = ROOT_DIR/ "shadowkeep.log"
+LOG_FILE = ROOT_DIR / "shadowkeep.log"

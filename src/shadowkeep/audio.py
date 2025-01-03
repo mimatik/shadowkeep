@@ -1,5 +1,7 @@
-import pygame
 import random
+
+import pygame
+
 from shadowkeep.config import AUDIO_DIR
 
 

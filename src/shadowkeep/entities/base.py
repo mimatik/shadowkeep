@@ -111,7 +111,6 @@ class Entity:
 
 
 class End(Entity):
-
     def interact(self, *args, **kwargs):
         self.destroy()
         self.game.player.ghost_step()
