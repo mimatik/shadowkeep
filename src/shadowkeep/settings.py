@@ -1,5 +1,8 @@
-import sys
+import json
 import pygame
+from pygame.examples.music_drop_fade import volume
+
+from shadowkeep.config import SETTINGS_FILE
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -10,7 +13,7 @@ font = pygame.font.Font(None, 32)
 
 
 class Button:
-    def __init__(self, game, x, y, width, height, text):
+    def __init__(self, game, x, y, width, height, text, action):
         self.game = game
         self.x = x
         self.y = y
@@ -18,6 +21,7 @@ class Button:
         self.height = height
         self.text = text
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.action = action
 
     def draw(self, surface):
         pygame.draw.rect(self.game.window, GREY, self.rect)
@@ -30,8 +34,10 @@ class Button:
         return self.rect.collidepoint(pos)
 
     def click(self):
-        if self.text == "Increase Volume":
-            self.increase_volume()
+        if self.action == "volume_up":
+            self.change_volume("+")
+        elif self.text == "volume_down":
+            self.change_volume("-")
         elif self.text == "Decrease Volume":
             self.decreace_volume()
         elif self.text == "Decrease Volume":
@@ -40,15 +46,34 @@ class Button:
             self.decreace_volume()
         elif self.text == "Decrease Volume":
             self.decreace_volume()
-        elif self.text == "Decrease Volume":
-            self.decreace_volume()
+        else:
+            pass
 
-    def increase_volume(self):
-        if self.game.audio.global_volume <= 2:
-            self.game.audio.global_volume += 0.05
-            self.game.audio.set_volume(self.game.audio.global_volume)
+    def save(self):
+        SETTINGS_FILE.parent.mkdir(exist_ok=True)
+        data = {
+            "volume" : self.game.audio.global_volume,
+        }
+        with open(SETTINGS_FILE, 'w+') as f:
+            json.dump(data, f)
 
-    def decreace_volume(self):
-        if self.game.audio.global_volume >= 0.0:
-            self.game.audio.global_volume -= 0.05
+    def load(self):
+        if SETTINGS_FILE.exists():
+            with open(SETTINGS_FILE, 'r') as f:
+                data = json.load(f)
+        else:
+            data = {
+                "volume": 1,
+            }
+        self.game.audio.global_volume = data[volume]
+
+    def change_volume(self, operation):
+        if self.game.audio.global_volume < 2 and self.game.audio.global_volume > 0.0:
+            if operation == "+":
+                self.game.audio.global_volume += 0.025
+            else:
+                self.game.audio.global_volume -= 0.025
             self.game.audio.set_volume(self.game.audio.global_volume)
+            self.save()
+
+

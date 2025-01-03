@@ -1,14 +1,12 @@
 import random
 
 import pygame
-
 from shadowkeep.config import AUDIO_DIR
-
 
 class Audio:
     def __init__(self, game):
         self.game = game
-        self.global_volume = 0.2
+        self.global_volume = None
 
         self.random_sfx = pygame.mixer.Sound(AUDIO_DIR / "random_sound.mp3")
         self.random_sfx.set_volume(0.1)

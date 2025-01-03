@@ -71,6 +71,7 @@ class Game:
                 200,
                 50,
                 "Increase Volume",
+                "volume_up",
             ),
             Button(
                 self,
@@ -79,6 +80,7 @@ class Game:
                 200,
                 50,
                 "Decrease Volume",
+                "volume_down",
             ),
         ]
 

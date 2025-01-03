@@ -7,6 +7,8 @@ IMG_DIR = ASSETS_DIR / "img"
 AUDIO_DIR = ASSETS_DIR / "audio"
 KEYS_DIR = ROOT_DIR / "keys"
 GENERATED_IMG_DIR = ASSETS_DIR / "generated_img"
+DATA_DIR = ROOT_DIR / "data"
+SETTINGS_FILE = DATA_DIR / "settings.json"
 
 # Size of a tile note: must be >= 32
 TILE_WIDTH = 32
