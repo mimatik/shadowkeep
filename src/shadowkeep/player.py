@@ -21,29 +21,30 @@ class Player:
         self.player_move_sfx.set_volume(0.3)
         self.max_lives = 4
         self.lives = 4
-        self.up_key = pygame.K_w
-        self.down_key = pygame.K_s
-        self.left_key = pygame.K_a
-        self.right_key = pygame.K_d
+        self.keys = {
+            "up": pygame.K_w,
+            "down": pygame.K_s,
+            "left": pygame.K_a,
+            "right": pygame.K_d,
+        }
 
     def move(self):
         movement = None
-
         pressed_keys = pygame.key.get_pressed()
 
         if sum(pressed_keys) > 1:
             return
 
-        if pressed_keys[self.up_key]:
+        if pressed_keys[self.keys["up"]]:
             movement = Coordinates(y=-1)
 
-        if pressed_keys[self.down_key]:
+        if pressed_keys[self.keys["down"]]:
             movement = Coordinates(y=+1)
 
-        if pressed_keys[self.right_key_key]:
+        if pressed_keys[self.keys["right"]]:
             movement = Coordinates(x=+1)
 
-        if pressed_keys[self.left_key]:
+        if pressed_keys[self.keys["left"]]:
             movement = Coordinates(x=-1)
 
         if movement:
