@@ -62,7 +62,6 @@ class Game:
 
         self.audio = Audio(self)
         self.menu = Menu(self)
-        self.menu.load()
 
         self.logic = []
         self.chatGPT = ChatGPT(self)

@@ -105,10 +105,14 @@ class Menu:
         self.game.audio.setting_volume(self.game.audio.global_volume)
 
     def run(self):
+        hand_cursor = pygame.SYSTEM_CURSOR_HAND
+        arrow_cursor = pygame.SYSTEM_CURSOR_ARROW
         mouse_pos = pygame.mouse.get_pos()
+        pygame.mouse.set_cursor(arrow_cursor)
         for button in self.buttons:
             button.draw(self.game.window)
             if button.is_hovered(mouse_pos):
+                pygame.mouse.set_cursor(hand_cursor)
                 if pygame.mouse.get_pressed()[0]:
                     button.click()
 
