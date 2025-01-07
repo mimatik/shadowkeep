@@ -15,7 +15,7 @@ font = pygame.font.Font(None, 32)
 class Menu:
     def __init__(self, game):
         self.game = game
-        self.load()
+        self.load_settings()
         self.right_key = f"{pygame.key.name(self.game.player.keys['right'])}"
         self.left_key = f"{pygame.key.name(self.game.player.keys['left'])}"
         self.up_key = f"{pygame.key.name(self.game.player.keys['up'])}"
@@ -91,7 +91,7 @@ class Menu:
                 )
             )
 
-    def load(self):
+    def load_settings(self):
         if SETTINGS_FILE.exists():
             with open(SETTINGS_FILE, "r") as f:
                 data = json.load(f)
