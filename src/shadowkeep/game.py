@@ -2,6 +2,8 @@ import logging
 
 import pygame
 from PIL import Image
+from pygame import Surface
+from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
@@ -27,6 +29,7 @@ from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
+from shadowkeep.lib.inventory import Inventory
 
 logger = logging.getLogger("shadowkeep")
 
@@ -47,6 +50,7 @@ class Game:
 
         self.map = Map(self)
         self.player = Player(self)
+        self.inventory = Inventory()
 
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
@@ -108,10 +112,18 @@ class Game:
                                     position=Coordinates(x, y),
                                 )
                             )
-                        case (255, 255, 0, 255):
-                            self.entities.append(Door(self, position=Coordinates(x, y)))
-                        case (255, 255, 1, 255):
-                            self.entities.append(Key(self, position=Coordinates(x, y)))
+                        case (187, 187, pair, 255):
+                            self.entities.append(
+                                Door(self, position=Coordinates(x, y), pair=pair)
+                            )
+                        case (170, 170, pair, 255):
+                            self.entities.append(
+                                Key(
+                                    self,
+                                    position=Coordinates(x, y),
+                                    pair=pair,
+                                )
+                            )
                         case (0, 255, 0, 255):
                             self.entities.append(End(self, position=Coordinates(x, y)))
                         case (0, 0, 255, 255):

@@ -75,7 +75,7 @@ class FireballLauncher(Entity):
         if self.game.current_turn % 4 == 0:
             fireball = Fireball(
                 self.game,
-                position=self.position + self.direction,
+                position=self.position,
                 velocity=self.direction,
                 rotation=self.rotation,
             )
