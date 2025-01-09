@@ -134,7 +134,7 @@ class Button:
         text_surface = font.render(self.text, True, BLACK)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
-        pygame.display.flip()
+        # pygame.display.flip()
 
     def is_hovered(self, pos):
         return self.rect.collidepoint(pos)
