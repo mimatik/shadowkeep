@@ -35,3 +35,4 @@ class Audio:
         self.random_sfx.set_volume(volume)
         self.random_sfx2.set_volume(volume)
         self.background_sfx.set_volume(volume)
+        self.game.player.player_move_sfx.set_volume(volume)
