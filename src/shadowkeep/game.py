@@ -24,6 +24,7 @@ from shadowkeep.entities.monsters import (
     BadMonster,
     TalkingMonster,
 )
+from shadowkeep.entities.slot import Slot
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.open_ai import ChatGPT
@@ -134,6 +135,7 @@ class Game:
         self.ui_layer.clear()
         self.player.blit()
         self.dialog.blit()
+        self.inventory.blit()
 
         for entity in self.entities:
             if entity.position and self.map.is_floor(entity.position):

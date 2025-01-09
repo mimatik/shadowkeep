@@ -1,7 +1,8 @@
 import logging
 
-from .base import Entity
 from shadowkeep.lib.coordinates import Coordinates
+
+from .base import Entity
 
 logger = logging.getLogger("shadowkeep")
 
@@ -13,6 +14,13 @@ class Door(Entity):
 
     def interact(self, *args, **kwargs):
         if any(self.pair == key.pair for key in self.game.inventory.of_type(Key)):
+            self.game.inventory.remove(
+                [
+                    key
+                    for key in self.game.inventory.of_type(Key)
+                    if key.pair == self.pair
+                ][0]
+            )
             self.destroy()
             logger.info(
                 f"opened door pair {self.pair} on x:{self.position.x} y:{self.position.y}"
@@ -29,6 +37,7 @@ class Key(Entity):
 
     def move_to_inventory(self):
         self.game.inventory += [self]
+        self.position = Coordinates(20 + self.game.inventory.index(self), 23)
         self.destroy()
 
     def interact(self, *args, **kwargs):
