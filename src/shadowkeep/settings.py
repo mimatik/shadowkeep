@@ -2,7 +2,8 @@ import json
 
 import pygame
 
-from shadowkeep.config import SETTINGS_FILE
+from shadowkeep.config import SETTINGS_FILE, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.lib.coordinates import Coordinates
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -90,6 +91,26 @@ class Menu:
                     None,
                 )
             )
+        self.dead_buttons = [
+            Button(
+                self.game,
+                100,
+                200,
+                200,
+                50,
+                "Respawn",
+                "respawn",
+            ),
+            Button(
+                self.game,
+                100,
+                260,
+                200,
+                50,
+                "Exit",
+                "exit",
+            ),
+        ]
 
     def load_settings(self):
         if SETTINGS_FILE.exists():
@@ -105,16 +126,27 @@ class Menu:
         self.game.audio.setting_volume(self.game.audio.global_volume)
 
     def run(self):
-        hand_cursor = pygame.SYSTEM_CURSOR_HAND
-        arrow_cursor = pygame.SYSTEM_CURSOR_ARROW
         mouse_pos = pygame.mouse.get_pos()
-        pygame.mouse.set_cursor(arrow_cursor)
         for button in self.buttons:
             button.draw(self.game.window)
             if button.is_hovered(mouse_pos):
-                pygame.mouse.set_cursor(hand_cursor)
                 if pygame.mouse.get_pressed()[0]:
                     button.click()
+
+    def respawn_run(self):
+        self.respawn_draw(self.game.window)
+        mouse_pos = pygame.mouse.get_pos()
+        for button in self.dead_buttons:
+            button.draw(self.game.window)
+            if button.is_hovered(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    button.click()
+
+    def respawn_draw(self, surface):
+        pygame.init()
+        title_font = pygame.font.Font(None, 110)
+        title_surface = title_font.render("You are dead", True, (255, 255, 255))
+        self.game.window.blit(title_surface, (5 * TILE_WIDTH, TILE_HEIGHT))
 
 
 class Button:
@@ -134,7 +166,7 @@ class Button:
         text_surface = font.render(self.text, True, BLACK)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
-        # pygame.display.flip()
+        pygame.display.flip()
 
     def is_hovered(self, pos):
         return self.rect.collidepoint(pos)
@@ -152,6 +184,10 @@ class Button:
             self.change_key("left")
         elif self.action == "right_button":
             self.change_key("right")
+        elif self.action == "respawn":
+            self.respawn()
+        elif self.action == "exit":
+            self.game.running = False
         else:
             pass
 
@@ -191,3 +227,13 @@ class Button:
                         self.choosing_key = False
                         self.save()
             self.draw(self.game.window)
+
+    def respawn(self):
+        self.game.player.position = Coordinates(
+            self.game.data["player_initial_x_position"],
+            self.game.data["player_initial_y_position"],
+        )
+        self.game.player.lives = 4
+        for entity in self.game.entities:
+            entity.respawn()
+        self.game.end_screen = False

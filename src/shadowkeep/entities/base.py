@@ -109,6 +109,9 @@ class Entity:
         if self.solid:
             self.solid = False
 
+    def respawn(self):
+        pass
+
 
 class End(Entity):
     def interact(self, *args, **kwargs):

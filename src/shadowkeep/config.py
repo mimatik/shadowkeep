@@ -9,7 +9,7 @@ KEYS_DIR = ROOT_DIR / "keys"
 GENERATED_IMG_DIR = ASSETS_DIR / "generated_img"
 DATA_DIR = ROOT_DIR / "data"
 SETTINGS_FILE = DATA_DIR / "settings.json"
-
+DATA_FILE = DATA_DIR / "data.json"
 # Size of a tile note: must be >= 32
 TILE_WIDTH = 32
 TILE_HEIGHT = 32

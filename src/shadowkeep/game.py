@@ -1,5 +1,5 @@
+import json
 import logging
-import random
 
 import pygame
 from PIL import Image
@@ -8,7 +8,7 @@ from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
-from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import DATA_FILE, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
 from shadowkeep.entities import Entities
 from shadowkeep.entities.base import End
@@ -46,6 +46,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        with open(DATA_FILE, "r") as f:
+            self.data = json.load(f)
+
         self.background_layer = Layer(self)
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
@@ -57,8 +60,12 @@ class Game:
         self.entities = Entities()
         self.entities += [Box(self, position=Coordinates(2, 13))]
         self.entities += [Door(self, position=Coordinates(12, 16))]
-        self.entities += [TalkingMonster(self) for x in range(7)]
-        self.entities += [BadMonster(self) for x in range(4)]
+        self.entities += [
+            TalkingMonster(self) for x in range(self.data["number_of_good_monsters"])
+        ]
+        self.entities += [
+            BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
+        ]
 
         self.audio = Audio(self)
         self.menu = Menu(self)
@@ -78,6 +85,8 @@ class Game:
 
         self.in_menu = True
 
+        self.end_screen = False
+
         logger.info("game:start")
 
     def turn(self):
@@ -86,7 +95,7 @@ class Game:
             entity.turn()
 
         if self.player.lives == 0:
-            self.running = False
+            self.end_screen = True
 
     # def load_logic(self):
     #     try:
@@ -131,6 +140,10 @@ class Game:
                             self.entities.append(End(self, position=Coordinates(x, y)))
                         case (0, 0, 255, 255):
                             self.player.position = Coordinates(x, y)
+                            self.data["player_initial_x_position"] = x
+                            self.data["player_initial_y_position"] = y
+                            with open(DATA_FILE, "w") as f:
+                                json.dump(self.data, f)
 
     def update(self):
         self.dynamic_layer.clear()
@@ -179,6 +192,8 @@ class Game:
             if self.in_menu:
                 self.draw_settings_title()
                 self.menu.run()
+            elif self.end_screen:
+                self.menu.respawn_run()
             else:
                 self.audio.random_sfx_play()
                 self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace

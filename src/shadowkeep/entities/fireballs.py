@@ -49,6 +49,9 @@ class Fireball(Entity):
     def next_position(self):
         return self.position + self.velocity
 
+    def respawn(self):
+        self.destroy()
+
 
 class FireballLauncher(Entity):
     def __init__(self, game, rotation=0, position=Coordinates(0, 0)):
@@ -81,6 +84,9 @@ class FireballLauncher(Entity):
             )
             self.game.entities += [fireball]
             fireball.turn()
+
+    def respawn(self):
+        self.game.current_turn = 0
 
     def hit(self):
         pass

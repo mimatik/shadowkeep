@@ -60,6 +60,12 @@ class Monster(Entity):
             ):
                 self._meet_player()
 
+    def respawn(self):
+        self.dead = False
+        self.dead_time = 0
+        self.solid = self.initial_solid
+        self.position = self.initial_position
+
 
 class TalkingMonster(Monster):
     def get_image(self):

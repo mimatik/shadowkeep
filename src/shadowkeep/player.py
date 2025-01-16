@@ -14,7 +14,10 @@ class Player:
         self.broken_health_surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
         self.broken_health_surface = pygame.image.load(IMG_DIR / "broken_heart.png")
         self.last_pressed = 0
-        self.position = Coordinates(11, 10)
+        self.position = Coordinates(
+            self.game.data["player_initial_x_position"],
+            self.game.data["player_initial_y_position"],
+        )
         self.last_position = Coordinates()
         self.position = Coordinates()
         self.player_move_sfx = pygame.mixer.Sound(AUDIO_DIR / "player_move.mp3")
