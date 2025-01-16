@@ -1,4 +1,5 @@
 from pathlib import Path
+from PIL import Image
 
 ROOT_DIR = Path(__file__).parent.parent.parent
 SRC_DIR = ROOT_DIR / "src"
@@ -13,8 +14,9 @@ TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
 # Size of the window
-WINDOW_WIDTH = TILE_WIDTH * 24
-WINDOW_HEIGHT = TILE_HEIGHT * 24
+with Image.open(IMG_DIR / "map.png") as image:
+    WINDOW_WIDTH = image.width * TILE_WIDTH
+    WINDOW_HEIGHT = image.height * TILE_HEIGHT
 
 # Frames Per Second
 FPS = 60
