@@ -70,5 +70,8 @@ class TextInput:
         return blink_surface
 
     def blit(self, text, bubble_position):
-        surface = self.surface_set(text)
+        if text:
+            surface = self.surface_set(text)
+        else:
+            surface = self.blink()
         self.game.ui_layer.place_surface(surface, (bubble_position))
