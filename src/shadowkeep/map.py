@@ -15,11 +15,18 @@ class Map:
     def __init__(self, game):
         self.game = game
         self.data = []
-        self.load_map_from_image()
+        self.load_map_from_image("map.png")
 
-    def load_map_from_image(self):
-        with Image.open(IMG_DIR / "map.png") as image:
+    def load_map_from_image(self, map_image):
+        self.data = []
+
+        with Image.open(IMG_DIR / map_image) as image:
             self.width, self.height = image.size
+            WINDOW_WIDTH = image.width * TILE_WIDTH
+            WINDOW_HEIGHT = image.height * TILE_HEIGHT
+            self.game.WINDOW_WIDTH = WINDOW_WIDTH
+            self.game.WINDOW_HEIGHT = WINDOW_HEIGHT
+            self.game.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
             for h in range(self.height):
                 row = []

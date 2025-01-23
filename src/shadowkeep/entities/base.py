@@ -87,7 +87,7 @@ class Entity:
 
     def choose_random_position(self):
         while True:
-            position = Coordinates(random.randint(5, 24), random.randint(5, 24))
+            position = Coordinates(random.randint(0, 24), random.randint(0, 24))
             if self.game.map.is_floor(position):
                 self.position = position
                 return

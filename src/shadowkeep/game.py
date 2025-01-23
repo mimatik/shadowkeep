@@ -27,10 +27,10 @@ from shadowkeep.entities.monsters import (
 from shadowkeep.entities.slot import Slot
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
+from shadowkeep.lib.inventory import Inventory
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
-from shadowkeep.lib.inventory import Inventory
 
 logger = logging.getLogger("shadowkeep")
 
@@ -71,7 +71,9 @@ class Game:
 
         self.map.blit()
 
-        self.load_data()
+        self.passed = 0
+
+        self.load_data("map.png")
         # self.load_logic()
 
         logger.info("game:start")
@@ -97,8 +99,16 @@ class Game:
     #     except:
     #         print("error")
 
-    def load_data(self):
-        with Image.open(IMG_DIR / "map.png") as image:
+    def load_data(self, map_image):
+        self.entities.clear()
+
+        # Temporary
+        self.entities += [Box(self, position=Coordinates(2, 13))]
+        self.entities += [Door(self, position=Coordinates(12, 16))]
+        self.entities += [TalkingMonster(self) for x in range(7)]
+        self.entities += [BadMonster(self) for x in range(4)]
+
+        with Image.open(IMG_DIR / map_image) as image:
             self.width, self.height = image.size
 
             for y in range(self.height):
@@ -166,4 +176,8 @@ class Game:
             self.dialog.backspace_update()  # enables multiple chars deletion by holding backspace
             self.update()
             self.blit_layers()
+            if self.current_turn % 20 == 0 and self.passed != self.current_turn:
+                self.passed = self.current_turn
+                self.map.load_map_from_image("second_map.png")
+                self.load_data("second_map.png")
             self.clock.tick(config.FPS)
