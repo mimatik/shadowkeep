@@ -58,14 +58,6 @@ class Game:
         self.inventory = Inventory()
 
         self.entities = Entities()
-        self.entities += [Box(self, position=Coordinates(2, 13))]
-        self.entities += [Door(self, position=Coordinates(12, 16))]
-        self.entities += [
-            TalkingMonster(self) for x in range(self.data["number_of_good_monsters"])
-        ]
-        self.entities += [
-            BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
-        ]
 
         self.audio = Audio(self)
         self.menu = Menu(self)
@@ -82,6 +74,14 @@ class Game:
 
         self.load_data()
         # self.load_logic()
+        self.entities += [Box(self, position=Coordinates(2, 13))]
+        self.entities += [Door(self, position=Coordinates(12, 16))]
+        self.entities += [
+            TalkingMonster(self) for x in range(self.data["number_of_good_monsters"])
+        ]
+        self.entities += [
+            BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
+        ]
 
         self.in_menu = True
 
