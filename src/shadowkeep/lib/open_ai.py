@@ -1,4 +1,5 @@
 import json
+from json.decoder import JSONDecodeError
 
 from openai import OpenAI
 
@@ -54,7 +55,10 @@ class ChatGPT:
             }
         )
         self.json_response = ai_response
-        self.parsed_json = json.loads(self.json_response)
+        try:
+            self.parsed_json = json.loads(self.json_response)
+        except JSONDecodeError:
+            self.parsed_json = {"command": "say", "text": "Nevím co říct"}
 
         print(self.parsed_json)
         print(self.conversation_history)

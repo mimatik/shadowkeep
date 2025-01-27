@@ -26,26 +26,32 @@ from shadowkeep.entities.monsters import (
     BadMonster,
     TalkingMonster,
 )
+from shadowkeep.entities.slot import Slot
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.inventory import Inventory
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
-from shadowkeep.settings import Menu
 
 logger = logging.getLogger("shadowkeep")
+# Size of the window
 
 
 class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Shadowkeep")
-        self.window = pygame.display.set_mode(
-            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
-        )
         self.clock = pygame.time.Clock()
         self.running = True
+
+        self.entities = Entities()
+        self.map = Map(self)
+        self.player = Player(self)
+        self.load_data()
+        self.window = pygame.display.set_mode(
+            (self.width * config.TILE_WIDTH, self.height * config.TILE_HEIGHT)
+        )
 
         with open(DATA_FILE, "r") as f:
             self.data = json.load(f)
@@ -54,22 +60,24 @@ class Game:
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
-        self.map = Map(self)
-        self.player = Player(self)
         self.inventory = Inventory()
 
-        self.entities = Entities()
-
-        self.audio = Audio(self)
-        self.menu = Menu(self)
+        self.entities += [Box(self, position=Coordinates(2, 13))]
+        self.entities += [Door(self, position=Coordinates(12, 16))]
+        self.entities += [TalkingMonster(self) for x in range(7)]
+        self.entities += [BadMonster(self) for x in range(4)]
 
         self.logic = []
         self.chatGPT = ChatGPT(self)
 
         self.current_turn = 0
         self.keys = 0
+        self.map.blit()
 
         self.dialog = Dialog(self)
+
+        # self.load_logic()
+
         # self.load_logic()\
 
         self.in_menu = True
@@ -92,6 +100,10 @@ class Game:
         self.entities += [
             BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
         ]
+
+        logger.info("game:start")
+
+        # print(open_ai_get_response("jak se mas"))
 
     def turn(self):
         self.current_turn += 1
