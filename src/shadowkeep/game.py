@@ -10,6 +10,7 @@ from shadowkeep import config
 from shadowkeep.audio import Audio
 from shadowkeep.config import DATA_FILE, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
+from shadowkeep.dynamic_light import Dynamic_light
 from shadowkeep.entities import Entities
 from shadowkeep.entities.base import End
 from shadowkeep.entities.doors_keys import (
@@ -69,11 +70,20 @@ class Game:
         self.keys = 0
 
         self.dialog = Dialog(self)
+        # self.load_logic()\
 
+        self.in_menu = True
+
+        self.end_screen = False
+
+        self.dynamic_light = Dynamic_light(self)
+
+        logger.info("game:start")
+        self.add_entities()
+
+    def add_entities(self):
         self.map.blit()
-
         self.load_data()
-        # self.load_logic()
         self.entities += [Box(self, position=Coordinates(2, 13))]
         self.entities += [Door(self, position=Coordinates(12, 16))]
         self.entities += [
@@ -83,18 +93,13 @@ class Game:
             BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
         ]
 
-        self.in_menu = True
-
-        self.end_screen = False
-
-        logger.info("game:start")
-
     def turn(self):
         self.current_turn += 1
         for entity in self.entities[:]:
             entity.turn()
 
         if self.player.lives == 0:
+            pygame.display.flip()
             self.end_screen = True
 
     # def load_logic(self):
@@ -140,6 +145,7 @@ class Game:
                             self.entities.append(End(self, position=Coordinates(x, y)))
                         case (0, 0, 255, 255):
                             self.player.position = Coordinates(x, y)
+                            self.player.transformed_position = ()
                             self.data["player_initial_x_position"] = x
                             self.data["player_initial_y_position"] = y
                             with open(DATA_FILE, "w") as f:
@@ -148,9 +154,8 @@ class Game:
     def update(self):
         self.dynamic_layer.clear()
         self.ui_layer.clear()
-        self.player.blit()
         self.dialog.blit()
-
+        self.player.blit()
         for entity in self.entities:
             if entity.position and self.map.is_floor(entity.position):
                 entity.blit()
@@ -161,7 +166,7 @@ class Game:
     def blit_layers(self):
         self.background_layer.blit()
         self.dynamic_layer.blit()
-        self.ui_layer.blit()
+        self.dynamic_light.draw()
         pygame.display.update()
 
     def draw_settings_title(self):

@@ -76,6 +76,15 @@ class Menu:
                 self.right_key,
                 "right_button",
             ),
+            Button(
+                self.game,
+                550,
+                40,
+                200,
+                50,
+                "Exit",
+                "exit",
+            ),
         ]
         for i, key in enumerate(self.game.player.keys):
             y_position = 320
@@ -229,11 +238,13 @@ class Button:
             self.draw(self.game.window)
 
     def respawn(self):
+        self.game.current_turn = 0
         self.game.player.position = Coordinates(
             self.game.data["player_initial_x_position"],
             self.game.data["player_initial_y_position"],
         )
         self.game.player.lives = 4
         for entity in self.game.entities:
-            entity.respawn()
+            entity.destroy()
+        self.game.add_entities()
         self.game.end_screen = False

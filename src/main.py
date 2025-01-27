@@ -34,6 +34,7 @@ logging.config.dictConfig(
     }
 )
 
+
 def main():
     game = Game()
     game.run()
