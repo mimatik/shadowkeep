@@ -1,9 +1,6 @@
-import sys
-
 import pygame
 
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
-from shadowkeep.lib.coordinates import Coordinates
 
 
 class Dynamic_light:
