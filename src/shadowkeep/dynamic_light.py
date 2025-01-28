@@ -6,7 +6,7 @@ from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
 class Dynamic_light:
     def __init__(self, game):
         self.game = game
-        self.radius = 3 * TILE_HEIGHT
+        self.radius = 10 * TILE_HEIGHT
 
     def draw(self):
         self.dark_layer = self.surface = pygame.surface.Surface(

@@ -45,8 +45,8 @@ class Game:
         pygame.display.set_caption("Shadowkeep")
         self.clock = pygame.time.Clock()
         self.running = True
-        self.width = 23
-        self.height = 23
+        self.width = 24
+        self.height = 24
 
         self.window = pygame.display.set_mode(
             (self.width * config.TILE_WIDTH, self.height * config.TILE_HEIGHT)
@@ -62,8 +62,6 @@ class Game:
         self.background_layer = Layer(self)
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
-
-        self.load_data()
 
         self.inventory = Inventory()
 
@@ -169,7 +167,6 @@ class Game:
         self.dynamic_layer.clear()
         self.ui_layer.clear()
         self.dialog.blit()
-        self.player.blit()
         self.dialog.blit()
         self.inventory.blit()
 
@@ -179,6 +176,7 @@ class Game:
         for firebal in self.entities.of_type(Fireball):
             if firebal.position and self.map.is_floor(firebal.position):
                 firebal.blit()
+        self.player.blit()
 
     def blit_layers(self):
         self.background_layer.blit()
