@@ -33,6 +33,7 @@ from shadowkeep.lib.inventory import Inventory
 from shadowkeep.lib.open_ai import ChatGPT
 from shadowkeep.map import Map
 from shadowkeep.player import Player
+from shadowkeep.settings import Menu
 
 logger = logging.getLogger("shadowkeep")
 # Size of the window
@@ -44,11 +45,9 @@ class Game:
         pygame.display.set_caption("Shadowkeep")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.width = 23
+        self.height = 23
 
-        self.entities = Entities()
-        self.map = Map(self)
-        self.player = Player(self)
-        self.load_data()
         self.window = pygame.display.set_mode(
             (self.width * config.TILE_WIDTH, self.height * config.TILE_HEIGHT)
         )
@@ -56,16 +55,17 @@ class Game:
         with open(DATA_FILE, "r") as f:
             self.data = json.load(f)
 
+        self.entities = Entities()
+        self.map = Map(self)
+        self.player = Player(self)
+
         self.background_layer = Layer(self)
         self.dynamic_layer = Layer(self)
         self.ui_layer = Layer(self)
 
-        self.inventory = Inventory()
+        self.load_data()
 
-        self.entities += [Box(self, position=Coordinates(2, 13))]
-        self.entities += [Door(self, position=Coordinates(12, 16))]
-        self.entities += [TalkingMonster(self) for x in range(7)]
-        self.entities += [BadMonster(self) for x in range(4)]
+        self.inventory = Inventory()
 
         self.logic = []
         self.chatGPT = ChatGPT(self)
@@ -73,6 +73,8 @@ class Game:
         self.current_turn = 0
         self.keys = 0
         self.map.blit()
+        self.audio = Audio(self)
+        self.menu = Menu(self)
 
         self.dialog = Dialog(self)
 
