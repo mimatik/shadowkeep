@@ -180,4 +180,6 @@ class Game:
                 self.passed = self.current_turn
                 self.map.load_map_from_image("second_map.png")
                 self.load_data("second_map.png")
+                self.map.blit()
+                pygame.display.update()
             self.clock.tick(config.FPS)
