@@ -170,6 +170,9 @@ class Game:
         self.ui_layer.clear()
         self.dialog.blit()
         self.player.blit()
+        self.dialog.blit()
+        self.inventory.blit()
+
         for entity in self.entities:
             if entity.position and self.map.is_floor(entity.position):
                 entity.blit()
