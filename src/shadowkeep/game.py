@@ -49,7 +49,7 @@ class Game:
         self.height = 24
 
         self.window = pygame.display.set_mode(
-            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
+            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT), pygame.FULLSCREEN
         )
 
         with open(DATA_FILE, "r") as f:
