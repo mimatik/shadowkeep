@@ -41,7 +41,7 @@ logger = logging.getLogger("shadowkeep")
 
 class Game:
     def __init__(self):
-        pygame.init()
+        # pygame.init()
         pygame.display.set_caption("Shadowkeep")
         self.clock = pygame.time.Clock()
         self.running = True
@@ -185,7 +185,7 @@ class Game:
         pygame.display.update()
 
     def draw_settings_title(self):
-        pygame.init()
+        # pygame.init()
         title_font = pygame.font.Font(None, 110)
         title_surface = title_font.render("settings", True, (255, 255, 255))
         self.window.blit(title_surface, (7 * TILE_WIDTH, TILE_HEIGHT))
