@@ -169,6 +169,7 @@ class Button:
     def draw(self, surface):
         pygame.draw.rect(self.game.window, GREY, self.rect)
         text_surface = pygame.font.Font(None, 32).render(self.text, True, BLACK)
+        text_surface = pygame.font.Font(None, 32).render(self.text, True, BLACK)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
         pygame.display.flip()

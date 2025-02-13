@@ -15,7 +15,7 @@ class DynamicLight:
             (self.game.window.get_width(), self.game.window.get_height()),
             pygame.SRCALPHA,
         )
-        self.dark_layer.fill((0, 0, 0))
+        self.dark_layer.fill((0, 0, 0, 255))
         pygame.draw.circle(
             self.dark_layer,
             (0, 0, 0, 0),
