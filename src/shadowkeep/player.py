@@ -30,6 +30,7 @@ class Player:
             "left": pygame.K_a,
             "right": pygame.K_d,
         }
+        self.number_of_matches = 0
 
     def move(self):
         movement = None

@@ -106,6 +106,9 @@ class Entity:
                 self.surface, self.position.transformed_pair()
             )
 
+    def interact(self, dir):
+        pass
+
     def destroy(self):
         self.game.entities.remove(self)
 
@@ -117,6 +120,13 @@ class Entity:
 
     def respawn(self):
         pass
+
+
+class Pickeable(Entity):
+    def move_to_inventory(self):
+        self.game.inventory += [self]
+        self.position = Coordinates(20 + self.game.inventory.index(self), 23)
+        self.destroy()
 
 
 class End(Entity):

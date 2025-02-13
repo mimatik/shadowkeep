@@ -1,6 +1,8 @@
 import logging
 import logging.config
 
+import pygame
+
 from shadowkeep.config import LOG_FILE
 from shadowkeep.game import Game
 
@@ -36,8 +38,10 @@ logging.config.dictConfig(
 
 
 def main():
+    pygame.init()
     game = Game()
     game.run()
+    pygame.quit()
 
 
 if __name__ == "__main__":
