@@ -1,7 +1,7 @@
 # shadowkeep
 Python course - game dev 
 
-# prerequisiteis
+# prerequisities
 
 - `uv` - https://docs.astral.sh/uv/
 
