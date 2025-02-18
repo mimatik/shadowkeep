@@ -9,9 +9,6 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (169, 169, 169)
 
-# pygame.init()
-# font = pygame.font.Font(None, 32)
-
 
 class Menu:
     def __init__(self, game):
@@ -152,7 +149,6 @@ class Menu:
                     button.click()
 
     def respawn_draw(self, surface):
-        # pygame.init()
         title_font = pygame.font.Font(None, 110)
         title_surface = title_font.render("You are dead", True, (255, 255, 255))
         self.game.window.blit(title_surface, (5 * TILE_WIDTH, TILE_HEIGHT))
@@ -172,6 +168,7 @@ class Button:
 
     def draw(self, surface):
         pygame.draw.rect(self.game.window, GREY, self.rect)
+        text_surface = pygame.font.Font(None, 32).render(self.text, True, BLACK)
         text_surface = pygame.font.Font(None, 32).render(self.text, True, BLACK)
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)

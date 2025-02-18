@@ -10,9 +10,10 @@ from shadowkeep import config
 from shadowkeep.audio import Audio
 from shadowkeep.config import DATA_FILE, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
-from shadowkeep.dynamic_light import Dynamic_light
+from shadowkeep.dynamic_light import DynamicLight
 from shadowkeep.entities import Entities
 from shadowkeep.entities.base import End
+from shadowkeep.entities.campfire import Campfires
 from shadowkeep.entities.doors_keys import (
     Door,
     Key,
@@ -22,6 +23,7 @@ from shadowkeep.entities.fireballs import (
     FireballLauncher,
 )
 from shadowkeep.entities.interactable import Box
+from shadowkeep.entities.match import Match
 from shadowkeep.entities.monsters import (
     BadMonster,
     TalkingMonster,
@@ -84,7 +86,7 @@ class Game:
 
         self.end_screen = False
 
-        self.dynamic_light = Dynamic_light(self)
+        self.dynamic_light = DynamicLight(self)
 
         logger.info("game:start")
         self.add_entities()
@@ -92,6 +94,7 @@ class Game:
     def add_entities(self):
         self.map.blit()
         self.load_data()
+        self.entities += [Campfires(self, position=Coordinates(1, 1))]
         self.entities += [Box(self, position=Coordinates(2, 13))]
         self.entities += [Door(self, position=Coordinates(12, 16))]
         self.entities += [
@@ -100,6 +103,8 @@ class Game:
         self.entities += [
             BadMonster(self) for x in range(self.data["number_of_bad_monsters"])
         ]
+        self.entities += [Match(self, position=Coordinates(2, 2))]
+        self.entities += [Match(self, position=Coordinates(3, 3))]
 
         logger.info("game:start")
 
@@ -202,7 +207,7 @@ class Game:
                     if self.dialog.is_open:
                         self.dialog.read_key(event)
                     elif pressed_key[pygame.K_ESCAPE]:
-                        if self.in_menu:
+                        if self.in_menu or self.end_screen:
                             self.in_menu = False
                         else:
                             self.in_menu = True

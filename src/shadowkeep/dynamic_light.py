@@ -1,12 +1,14 @@
 import pygame
 
 from shadowkeep.config import TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.entities.campfire import Campfires
 
 
-class Dynamic_light:
+class DynamicLight:
     def __init__(self, game):
         self.game = game
-        self.radius = 10 * TILE_HEIGHT
+        self.radius = 4 * TILE_HEIGHT
+        self.half_of_tile = TILE_HEIGHT / 2
 
     def draw(self):
         self.dark_layer = self.surface = pygame.surface.Surface(
@@ -18,11 +20,22 @@ class Dynamic_light:
             self.dark_layer,
             (0, 0, 0, 0),
             (
-                self.game.player.position.x * TILE_WIDTH + 16,
-                self.game.player.position.y * TILE_HEIGHT + 16,
+                (self.game.player.position.x + 0.5) * TILE_WIDTH,
+                (self.game.player.position.y + 0.5) * TILE_HEIGHT,
             ),
             self.radius,
         )
+        for campfire in self.game.entities.of_type(Campfires):
+            if campfire.is_lit:
+                pygame.draw.circle(
+                    self.dark_layer,
+                    (0, 0, 0, 0),
+                    (
+                        (campfire.position.x + 0.5) * TILE_WIDTH,
+                        (campfire.position.y + 0.5) * TILE_HEIGHT,
+                    ),
+                    self.radius,
+                )
         self.game.window.blit(self.dark_layer, (0, 0))
         self.game.ui_layer.blit()
         pygame.display.flip()

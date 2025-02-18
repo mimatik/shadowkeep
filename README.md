@@ -1,7 +1,7 @@
 # shadowkeep
 Game dev
 
-# prerequisiteis
+# prerequisities
 
 - `uv` - https://docs.astral.sh/uv/
 

@@ -2,7 +2,7 @@ import logging
 
 from shadowkeep.lib.coordinates import Coordinates
 
-from .base import Entity
+from .base import Entity, Pickeable
 
 logger = logging.getLogger("shadowkeep")
 
@@ -30,15 +30,10 @@ class Door(Entity):
         return "Door.png"
 
 
-class Key(Entity):
+class Key(Pickeable):
     def __init__(self, game, position=Coordinates(0, 0), pair=0):
         super().__init__(game=game, position=position)
         self.pair = pair
-
-    def move_to_inventory(self):
-        self.game.inventory += [self]
-        self.position = Coordinates(20 + self.game.inventory.index(self), 23)
-        self.destroy()
 
     def interact(self, *args, **kwargs):
         self.move_to_inventory()
