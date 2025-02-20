@@ -34,6 +34,15 @@ class Entities(list):
             ]
         )
 
+    def not_of_type(self, *args):
+        return Entities(
+            [
+                entity
+                for entity in self
+                if not any([isinstance(entity, cls) for cls in args])
+            ]
+        )
+
 
 class Entity:
     def __init__(

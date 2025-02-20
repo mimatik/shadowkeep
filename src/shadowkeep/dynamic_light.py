@@ -7,7 +7,7 @@ from shadowkeep.entities.campfire import Campfires
 class DynamicLight:
     def __init__(self, game):
         self.game = game
-        self.radius = 4 * TILE_HEIGHT
+        self.radius = 10 * TILE_HEIGHT
         self.half_of_tile = TILE_HEIGHT / 2
 
     def draw(self):

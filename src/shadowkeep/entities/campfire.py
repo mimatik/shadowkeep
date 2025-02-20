@@ -6,14 +6,13 @@ from shadowkeep.config import (
     TILE_WIDTH,
 )
 from shadowkeep.entities.match import Match
-from shadowkeep.lib.coordinates import Coordinates
 
 from .base import Entity
 
 
 class Campfires(Entity):
     def __init__(self, game, position=None):
-        super().__init__(game=game, position=position, solid=True, movable=True)
+        super().__init__(game=game, position=position, solid=True)
         self.game = game
         self.is_lit = False
         self.surface = pygame.surface.Surface((TILE_WIDTH, TILE_HEIGHT))
