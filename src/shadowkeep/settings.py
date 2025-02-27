@@ -2,7 +2,7 @@ import json
 
 import pygame
 
-from shadowkeep.config import SETTINGS_FILE, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import IMG_DIR, SETTINGS_FILE, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.lib.coordinates import Coordinates
 
 WHITE = (255, 255, 255)

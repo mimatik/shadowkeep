@@ -8,7 +8,7 @@ from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
-from shadowkeep.config import DATA_FILE, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import DATA_FILE, LEVELS_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
 from shadowkeep.dynamic_light import DynamicLight
 from shadowkeep.entities import Entities
@@ -29,6 +29,7 @@ from shadowkeep.entities.monsters import (
     TalkingMonster,
 )
 from shadowkeep.entities.slot import Slot
+from shadowkeep.entities.trapdoor import Trapdoor
 from shadowkeep.layer import Layer
 from shadowkeep.lib.coordinates import Coordinates
 from shadowkeep.lib.inventory import Inventory
@@ -51,7 +52,7 @@ class Game:
         self.height = 24
 
         self.window = pygame.display.set_mode(
-            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
+            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)  # , pygame.FULLSCREEN
         )
 
         with open(DATA_FILE, "r") as f:
@@ -116,7 +117,8 @@ class Game:
             entity.turn()
 
         if self.player.lives == 0:
-            pygame.display.flip()
+            self.update()
+            self.blit_layers()
             self.end_screen = True
 
     # def load_logic(self):
@@ -131,7 +133,7 @@ class Game:
     #         print("error")
 
     def load_data(self):
-        with Image.open(IMG_DIR / "map.png") as image:
+        with Image.open(LEVELS_DIR / "map.png") as image:
             self.width, self.height = image.size
 
             for y in range(self.height):
@@ -158,8 +160,20 @@ class Game:
                                     pair=pair,
                                 )
                             )
+                        case (9, 9, 9, 255):
+                            self.entities.append(
+                                Campfires(self, position=Coordinates(x, y))
+                            )
+                        case (8, 8, 8, 255):
+                            self.entities.append(
+                                Match(self, position=Coordinates(x, y))
+                            )
                         case (0, 255, 0, 255):
                             self.entities.append(End(self, position=Coordinates(x, y)))
+                        case (255, 0, 255, 255):
+                            self.entities.append(
+                                Trapdoor(self, position=Coordinates(x, y))
+                            )
                         case (0, 0, 255, 255):
                             self.player.position = Coordinates(x, y)
                             self.player.transformed_position = ()
@@ -211,9 +225,8 @@ class Game:
                             self.in_menu = False
                         else:
                             self.in_menu = True
-                    elif not self.in_menu:
+                    elif not self.in_menu and not self.end_screen:
                         self.player.move()
-
             if self.in_menu:
                 self.draw_settings_title()
                 self.menu.run()
