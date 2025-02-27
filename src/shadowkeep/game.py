@@ -8,7 +8,7 @@ from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
-from shadowkeep.config import DATA_FILE, IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import DATA_FILE, LEVELS_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
 from shadowkeep.dynamic_light import DynamicLight
 from shadowkeep.entities import Entities
@@ -133,7 +133,7 @@ class Game:
     #         print("error")
 
     def load_data(self):
-        with Image.open(IMG_DIR / "map.png") as image:
+        with Image.open(LEVELS_DIR / "map.png") as image:
             self.width, self.height = image.size
 
             for y in range(self.height):

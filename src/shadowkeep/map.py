@@ -1,7 +1,7 @@
 import pygame
 from PIL import Image
 
-from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import IMG_DIR, TILE_HEIGHT, TILE_WIDTH, LEVELS_DIR
 
 
 class Map:
@@ -18,7 +18,7 @@ class Map:
         self.load_map_from_image()
 
     def load_map_from_image(self):
-        with Image.open(IMG_DIR / "map.png") as image:
+        with Image.open(LEVELS_DIR / "map.png") as image:
             self.width, self.height = image.size
 
             for h in range(self.height):

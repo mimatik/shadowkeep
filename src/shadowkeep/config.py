@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from PIL import Image
 
 ROOT_DIR = Path(__file__).parent.parent.parent
@@ -19,7 +20,7 @@ TILE_HEIGHT = 32
 
 
 # Size of the window
-with Image.open(IMG_DIR / "map.png") as image:
+with Image.open(LEVELS_DIR / "map.png") as image:
     WINDOW_WIDTH = image.width * TILE_WIDTH
     WINDOW_HEIGHT = image.height * TILE_HEIGHT
 # Frames Per Second
