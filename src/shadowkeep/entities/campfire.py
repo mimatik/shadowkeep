@@ -27,6 +27,8 @@ class Campfires(Entity):
                 [match for match in self.game.inventory.of_type(Match)][0]
             )
             self.is_lit = True
+        if self.is_lit:
+            self.game.dynamic_light.radius = 10 * TILE_HEIGHT
 
     def blit(self):
         if self.dead:
