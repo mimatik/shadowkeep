@@ -8,7 +8,7 @@ from requests.packages import target
 
 from shadowkeep import config
 from shadowkeep.audio import Audio
-from shadowkeep.config import DATA_FILE, LEVELS_DIR, TILE_HEIGHT, TILE_WIDTH
+from shadowkeep.config import LEVELS_DIR, TILE_HEIGHT, TILE_WIDTH
 from shadowkeep.dialog import Dialog
 from shadowkeep.dynamic_light import DynamicLight
 from shadowkeep.entities import Entities
@@ -51,11 +51,13 @@ class Game:
         self.width = 24
         self.height = 24
 
+        self.level = "01"
+
         self.window = pygame.display.set_mode(
             (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)  # , pygame.FULLSCREEN
         )
 
-        with open(DATA_FILE, "r") as f:
+        with open(LEVELS_DIR / self.level / "data.json", "r") as f:
             self.data = json.load(f)
 
         self.entities = Entities()
@@ -133,7 +135,7 @@ class Game:
     #         print("error")
 
     def load_data(self):
-        with Image.open(LEVELS_DIR / "map.png") as image:
+        with Image.open(LEVELS_DIR / self.level / "map.png") as image:
             self.width, self.height = image.size
 
             for y in range(self.height):
@@ -179,7 +181,7 @@ class Game:
                             self.player.transformed_position = ()
                             self.data["player_initial_x_position"] = x
                             self.data["player_initial_y_position"] = y
-                            with open(DATA_FILE, "w") as f:
+                            with open(LEVELS_DIR / self.level / "data.json", "w") as f:
                                 json.dump(self.data, f)
 
     def update(self):
@@ -196,6 +198,7 @@ class Game:
             if firebal.position and self.map.is_floor(firebal.position):
                 firebal.blit()
         self.player.blit()
+        self.dynamic_light.change_light()
 
     def blit_layers(self):
         self.background_layer.blit()

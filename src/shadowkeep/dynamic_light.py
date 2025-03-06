@@ -8,7 +8,12 @@ class DynamicLight:
     def __init__(self, game):
         self.game = game
         self.radius = 10 * TILE_HEIGHT
+        self.campfire_radius = 5 * TILE_HEIGHT
         self.half_of_tile = TILE_HEIGHT / 2
+
+    def change_light(self):
+        if self.radius > TILE_HEIGHT:
+            self.radius -= 0.5
 
     def draw(self):
         self.dark_layer = self.surface = pygame.surface.Surface(
@@ -34,7 +39,7 @@ class DynamicLight:
                         (campfire.position.x + 0.5) * TILE_WIDTH,
                         (campfire.position.y + 0.5) * TILE_HEIGHT,
                     ),
-                    self.radius,
+                    self.campfire_radius,
                 )
         self.game.window.blit(self.dark_layer, (0, 0))
         self.game.ui_layer.blit()
