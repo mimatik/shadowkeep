@@ -134,8 +134,24 @@ class Entity:
 class Pickeable(Entity):
     def move_to_inventory(self):
         self.game.inventory += [self]
-        self.position = Coordinates(20 + self.game.inventory.index(self), 23)
+        self.position = self.game.inventory.index(self)
         self.destroy()
+
+    def blit(self):
+        if self.dead:
+            pass
+        else:
+            if not self in self.game.inventory:
+                self.game.dynamic_layer.place_surface(
+                    self.surface, self.position.transformed_pair()
+                )
+            else:
+                self.game.ui_layer.place_surface(
+                    self.surface,
+                    Coordinates.transformed_pair(
+                        Coordinates(self.game.inventory.index(self), 1)
+                    ),
+                )
 
 
 class End(Entity):

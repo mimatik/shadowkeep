@@ -36,11 +36,11 @@ class Key(Pickeable):
         self.pair = pair
 
     def interact(self, *args, **kwargs):
-        self.move_to_inventory()
-        self.game.player.ghost_step()
         logger.info(
             f"moved key pair {self.pair} on x:{self.position.x} y:{self.position.y}"
         )
+        self.move_to_inventory()
+        self.game.player.ghost_step()
 
     def get_image(self):
         return "Key.png"
