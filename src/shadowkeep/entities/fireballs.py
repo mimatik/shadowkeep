@@ -20,7 +20,6 @@ class Fireball(Entity):
         self.solid = False
 
     def turn(self):
-        print("turn")
         next_position = self.next_position
         for entity in self.game.entities.solid:
             if next_position == entity.position:

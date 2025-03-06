@@ -12,8 +12,8 @@ class DynamicLight:
         self.half_of_tile = TILE_HEIGHT / 2
 
     def change_light(self):
-        if self.radius > TILE_HEIGHT:
-            self.radius -= 0.5
+        if self.radius > 1.2 * TILE_HEIGHT:
+            self.radius -= 0.5 * TILE_HEIGHT
 
     def draw(self):
         self.dark_layer = self.surface = pygame.surface.Surface(

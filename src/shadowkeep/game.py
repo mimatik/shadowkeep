@@ -97,7 +97,6 @@ class Game:
     def add_entities(self):
         self.map.blit()
         self.load_data()
-        self.entities += [Campfires(self, position=Coordinates(1, 1))]
         self.entities += [Box(self, position=Coordinates(2, 13))]
         self.entities += [Door(self, position=Coordinates(12, 16))]
         self.entities += [
@@ -115,6 +114,7 @@ class Game:
 
     def turn(self):
         self.current_turn += 1
+        self.dynamic_light.change_light()
         for entity in self.entities[:]:
             entity.turn()
 
@@ -198,7 +198,6 @@ class Game:
             if firebal.position and self.map.is_floor(firebal.position):
                 firebal.blit()
         self.player.blit()
-        self.dynamic_light.change_light()
 
     def blit_layers(self):
         self.background_layer.blit()

@@ -236,12 +236,13 @@ class Button:
 
     def respawn(self):
         self.game.current_turn = 0
+        self.game.dynamic_light.radius = 10 * TILE_HEIGHT
         self.game.player.position = Coordinates(
             self.game.data["player_initial_x_position"],
             self.game.data["player_initial_y_position"],
         )
         self.game.player.lives = 4
-        for entity in self.game.entities:
+        for entity in list(self.game.entities):
             entity.destroy()
         self.game.add_entities()
         self.game.end_screen = False
