@@ -148,9 +148,9 @@ class Pickeable(Entity):
             else:
                 self.game.ui_layer.place_surface(
                     self.surface,
-                    Coordinates.transformed_pair(
-                        Coordinates(self.game.inventory.index(self), 1)
-                    ),
+                    Coordinates(
+                        self.game.inventory.index(self) + 1, 1
+                    ).transformed_pair(),
                 )
 
 
