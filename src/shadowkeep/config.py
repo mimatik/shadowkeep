@@ -19,7 +19,7 @@ TILE_HEIGHT = 32
 
 
 # Size of the window
-with Image.open(LEVELS_DIR / "01" / "map.png") as image:
+with Image.open(LEVELS_DIR / "1" / "map.png") as image:
     WINDOW_WIDTH = image.width * TILE_WIDTH
     WINDOW_HEIGHT = image.height * TILE_HEIGHT
 # Frames Per Second

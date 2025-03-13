@@ -39,7 +39,6 @@ from shadowkeep.player import Player
 from shadowkeep.settings import Menu
 
 logger = logging.getLogger("shadowkeep")
-# Size of the window
 
 
 class Game:
@@ -51,17 +50,13 @@ class Game:
         self.width = 24
         self.height = 24
 
-        self.level = "01"
+        self.window = pygame.display.set_mode(config.WINDOW_WIDTH, config.WINDOW_HEIGHT)
 
-        self.window = pygame.display.set_mode(
-            (config.WINDOW_WIDTH, config.WINDOW_HEIGHT)  # , pygame.FULLSCREEN
-        )
-
-        with open(LEVELS_DIR / self.level / "data.json", "r") as f:
-            self.data = json.load(f)
-
-        self.entities = Entities()
+        self.level = 1
         self.map = Map(self)
+        self.entities = Entities()
+        self.load_all(self.level)
+
         self.player = Player(self)
 
         self.background_layer = Layer(self)
@@ -80,11 +75,6 @@ class Game:
         self.menu = Menu(self)
 
         self.dialog = Dialog(self)
-
-        # self.load_logic()
-
-        # self.load_logic()\
-
         self.in_menu = True
 
         self.end_screen = False
@@ -93,6 +83,12 @@ class Game:
 
         logger.info("game:start")
         self.add_entities()
+
+    def load_all(self, level):
+        self.level = level
+        self.map.load_map_from_image()
+        with open(LEVELS_DIR / str(self.level) / "data.json", "r") as f:
+            self.data = json.load(f)
 
     def add_entities(self):
         self.map.blit()

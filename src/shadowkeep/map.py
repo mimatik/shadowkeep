@@ -18,7 +18,7 @@ class Map:
         self.load_map_from_image()
 
     def load_map_from_image(self):
-        with Image.open(LEVELS_DIR / self.game.level / "map.png") as image:
+        with Image.open(LEVELS_DIR / str(self.game.level) / "map.png") as image:
             self.width, self.height = image.size
 
             for h in range(self.height):
